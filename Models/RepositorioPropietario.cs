@@ -31,6 +31,24 @@ public class RepositorioPropietario : RepositorioBase
     return res;
 }
 
+    
+        public int Baja(int id)
+		{
+			int res = -1;
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = "DELETE FROM Propietarios WHERE id = @id";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@id", id);
+					connection.Open();
+					res = command.ExecuteNonQuery();
+					connection.Close();
+				}
+			}
+			return res;
+		}
+
     public List<Propietario> ObtenerTodos()
     {
         List<Propietario> propietarios = new List<Propietario>();
