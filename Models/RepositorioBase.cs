@@ -3,11 +3,11 @@ using MySql.Data.MySqlClient;
 
 public abstract class RepositorioBase
 {
-    protected readonly string ConectionString;
+    protected readonly string connectionString;
 
     protected RepositorioBase()
     {
-        ConectionString = "Server=localhost;User=root;Password=;Database=inmobiliaria_net;SslMode=none";
+        connectionString = "Server=localhost;User=root;Password=;Database=inmobiliaria_net;SslMode=none";
     }
 
    

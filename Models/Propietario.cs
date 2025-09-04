@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace proyectoInmobiliaria.NET.Models;
 public class Propietario
 {
-    
+    [Display(Name = "Codigo ID")]
     public int id { get; set; } 
     [Display(Name = "Nombre Propietario")]
     public string nombre { get; set; } = "";
