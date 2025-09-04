@@ -49,6 +49,31 @@ public class RepositorioPropietario : RepositorioBase
 			return res;
 		}
 
+        public int Modificacion(Propietario p)
+		{
+			int res = -1;
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"UPDATE Propietarios 
+					SET nombre=@nombre, apellido=@apellido, dni=@dni, celular=@celular, direccion=@direccion, estado=@estado
+					WHERE id = @id";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.Parameters.AddWithValue("@nombre", p.nombre);
+					command.Parameters.AddWithValue("@apellido", p.apellido);
+					command.Parameters.AddWithValue("@dni", p.dni);
+					command.Parameters.AddWithValue("@celular", p.celular);
+					command.Parameters.AddWithValue("@direccion", p.direccion);
+					command.Parameters.AddWithValue("@estado", p.estado);
+					command.Parameters.AddWithValue("@id", p.id);
+					connection.Open();
+					res = command.ExecuteNonQuery();
+					connection.Close();
+				}
+			}
+			return res;
+		}
+
     public List<Propietario> ObtenerTodos()
     {
         List<Propietario> propietarios = new List<Propietario>();
