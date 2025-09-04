@@ -1,10 +1,11 @@
+namespace proyectoInmobiliaria.NET.Models;
 using MySql.Data.MySqlClient;
 
-public class RespositorioPropietario
+public class RepositorioPropietario
 {
-    string ConectionString = "Server=localhost;User=root;Password=;Database=test;SslMode=none";
+    string ConectionString = "Server=localhost;User=root;Password=;Database=inmobiliaria_net;SslMode=none";
 
-    public List<Propietario> obtenerPropietarios()
+    public List<Propietario> ObtenerTodos()
     {
         List<Propietario> propietarios = new List<Propietario>();
 
@@ -22,14 +23,16 @@ public class RespositorioPropietario
                         propietario.id = reader.GetInt32("id");
                         propietario.nombre = reader.GetString("nombre");
                         propietario.apellido = reader.GetString("apellido");
+                        propietario.dni = reader.GetInt32("dni");
                         propietario.direccion = reader.GetString("direccion");
                         propietario.celular = reader.GetString("celular");
+                        propietario.estado = reader.GetBoolean("estado");
 
                         propietarios.Add(propietario);
                     }
                 }
             }
-        }        
+        }
         return propietarios;
     }
 }
