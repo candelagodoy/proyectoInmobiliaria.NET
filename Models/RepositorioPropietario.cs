@@ -1,35 +1,35 @@
 namespace proyectoInmobiliaria.NET.Models;
+
 using MySql.Data.MySqlClient;
 
 public class RepositorioPropietario : RepositorioBase
 {
 
-    	public int Alta(Propietario p)
-		{
-			int res = -1;
-			using (MySqlConnection connection = new MySqlConnection(connectionString))
-			{
-				string sql = @"INSERT INTO Propietarios 
-					(Nombre, Apellido, Dni, Telefono, Email, Clave)
-					VALUES (@nombre, @apellido, @dni, @telefono, @email, @clave);
-					SELECT SCOPE_IDENTITY();";
-				using (MySqlCommand command = new MySqlCommand(sql, connection))
-				{
-					command.CommandType = CommandType.Text;
-					command.Parameters.AddWithValue("@nombre", p.Nombre);
-					command.Parameters.AddWithValue("@apellido", p.Apellido);
-					command.Parameters.AddWithValue("@dni", p.Dni);
-					command.Parameters.AddWithValue("@telefono", p.Telefono);
-					command.Parameters.AddWithValue("@email", p.Email);
-					command.Parameters.AddWithValue("@clave", p.Clave);
-					connection.Open();
-					res = Convert.ToInt32(command.ExecuteScalar());
-					p.IdPropietario = res;
-					connection.Close();
-				}
-			}
-			return res;
-		}
+    public int Alta(Propietario p)
+{
+    int res = -1;
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    {
+        string sql = @"INSERT INTO Propietarios 
+                        (nombre, apellido, dni, direccion, celular, estado)
+                        VALUES (@nombre, @apellido, @dni, @direccion, @celular, @estado);";
+
+        using (MySqlCommand command = new MySqlCommand(sql, connection))
+        {
+            command.Parameters.AddWithValue("@nombre", p.nombre);
+            command.Parameters.AddWithValue("@apellido", p.apellido);
+            command.Parameters.AddWithValue("@dni", p.dni);
+            command.Parameters.AddWithValue("@direccion", p.direccion);
+            command.Parameters.AddWithValue("@celular", p.celular);
+            command.Parameters.AddWithValue("@estado", p.estado);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+            res = (int)command.LastInsertedId; // ID del nuevo Propietario
+        }
+    }
+    return res;
+}
 
     public List<Propietario> ObtenerTodos()
     {

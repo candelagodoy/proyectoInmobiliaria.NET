@@ -17,6 +17,7 @@ public class PropietarioController : Controller
 
     public IActionResult Index()
     {
+        repo.Alta(new Propietario() { nombre = "pepe", apellido = "perez", dni = "12345678", celular = "12345678", estado = true });
         var lista = repo.ObtenerTodos();
         return View(lista);
     }
