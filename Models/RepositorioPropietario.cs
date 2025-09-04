@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 public class RepositorioPropietario : RepositorioBase
 {
 
+
     public int Alta(Propietario p)
 {
     int res = -1;

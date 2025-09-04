@@ -1,14 +1,11 @@
+namespace proyectoInmobiliaria.NET.Models;
 public class Inquilino
 {
-
-    private int id { get; set; }
-    private string nombre { get; set; } = "";
-    private string apellido { get; set; } = "";
-    private string dni { get; set; }
-    private string direccion { get; set; } = "";
-    private string celular { get; set; } = "";
-    private Boolean estado { get; set; }
-    
-    
+    public int id { get; set; }
+    public string? nombre { get; set; }
+    public string? apellido { get; set; }
+    public string? dni { get; set; }
+    public string? email { get; set; }
+    public string? celular { get; set; }
+    public Boolean estado { get; set; }
 }
-    
