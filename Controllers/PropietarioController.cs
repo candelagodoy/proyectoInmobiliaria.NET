@@ -65,6 +65,13 @@ public class PropietarioController : Controller
         }
     }  
 
+    public IActionResult Eliminar(int id)
+    {
+        repo.Baja(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+    
     
 
     
