@@ -15,9 +15,6 @@ public class PropietarioController : Controller
 
     public IActionResult Index()
     {
-        //repo.Modificacion(new Propietario() { id = 2, nombre = "pepe", apellido = "perez", dni = "12345678", celular = "12345678", estado = true});
-        //repo.Baja(6);
-
         var lista = repo.ObtenerTodos();
         return View(lista);
     }
@@ -27,6 +24,7 @@ public class PropietarioController : Controller
         return View();
     }
     
+    [HttpPost]
     public IActionResult Create(Propietario propietario)
     {
         try
@@ -38,7 +36,15 @@ public class PropietarioController : Controller
         {
             return View(propietario);
         }
-    }
+    }   
+
+    
+
+    
+
+
+
+  
 
 
 }
