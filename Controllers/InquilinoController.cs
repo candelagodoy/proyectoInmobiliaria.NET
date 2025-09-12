@@ -58,6 +58,34 @@ public class InquilinoController : Controller
         }
     }
 
+    [HttpPost]
+    public IActionResult Edit(Inquilino inquilino)
+    {
+        try
+        {
+            repo.Modificacion(inquilino);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception)
+        {
+            return View(inquilino);
+        }
+    }
+
+
+
+
+
+    
+
+    
+
+
+
+    
+
+    
+
     
 
 }
