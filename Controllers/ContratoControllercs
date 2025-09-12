@@ -1,0 +1,24 @@
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using proyectoInmobiliaria.NET.Models;
+
+namespace proyectoInmobiliaria.NET.Controllers;
+
+public class ContratoController : Controller
+{
+    private RepositorioContrato repo;
+
+    public ContratoController()
+    {
+        repo = new RepositorioContrato();
+    }
+
+    public IActionResult Index()
+    {
+        var lista = repo.ObtenerTodos();
+        return View(lista);
+    }
+
+    
+
+}

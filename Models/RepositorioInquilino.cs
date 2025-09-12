@@ -13,10 +13,10 @@ public class RepositorioInquilino : RepositorioBase
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "DELETE FROM inquilinos WHERE id = @id";
+            string sql = "DELETE FROM inquilinos WHERE idInquilino = @idInquilino";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@idInquilino", id);
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -61,7 +61,7 @@ public class RepositorioInquilino : RepositorioBase
                     while (reader.Read())
                     {
                         Inquilino inquilino = new Inquilino();
-                        inquilino.id = reader.GetInt32("id");
+                        inquilino.id = reader.GetInt32("idInquilino");
                         inquilino.dni = reader.GetString("dni");
                         inquilino.apellido = reader.GetString("apellido");
                         inquilino.nombre = reader.GetString("nombre");
@@ -85,14 +85,14 @@ public class RepositorioInquilino : RepositorioBase
             var sql = "SELECT * FROM inquilinos WHERE id = @id";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@idInquilino", id);
                 connection.Open();
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         inquilino = new Inquilino();
-                        inquilino.id = reader.GetInt32("id");
+                        inquilino.id = reader.GetInt32("idInquilino");
                         inquilino.dni = reader.GetString("dni");
                         inquilino.apellido = reader.GetString("apellido");
                         inquilino.nombre = reader.GetString("nombre");
@@ -113,7 +113,7 @@ public class RepositorioInquilino : RepositorioBase
         {
             string sql = @"UPDATE inquilinos 
                             SET dni=@dni, apellido=@apellido, nombre=@nombre, celular=@celular, email=@email, estado=@estado
-                            WHERE id = @id";
+                            WHERE idInquilino = @idInquilino";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@dni", inquilino.dni);
@@ -122,7 +122,7 @@ public class RepositorioInquilino : RepositorioBase
                 command.Parameters.AddWithValue("@celular", inquilino.celular);
                 command.Parameters.AddWithValue("@email", inquilino.email);
                 command.Parameters.AddWithValue("@estado", inquilino.estado);
-                command.Parameters.AddWithValue("@id", inquilino.id);
+                command.Parameters.AddWithValue("@idInquilino", inquilino.id);
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();

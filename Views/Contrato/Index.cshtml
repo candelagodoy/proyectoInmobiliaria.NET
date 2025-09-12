@@ -1,0 +1,65 @@
+﻿@model IEnumerable<proyectoInmobiliaria.NET.Models.Contrato>
+
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Welcome</h1>
+	<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
++
+<h1>
+	Contratos
+	<div class="btn-group pull-right">
+		<a class="btn btn-primary" asp-action="Create" title="Crear"><i class="fa-solid fa-plus"></i></a>
+	</div>
+</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.idContrato)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.monto)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.fechaDesde)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.fechaHasta)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.idContrato)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.monto)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.fechaDesde)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.fechaHasta)
+				</td>
+				<td>
+					<div class="btn-group" role="group">
+						<a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.idContrato" title="Editar">
+							<i class="fa-solid fa-pen"></i>
+						</a>
+						<a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.idContrato" title="Eliminar">
+							<i class="fa-solid fa-trash-can"></i>
+						</a>
+					</div>
+				</td>
+			</tr>
+		}	
+	</tbody>
+</table>
