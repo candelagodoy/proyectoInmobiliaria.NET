@@ -23,7 +23,7 @@ public class PropietarioController : Controller
     {
         return View();
     }
-    
+
     [HttpPost]
     public IActionResult Create(Propietario propietario)
     {
@@ -36,7 +36,34 @@ public class PropietarioController : Controller
         {
             return View(propietario);
         }
-    }   
+    }
+
+    public ActionResult Edit(int id)
+    {
+        try
+        {
+            var entidad = repo.ObtenerPorId(id);
+            return View("Edit", entidad);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    } 
+
+    [HttpPost]
+    public ActionResult Edit(Propietario propietario)
+    {
+        try
+        {
+            repo.Modificacion(propietario);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception)
+        {
+            return View(propietario);
+        }
+    }  
 
     
 
