@@ -2,7 +2,7 @@ using MySql.Data.MySqlClient;
 
 namespace proyectoInmobiliaria.NET.Models;
 
-public class RepositoprioContrato : RepositorioBase
+public class RepositorioContrato : RepositorioBase
 {
     public List<Contrato> ObtenerTodos()
     {

@@ -8,6 +8,7 @@ public class ContratoController : Controller
 {
     private RepositorioContrato repo;
 
+
     public ContratoController()
     {
         repo = new RepositorioContrato();
