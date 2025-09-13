@@ -1,6 +1,7 @@
 ﻿@model proyectoInmobiliaria.NET.Models.Inmueble
 @{
     ViewData["Title"] = "Create";
+    var ltaPropietarios = (IList<Propietario>)ViewBag.Propietarios;
 }
 
 <h4>Nuevo Inmueble</h4>
@@ -34,9 +35,15 @@
                 <input asp-for="precio" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="idPropietario" class="control-label"></label>
-                <input asp-for="idPropietario" class="form-control" />
-            </div>
+				<label class="control-label">Propietario</label>
+				<select class="form-control" name="idPropietario">
+					@foreach (var item in ltaPropietarios)
+					{
+						<option value="@item.id">@(item.ToString())</option>
+					}
+				</select>
+				<span asp-validation-for="idPropietario" class="text-danger"></span>
+			</div>
             <div class="form-group form-check">
                 <input asp-for="estado" class="form-check-input" type="checkbox" />
                 <label asp-for="estado" class="form-check-label"></label>

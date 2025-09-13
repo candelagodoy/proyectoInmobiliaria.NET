@@ -6,11 +6,13 @@ namespace proyectoInmobiliaria.NET.Controllers;
 
 public class inmuebleController : Controller
 {
-    private RepositorioInmueble repo;        
+    private RepositorioInmueble repo;   
+    private RepositorioPropietario repoPropietario;     
 
     public inmuebleController()
     {
         repo = new RepositorioInmueble();
+        repoPropietario = new RepositorioPropietario();
     }
 
     public IActionResult Index()
@@ -18,19 +20,31 @@ public class inmuebleController : Controller
         var lista = repo.ObtenerTodos();
         return View(lista);
         
+        
     }
+    
 
     public IActionResult Create()
     {
+        ViewBag.Propietarios = new RepositorioPropietario().ObtenerTodos();
         return View();
     }
 
     [HttpPost]
     public IActionResult Create(Inmueble inmueble)
     {
-        try{
-            repo.Alta(inmueble);
-            return RedirectToAction(nameof(Index));
+        try{         
+            if (ModelState.IsValid)
+				{
+					repo.Alta(inmueble);
+					return RedirectToAction(nameof(Index));
+				}
+				else
+				{
+					ViewBag.Propietarios = repoPropietario.ObtenerTodos();
+					return View(inmueble);
+				}
+
         }
         catch (Exception)
         {
