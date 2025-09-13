@@ -82,7 +82,7 @@ public class RepositorioInquilino : RepositorioBase
         Inquilino inquilino = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var sql = "SELECT * FROM inquilinos WHERE id = @id";
+            var sql = "SELECT * FROM inquilinos WHERE idInquilino = @idInquilino";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idInquilino", id);
