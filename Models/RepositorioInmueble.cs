@@ -103,4 +103,36 @@ public class RepositorioInmueble : RepositorioBase
         return inmuebles;
     }
 
+    public Inmueble ObtenerPorId(int id) { 
+        Inmueble inmueble = null;
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var sql = "SELECT * From inmueble WHERE idInmueble = @idInmueble";
+            using (MySqlCommand command = new MySqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@idInmueble", id);
+                connection.Open();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        inmueble = new Inmueble();
+                        inmueble.idInmueble = reader.GetInt32("idInmueble");
+                        inmueble.direccion = reader.GetString("direccion");
+                        inmueble.uso = reader.GetString("uso");
+                        inmueble.tipo = reader.GetString("tipo");
+                        inmueble.cantidadAmb = reader.GetInt32("cantidadAmb");
+                        inmueble.coordenadas = reader.GetString("coordenadas");
+                        inmueble.precio = reader.GetDecimal("precio");
+                        inmueble.idPropietario = reader.GetInt32("idPropietario");
+                        inmueble.estado = reader.GetBoolean("estado");
+                    }
+                }
+            }
+            connection.Close();
+        }
+        return inmueble;
+        
+    }
+
 }

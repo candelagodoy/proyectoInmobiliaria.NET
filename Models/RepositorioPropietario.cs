@@ -50,14 +50,13 @@ public class RepositorioPropietario : RepositorioBase
         return res;
     }
 
-    public int Modificacion(Propietario p)
+    public void Modificacion(Propietario p)
     {
-        int res = -1;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             string sql = @"UPDATE Propietarios 
-					SET nombre=@nombre, apellido=@apellido, dni=@dni, celular=@celular, direccion=@direccion, estado=@estado
-					WHERE id = @id";
+					        SET nombre=@nombre, apellido=@apellido, dni=@dni, celular=@celular, direccion=@direccion, estado=@estado
+					        WHERE idPropietario = @idPropietario";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@nombre", p.nombre);
@@ -66,13 +65,12 @@ public class RepositorioPropietario : RepositorioBase
                 command.Parameters.AddWithValue("@celular", p.celular);
                 command.Parameters.AddWithValue("@direccion", p.direccion);
                 command.Parameters.AddWithValue("@estado", p.estado);
-                command.Parameters.AddWithValue("@id", p.id);
+                command.Parameters.AddWithValue("@idPropietario", p.id);
                 connection.Open();
-                res = command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
                 connection.Close();
             }
         }
-        return res;
     }
 
     public List<Propietario> ObtenerTodos()
@@ -121,7 +119,7 @@ public class RepositorioPropietario : RepositorioBase
                     if (reader.Read())
                     {
                         propietario = new Propietario();
-                        propietario.id = reader.GetInt32("idPropietario");
+                        propietario.id= reader.GetInt32("idPropietario");
                         propietario.nombre = reader.GetString("nombre");
                         propietario.apellido = reader.GetString("apellido");
                         propietario.dni = reader.GetString("dni");
@@ -131,6 +129,7 @@ public class RepositorioPropietario : RepositorioBase
                     }
                 }
             }
+            connection.Close();
         }
         return propietario;
     }

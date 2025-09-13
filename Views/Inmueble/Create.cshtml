@@ -1,0 +1,53 @@
+﻿@model proyectoInmobiliaria.NET.Models.Inmueble
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Nuevo Inmueble</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="direccion" class="control-label"></label>
+                <input asp-for="direccion" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="uso" class="control-label"></label>
+                <input asp-for="uso" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="tipo" class="control-label"></label>
+                <input asp-for="tipo" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="cantidadAmb" class="control-label"></label>
+                <input asp-for="cantidadAmb" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="coordenadas" class="control-label"></label>
+                <input asp-for="coordenadas" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="precio" class="control-label"></label>
+                <input asp-for="precio" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="idPropietario" class="control-label"></label>
+                <input asp-for="idPropietario" class="form-control" />
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="estado" class="form-check-input" type="checkbox" />
+                <label asp-for="estado" class="form-check-label"></label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

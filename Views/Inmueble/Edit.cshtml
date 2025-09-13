@@ -1,0 +1,63 @@
+@model proyectoInmobiliaria.NET.Models.Inmueble
+@{
+	ViewData["Title"] = "Editar Inmueble";
+}
+
+<h4>Editar Inmueble</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" name="IdInmueble" value="@Model.idInmueble" />
+			<div class="form-group">
+				<label asp-for="direccion" class="control-label"></label>
+				<input asp-for="direccion" class="form-control" />
+				<span asp-validation-for="direccion" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="uso" class="control-label"></label>
+				<input asp-for="uso" class="form-control" />
+				<span asp-validation-for="uso" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="tipo" class="control-label"></label>
+				<input asp-for="tipo" class="form-control" />
+				<span asp-validation-for="tipo" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="cantidadAmb" class="control-label"></label>
+				<input asp-for="cantidadAmb" class="form-control" />
+				<span asp-validation-for="cantidadAmb" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="coordenadas" class="control-label"></label>
+				<input asp-for="coordenadas" class="form-control" />
+				<span asp-validation-for="coordenadas" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="precio" class="control-label"></label>
+				<input asp-for="precio" class="form-control" />
+				<span asp-validation-for="precio" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="idPropietario" class="control-label"></label>
+				<input asp-for="idPropietario" class="form-control" />
+				<span asp-validation-for="idPropietario" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="estado" class="control-label"></label>
+				<input asp-for="estado" class="form-control" />
+				<span asp-validation-for="estado" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<input type="submit" value="Guardar" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Volver al listado</a>
+</div>
