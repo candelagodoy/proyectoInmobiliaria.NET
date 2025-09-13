@@ -90,7 +90,7 @@ public class RepositorioPropietario : RepositorioBase
                     while (reader.Read())
                     {
                         Propietario propietario = new Propietario();
-                        propietario.id = reader.GetInt32("id");
+                        propietario.id = reader.GetInt32("idPropietario");
                         propietario.nombre = reader.GetString("nombre");
                         propietario.apellido = reader.GetString("apellido");
                         propietario.dni = reader.GetString("dni");
@@ -111,17 +111,17 @@ public class RepositorioPropietario : RepositorioBase
         Propietario propietario = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var sql = "SELECT * FROM propietarios WHERE id = @id";
+            var sql = "SELECT * FROM propietarios WHERE idPropietario = @idPropietario";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@idPropietario", id);
                 connection.Open();
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         propietario = new Propietario();
-                        propietario.id = reader.GetInt32("id");
+                        propietario.id = reader.GetInt32("idPropietario");
                         propietario.nombre = reader.GetString("nombre");
                         propietario.apellido = reader.GetString("apellido");
                         propietario.dni = reader.GetString("dni");
