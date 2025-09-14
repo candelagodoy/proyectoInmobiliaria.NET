@@ -38,10 +38,10 @@ public class RepositorioPropietario : RepositorioBase
         int res = -1;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "DELETE FROM Propietarios WHERE id = @id";
+            string sql = "DELETE FROM Propietarios WHERE idPropietario = @idPropietario";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@idPropietario", id);
                 connection.Open();
                 res = command.ExecuteNonQuery();
                 connection.Close();

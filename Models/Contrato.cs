@@ -14,4 +14,5 @@ public class Contrato
     public bool estado { get; set; }
 
 
+    public String ToString() => $"{idContrato}, {fechaDesde}, {fechaHasta}, {monto}, {idInmueble}, {idInquilino}, {idUsuario}, {estado}";
 }

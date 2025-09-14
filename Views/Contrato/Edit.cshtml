@@ -1,0 +1,65 @@
+@model proyectoInmobiliaria.NET.Models.Contrato
+@{
+	ViewData["Title"] = "Editar Contrato";
+	IList<Inquilino>? listaInquilinos = (IList<Inquilino>)ViewBag.Inquilinos;
+	IList<Inmueble>? listaInmuebles = (IList<Inmueble>)ViewBag.Inmuebles;
+}
+
+<h4>Editar Contrato</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div class="form-group m-2 mx-0">
+				<label asp-for="idContrato" class="control-label">Contrato Nroº @Model.idContrato</label>
+				<input asp-for="idContrato" class="form-control" value="@Model.idContrato" type="hidden"/>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Inmueble</label>
+				<select class="form-control" name="idInmueble">
+					@foreach (Inmueble item in listaInmuebles)
+					{
+						<option value="@item.idInmueble">@(item.ToString())</option>
+					}
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Inquilino</label>
+				<select class="form-control" name="idInquilino">
+					@foreach (Inquilino item in listaInquilinos)
+					{
+						<option value="@item.id">@(item.ToString())</option>
+					}
+				</select>
+			</div>
+			<div class="form-group">
+				<label asp-for="idUsuario" class="control-label">Usuario</label>
+				<input asp-for="idUsuario" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label asp-for="monto" class="control-label">Monto</label>
+				<input asp-for="monto" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label asp-for="fechaDesde" class="control-label">Desde</label>
+				<input asp-for="fechaDesde" class="form-control" type="date" />
+			</div>
+			<div class="form-group">
+				<label asp-for="fechaHasta" class="control-label">Hasta</label>
+				<input asp-for="fechaHasta" class="form-control" type="date" />
+			</div>
+			<div class="form-group form-check m-2">
+				<input asp-for="estado" class="form-check-input" type="checkbox" />
+				<label asp-for="estado" class="form-check-label">Estado</label>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Guardar" class="btn btn-primary m-2" />
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div>
+	<a class="btn btn-primary m-2" asp-action="Index">Volver</a>
+</div>

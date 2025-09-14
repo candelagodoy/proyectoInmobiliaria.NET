@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace proyectoInmobiliaria.NET.Models;
+
 public class Inquilino
 {
     [Display(Name = "Id")]
@@ -16,4 +17,6 @@ public class Inquilino
     [Display(Name = "Celular")]
     public string? celular { get; set; }
     public Boolean estado { get; set; }
+    
+    public String ToString() => $"{apellido}, {nombre}";
 }

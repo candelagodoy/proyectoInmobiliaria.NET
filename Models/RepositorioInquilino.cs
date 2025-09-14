@@ -4,11 +4,6 @@ namespace proyectoInmobiliaria.NET.Models;
 
 public class RepositorioInquilino : RepositorioBase
 {
-
-    public RepositorioInquilino() { }
-
-
-
     public void Baja(int id)
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
