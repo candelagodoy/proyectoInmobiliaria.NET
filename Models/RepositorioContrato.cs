@@ -35,9 +35,9 @@ public class RepositorioContrato : RepositorioBase
         return contratos;
     }
 
-    public Contrato ObtenerPorId(int id)
+    public Contrato? ObtenerPorId(int id)
     {
-        Contrato contrato = null;
+        Contrato? contrato = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             string sql = "SELECT * FROM contrato WHERE idContrato = @idContrato";

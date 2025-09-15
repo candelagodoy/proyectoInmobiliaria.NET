@@ -18,5 +18,6 @@ public class Inquilino
     public string? celular { get; set; }
     public Boolean estado { get; set; }
     
+    override
     public String ToString() => $"{apellido}, {nombre}";
 }

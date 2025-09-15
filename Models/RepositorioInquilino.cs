@@ -72,9 +72,9 @@ public class RepositorioInquilino : RepositorioBase
         return inquilinos;
     }
 
-    public Inquilino ObtenerPorId(int id)
+    public Inquilino? ObtenerPorId(int id)
     {
-        Inquilino inquilino = null;
+        Inquilino? inquilino = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             var sql = "SELECT * FROM inquilinos WHERE idInquilino = @idInquilino";
@@ -100,8 +100,7 @@ public class RepositorioInquilino : RepositorioBase
             connection.Close();
         }
         return inquilino;
-    }   
-
+    }  
     public void Modificacion(Inquilino inquilino)
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))

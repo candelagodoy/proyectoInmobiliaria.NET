@@ -23,5 +23,6 @@ public class Inmueble
 
     public bool estado { get; set; }
     
+    override
     public String ToString() => $"{direccion}";
 }

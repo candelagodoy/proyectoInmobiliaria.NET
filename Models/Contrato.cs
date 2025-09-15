@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-    
+
 namespace proyectoInmobiliaria.NET.Models;
 
 public class Contrato
@@ -13,6 +13,6 @@ public class Contrato
     public int idUsuario { get; set; }
     public bool estado { get; set; }
 
-
-    public String ToString() => $"{idContrato}, {fechaDesde}, {fechaHasta}, {monto}, {idInmueble}, {idInquilino}, {idUsuario}, {estado}";
+    override
+        public String ToString() => $"{idContrato}, {fechaDesde}, {fechaHasta}, {monto}, {idInmueble}, {idInquilino}, {idUsuario}, {estado}";
 }

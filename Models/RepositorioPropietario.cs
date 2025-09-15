@@ -104,9 +104,9 @@ public class RepositorioPropietario : RepositorioBase
         return propietarios;
     }
     
-    public Propietario ObtenerPorId(int id)
+    public Propietario? ObtenerPorId(int id)
     {
-        Propietario propietario = null;
+        Propietario? propietario = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             var sql = "SELECT * FROM propietarios WHERE idPropietario = @idPropietario";

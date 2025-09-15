@@ -103,8 +103,8 @@ public class RepositorioInmueble : RepositorioBase
         return inmuebles;
     }
 
-    public Inmueble ObtenerPorId(int id) { 
-        Inmueble inmueble = null;
+    public Inmueble? ObtenerPorId(int id) { 
+        Inmueble? inmueble = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             var sql = "SELECT * From inmueble WHERE idInmueble = @idInmueble";
