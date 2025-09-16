@@ -2,6 +2,28 @@ html {
   font-size: 14px;
 }
 
+/* Estilos propios */
+
+.btn {
+  transition: all 0.3s ease ;
+}
+
+
+.btn:hover {
+  transform: scale(1.05) ; 
+}
+
+.navbar-brand {
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8); 
+}
+
+/* Estilos propios */
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
