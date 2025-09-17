@@ -1,0 +1,39 @@
+@model proyectoInmobiliaria.NET.Models.Propietario
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<h2>Detalles del propietario</h2>
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.id)</th>
+        <td>@Html.DisplayFor(model => model.id)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.nombre)</th>
+        <td>@Html.DisplayFor(model => model.nombre)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.apellido)</th>
+        <td>@Html.DisplayFor(model => model.apellido)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.dni)</th>
+        <td>@Html.DisplayFor(model => model.dni)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.celular)</th>
+        <td>@Html.DisplayFor(model => model.celular)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.direccion)</th>
+        <td>@Html.DisplayFor(model => model.direccion)</td>
+    </tr>
+   
+
+</table>
+<div>
+    <a class="btn btn-primary m-2" asp-action="Index">Volver</a>
+</div>
