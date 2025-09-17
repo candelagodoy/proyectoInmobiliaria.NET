@@ -72,6 +72,20 @@ public class InquilinoController : Controller
         }
     }
 
+    public IActionResult Detalles(int id)
+
+    {
+        var inquilino = repo.ObtenerPorId(id);
+        if (inquilino == null)
+        {
+        return NotFound();
+        }
+
+        return View(inquilino);
+    }
+
+
+
 
 
 

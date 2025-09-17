@@ -15,9 +15,6 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.id)
-			</th>
-			<th>
 				@Html.DisplayNameFor(model => model.nombre)
 			</th>
 			<th>
@@ -26,12 +23,6 @@
 			<th>
 				@Html.DisplayNameFor(model => model.dni)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.celular)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.email)
-			</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -39,9 +30,6 @@
 		@foreach (var item in Model)
 		{
 			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.id)
-				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.nombre)
 				</td>
@@ -52,18 +40,15 @@
 					@Html.DisplayFor(modelItem => item.dni)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.celular)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.email)
-				</td>
-				<td>
 					<div class="btn-group" role="group">
 						<a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.id" title="Editar">
 							Editar
 						</a>
-						<a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.id" title="Eliminar">Eliminar
-							
+						<a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.id" title="Eliminar">
+						Eliminar	
+						</a>
+						<a class="btn btn-secondary" asp-action="Detalles" asp-controller="Inquilino" asp-route-id="@item.id" title="Detalles">
+							Detalles
 						</a>
 					</div>
 				</td>
