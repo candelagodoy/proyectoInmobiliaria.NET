@@ -64,6 +64,7 @@ public class inmuebleController : Controller
         try
         {
             var entidad = repo.ObtenerPorId(id);
+            ViewBag.Propietarios = repoPropietario.ObtenerTodos();
             return View("Edit",entidad);
         }
         catch (Exception)
@@ -84,6 +85,18 @@ public class inmuebleController : Controller
         {
             return View(inmueble);
         }
+    }
+
+    public IActionResult Detalles(int id)
+
+    {
+        var inmueble = repo.ObtenerPorId(id);
+        if (inmueble == null)
+        {
+        return NotFound();
+        }
+
+        return View(inmueble);
     }
     
 

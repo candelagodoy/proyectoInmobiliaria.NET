@@ -1,0 +1,50 @@
+@model proyectoInmobiliaria.NET.Models.Inmueble
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<h2>Detalles del Inmueble</h2>
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.idInmueble)</th>
+        <td>@Html.DisplayFor(model => model.idInmueble)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.direccion)</th>
+        <td>@Html.DisplayFor(model => model.direccion)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.uso)</th>
+        <td>@Html.DisplayFor(model => model.uso)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.tipo)</th>
+        <td>@Html.DisplayFor(model => model.tipo)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.cantidadAmb)</th>
+        <td>@Html.DisplayFor(model => model.cantidadAmb)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.coordenadas)</th>
+        <td>@Html.DisplayFor(model => model.coordenadas)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.precio)</th>
+        <td>@Html.DisplayFor(model => model.precio)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.idPropietario)</th>
+        <td>@Html.DisplayFor(model => model.idPropietario)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.estado)</th>
+        <td>@Html.DisplayFor(model => model.estado)</td>
+    </tr>
+    
+</table>
+<div>
+    <a class="btn btn-primary m-2" asp-action="Index">Volver</a>
+</div>
