@@ -91,6 +91,8 @@ public class inmuebleController : Controller
 
     {
         var inmueble = repo.ObtenerPorId(id);
+        var propietario = repoPropietario.ObtenerPorId(inmueble.idPropietario);
+        ViewBag.nombrePropietario = propietario.nombre + " " + propietario.apellido;
         if (inmueble == null)
         {
         return NotFound();

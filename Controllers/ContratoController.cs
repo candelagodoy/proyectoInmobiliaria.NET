@@ -72,4 +72,20 @@ public class ContratoController : Controller
         repo.Baja(id);
         return RedirectToAction(nameof(Index));
     }
+
+    public IActionResult Detalles(int id)
+
+    {
+        var contrato = repo.ObtenerPorId(id);
+        var inquilino = repoInquilino.ObtenerPorId(contrato.idInquilino);
+        var inmueble = repoInmueble.ObtenerPorId(contrato.idInmueble);
+        ViewBag.PropietarioNombre = inquilino.nombre + " " + inquilino.apellido;
+        ViewBag.Inmueble = inmueble.direccion;
+        if (contrato == null)
+        {
+        return NotFound();
+        }
+
+        return View(contrato);
+    }
 }
