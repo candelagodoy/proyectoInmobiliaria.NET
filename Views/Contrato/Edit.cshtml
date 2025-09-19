@@ -3,6 +3,7 @@
 	ViewData["Title"] = "Editar Contrato";
 	IList<Inquilino>? listaInquilinos = (IList<Inquilino>)ViewBag.Inquilinos;
 	IList<Inmueble>? listaInmuebles = (IList<Inmueble>)ViewBag.Inmuebles;
+	IList<Usuario>? listaUsuarios = (IList<Usuario>)ViewBag.Usuarios;
 }
 
 <h4>Editar Contrato</h4>
@@ -33,8 +34,13 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label asp-for="idUsuario" class="control-label">Usuario</label>
-				<input asp-for="idUsuario" class="form-control" />
+				<label class="control-label">Usuario</label>
+                 <select class="form-control" name="idUsuario">
+                    @foreach (Usuario item in listaUsuarios)
+                    {
+                        <option value="@item.idUsuario">@(item.ToString())</option>
+                    }
+                </select>
 			</div>
 			<div class="form-group">
 				<label asp-for="monto" class="control-label">Monto</label>

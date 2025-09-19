@@ -39,25 +39,28 @@
 					@Html.DisplayFor(modelItem => item.monto)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.fechaDesde)
+					@item.fechaDesde.ToString("dd/MM/yyyy")
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.fechaHasta)
+					@item.fechaHasta.ToString("dd/MM/yyyy")
 				</td>
 				<td>
 					<div class="btn-group" role="group">
-						<a class="btn btn-primary btnOpcion" asp-action="Edit" asp-route-id="@item.idContrato" title="Editar">
+						<a class="btn btn-primary btnOpcion" asp-action="Edit" asp-route-id="@item.idContrato"
+							title="Editar">
 							Editar
 						</a>
-						<a class="btn btn-danger btnOpcion" asp-action="Eliminar" asp-route-id="@item.idContrato" title="Eliminar">
+						<a class="btn btn-danger btnOpcion" asp-action="Eliminar" asp-route-id="@item.idContrato"
+							title="Eliminar">
 							Eliminar
 						</a>
-						<a class="btn btn-secondary" asp-action="Detalles" asp-controller="Contrato" asp-route-id="@item.idContrato" title="Detalles">
+						<a class="btn btn-secondary" asp-action="Detalles" asp-controller="Contrato"
+							asp-route-id="@item.idContrato" title="Detalles">
 							Detalles
 						</a>
 					</div>
 				</td>
 			</tr>
-		}	
+		}
 	</tbody>
 </table>

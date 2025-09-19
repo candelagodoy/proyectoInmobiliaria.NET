@@ -23,6 +23,6 @@ namespace proyectoInmobiliaria.NET.Models
         public string rolNombre => rol > 0 ? ((enRoles)rol).ToString() : "";
         
         override
-        public string ToString() => $"{apellido}, {nombre}";    
+        public string ToString() => $"{apellido}, {nombre} ({email})";    
 	}
 }

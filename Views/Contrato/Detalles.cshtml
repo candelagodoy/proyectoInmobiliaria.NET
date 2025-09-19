@@ -13,11 +13,11 @@
     </tr>
     <tr>
         <th>@Html.DisplayNameFor(model => model.fechaDesde)</th>
-        <td>@Html.DisplayFor(model => model.fechaDesde)</td>
+        <td>@Model.fechaDesde.ToString("dd/MM/yyyy")</td>
     </tr>
     <tr>
         <th>@Html.DisplayNameFor(model => model.fechaHasta)</th>
-        <td>@Html.DisplayFor(model => model.fechaHasta)</td>
+        <td>@Model.fechaHasta.ToString("dd/MM/yyyy")</td>
     </tr>
     <tr>
         <th>@Html.DisplayNameFor(model => model.idInquilino)</th>
@@ -33,7 +33,7 @@
     </tr>
     <tr>
         <th>@Html.DisplayNameFor(model => model.idUsuario)</th>
-        <td>@Html.DisplayFor(model => model.idUsuario)</td>
+        <td>@ViewBag.Usuario</td>
     </tr>
     <tr>
         <th>@Html.DisplayNameFor(model => model.estado)</th>
