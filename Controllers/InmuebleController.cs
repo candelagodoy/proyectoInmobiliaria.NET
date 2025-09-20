@@ -123,7 +123,12 @@ public class inmuebleController : Controller
         return View(inmueble);
     }
 
+    public IActionResult Disponibles()
+    {
+        var lista = repo.obtenerDisponibles();
+        return View("Disponibles", lista);
 
+    }
 
 
 }

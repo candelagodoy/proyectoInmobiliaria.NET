@@ -103,7 +103,39 @@ public class RepositorioInmueble : RepositorioBase
         return inmuebles;
     }
 
-    public Inmueble? ObtenerPorId(int id) { 
+    public List<Inmueble> obtenerDisponibles() { 
+        List<Inmueble> inmuebles = new List<Inmueble>();
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var sql = "SELECT * FROM inmueble WHERE estado = 1";
+            using (MySqlCommand command = new MySqlCommand(sql, connection))
+            {
+                connection.Open();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Inmueble inmueble = new Inmueble();
+                        inmueble.idInmueble = reader.GetInt32("idInmueble");
+                        inmueble.direccion = reader.GetString("direccion");
+                        inmueble.uso = (UsoInmueble)reader.GetByte("uso");
+                        inmueble.tipo = (TipoInmueble)reader.GetByte("tipo");
+                        inmueble.cantidadAmb = reader.GetInt32("cantidadAmb");
+                        inmueble.coordenadas = reader.GetString("coordenadas");
+                        inmueble.precio = reader.GetDecimal("precio");
+                        inmueble.idPropietario = reader.GetInt32("idPropietario");
+                        inmueble.estado = reader.GetBoolean("estado");
+                        inmuebles.Add(inmueble);
+                    }
+                }
+            }
+            connection.Close();
+        }
+        return inmuebles;    
+    }
+
+    public Inmueble? ObtenerPorId(int id)
+    {
         Inmueble? inmueble = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
@@ -132,7 +164,7 @@ public class RepositorioInmueble : RepositorioBase
             connection.Close();
         }
         return inmueble;
-        
+
     }
 
 }
