@@ -20,7 +20,13 @@
 				<select class="form-control" name="idInmueble">
 					@foreach (Inmueble item in listaInmuebles)
 					{
-						<option value="@item.idInmueble">@(item.ToString())</option>
+						if(item.idInmueble == ViewBag.InmuebleSelected)
+						{
+							<option value="@item.idInmueble" selected="selected" >@(item.ToString())</option>
+						}else{
+							<option value="@item.idInmueble" >@(item.ToString())</option>
+						}
+						
 					}
 				</select>
 			</div>
@@ -29,7 +35,13 @@
 				<select class="form-control" name="idInquilino">
 					@foreach (Inquilino item in listaInquilinos)
 					{
-						<option value="@item.id">@(item.ToString())</option>
+						
+						if(item.id == ViewBag.InquilinoSelected)
+						{
+							<option value="@item.id" selected="selected">@(item.ToString())</option>
+						}else{
+							<option value="@item.id">@(item.ToString())</option>
+						}
 					}
 				</select>
 			</div>
@@ -38,7 +50,14 @@
                  <select class="form-control" name="idUsuario">
                     @foreach (Usuario item in listaUsuarios)
                     {
-                        <option value="@item.idUsuario">@(item.ToString())</option>
+
+						if(item.idUsuario == ViewBag.UsuarioSelected)
+						{
+							<option value="@item.idUsuario" selected="selected" >@(item.ToString())</option>
+						}else{
+							 <option value="@item.idUsuario">@(item.ToString())</option>
+						}
+                       
                     }
                 </select>
 			</div>

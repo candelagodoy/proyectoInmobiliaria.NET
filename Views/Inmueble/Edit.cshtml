@@ -18,13 +18,11 @@
 			</div>
 			<div class="form-group">
 				<label asp-for="uso" class="control-label"></label>
-				<input asp-for="uso" class="form-control" />
-				<span asp-validation-for="uso" class="text-danger"></span>
+				<select asp-for="uso" asp-items="ViewBag.Usos" class="form-control"></select>
 			</div>
 			<div class="form-group">
 				<label asp-for="tipo" class="control-label"></label>
-				<input asp-for="tipo" class="form-control" />
-				<span asp-validation-for="tipo" class="text-danger"></span>
+				<select asp-for="tipo" asp-items="ViewBag.Tipos" class="form-control"></select>
 			</div>
 			<div class="form-group">
 				<label asp-for="cantidadAmb" class="control-label"></label>
@@ -46,7 +44,15 @@
 				<select class="form-control" name="idPropietario">
 					@foreach (var item in ltaPropietarios)
 					{
-						<option value="@item.id">@(item.ToString())</option>
+						if (item.id == ViewBag.PropietarioSelected)
+						{
+							<option value="@item.id" selected="selected">@(item.ToString())</option>
+						}
+						else
+						{
+							<option value="@item.id">@(item.ToString())</option>
+						}
+
 					}
 				</select>
 				<span asp-validation-for="idPropietario" class="text-danger"></span>

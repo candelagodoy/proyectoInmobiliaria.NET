@@ -53,6 +53,9 @@ public class ContratoController : Controller
         ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
         ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+        ViewBag.InquilinoSelected = contrato.idInquilino;
+        ViewBag.InmuebleSelected = contrato.idInmueble;
+        ViewBag.UsuarioSelected = contrato.idUsuario;
         return View(contrato);
     }
 

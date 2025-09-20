@@ -16,8 +16,8 @@ public class RepositorioInmueble : RepositorioBase
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@direccion", inmueble.direccion);  
-                command.Parameters.AddWithValue("@uso", inmueble.uso);
-                command.Parameters.AddWithValue("@tipo", inmueble.tipo);
+                command.Parameters.AddWithValue("@uso", (int)inmueble.uso);
+                command.Parameters.AddWithValue("@tipo", (int)inmueble.tipo);
                 command.Parameters.AddWithValue("@cantidadAmb", inmueble.cantidadAmb);
                 command.Parameters.AddWithValue("@coordenadas", inmueble.coordenadas);
                 command.Parameters.AddWithValue("@precio", inmueble.precio);
@@ -40,8 +40,8 @@ public class RepositorioInmueble : RepositorioBase
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@direccion", inmueble.direccion); 
-                command.Parameters.AddWithValue("@uso", inmueble.uso);
-                command.Parameters.AddWithValue("@tipo", inmueble.tipo);
+                command.Parameters.AddWithValue("@uso", (int)inmueble.uso);
+                command.Parameters.AddWithValue("@tipo", (int)inmueble.tipo);
                 command.Parameters.AddWithValue("@cantidadAmb", inmueble.cantidadAmb);
                 command.Parameters.AddWithValue("@coordenadas", inmueble.coordenadas);
                 command.Parameters.AddWithValue("@precio", inmueble.precio);
@@ -87,8 +87,8 @@ public class RepositorioInmueble : RepositorioBase
                         Inmueble inmueble = new Inmueble();
                         inmueble.idInmueble = reader.GetInt32("idInmueble");
                         inmueble.direccion = reader.GetString("direccion");
-                        inmueble.uso = reader.GetString("uso");
-                        inmueble.tipo = reader.GetString("tipo");
+                        inmueble.uso = (UsoInmueble)reader.GetByte("uso");
+                        inmueble.tipo = (TipoInmueble)reader.GetByte("tipo");
                         inmueble.cantidadAmb = reader.GetInt32("cantidadAmb");
                         inmueble.coordenadas = reader.GetString("coordenadas");
                         inmueble.precio = reader.GetDecimal("precio");
@@ -119,8 +119,8 @@ public class RepositorioInmueble : RepositorioBase
                         inmueble = new Inmueble();
                         inmueble.idInmueble = reader.GetInt32("idInmueble");
                         inmueble.direccion = reader.GetString("direccion");
-                        inmueble.uso = reader.GetString("uso");
-                        inmueble.tipo = reader.GetString("tipo");
+                        inmueble.uso = (UsoInmueble)reader.GetByte("uso");
+                        inmueble.tipo = (TipoInmueble)reader.GetByte("tipo");
                         inmueble.cantidadAmb = reader.GetInt32("cantidadAmb");
                         inmueble.coordenadas = reader.GetString("coordenadas");
                         inmueble.precio = reader.GetDecimal("precio");
