@@ -1,9 +1,24 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+
 using proyectoInmobiliaria.NET.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.IO;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+
 
 namespace proyectoInmobiliaria.NET.Controllers;
 
+[Authorize]
 public class UsuarioController : Controller
 {
 
@@ -19,48 +34,176 @@ public class UsuarioController : Controller
         return View(lista);
     }
 
-    public IActionResult Registrar()
+    [AllowAnonymous]
+    public ActionResult Login()
     {
-        Usuario usuario = new Usuario();
-        usuario.idUsuario = 0;
-        usuario.nombre = "Ejemplo";
-        usuario.apellido = "Ejemplo";
-        usuario.email = "nose@nose.com";
-        usuario.clave = "1234";
-        usuario.avatar = "https://www.w3schools.com/howto/img_avatar.png";
-        usuario.rol = 1;
-        repo.Alta(usuario);
-           return RedirectToAction(nameof(Index));
+        return View();
     }
+
 
     [HttpPost]
-    public IActionResult Registrar(Usuario usuario)
+    [ValidateAntiForgeryToken]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(Login login)
     {
-        repo.Alta(usuario);
-        return View();
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                 password: login.Clave,
+                 salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+                 prf: KeyDerivationPrf.HMACSHA1,
+                 iterationCount: 1000,
+                 numBytesRequested: 256 / 8));
+
+                var e = repo.ObtenerPorEmail(login.Email);
+                if (e == null)
+                {
+                    ModelState.AddModelError("", "El email y/o el password son incorrectos");
+                    return View();
+                }
+                var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Email, e.email),
+                        new Claim("FullName", e.nombre + " " + e.apellido),
+                        new Claim(ClaimTypes.Role, e.rolNombre),
+                    };
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity));
+
+
+                return RedirectToAction(nameof(Index), "Home");
+            }
+            return View();
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.Message);
+            return View();
+        }
     }
 
-    public IActionResult Login()
+    public async Task<IActionResult> Logout()
     {
-        return View();
+        await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Home");
     }
 
-    public IActionResult Eliminar(int id)
-    {
-        repo.Baja(id);
-           return RedirectToAction(nameof(Index));
-    }
+    [Authorize(Policy = "Administrador")]
+        public ActionResult Create()
+        {
+            return View();
+        }
 
-    public IActionResult Editar()
-    {
-        return View();
-    }
+        // POST: Admin/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
+#pragma warning disable CS0161 // 'UsuariosController.Create(Usuarios)': no todas las rutas de acceso de código devuelven un valor
 
-    [HttpPost]
-    public IActionResult Editar(Usuario usuario)
-    {
-        repo.Modificacion(usuario);
-        return View();
-    }
+        public ActionResult Create(Usuario u)
+#pragma warning restore CS0161 // 'UsuariosController.Create(Usuarios)': no todas las rutas de acceso de código devuelven un valor
+
+        {
+            if (!ModelState.IsValid)
+                return View();
+            try
+            {
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: u.clave,
+                        salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                u.clave = hashed;
+
+                var nbreRnd = Guid.NewGuid();
+                repo.Alta(u);
+                
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View();
+            }
+        }
+
+
+
+     [Authorize(Policy = "Administrador")]
+        public ActionResult Edit(int id)
+        {
+            var i = repo.ObtenerPorId(id);
+            return View(i);
+        }
+
+        // POST: Admin/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
+        public ActionResult Edit(int id, Usuario i)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+
+                    i.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: i.clave,
+                        salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                    repo.Modificacion(i);
+                    return RedirectToAction(nameof(Index));
+
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Error al actualizar!!");
+                    return View();
+                }
+
+
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Admin/Delete/5
+        [Authorize(Policy = "Administrador")]
+        public ActionResult Delete(int id)
+        {
+            var i = repo.ObtenerPorId(id);
+            return View(i);
+        }
+
+        // POST: Admin/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
+        public ActionResult Delete(int id, Usuario i)
+        {
+            try
+            {
+                repo.Baja(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
 }

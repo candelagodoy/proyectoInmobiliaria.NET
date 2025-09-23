@@ -6,61 +6,81 @@
 
 <h1>
 	Usuarios
-	<div class="btn-group pull-right">
-		<a class="btn btn-primary" asp-action="Registrar" title="Crear"> Crear </a>
-	</div>
 </h1>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.idUsuario)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.nombre)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.apellido)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.email)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.rol)
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (Usuario item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.idUsuario)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.nombre)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.apellido)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.email)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.rolNombre)
-				</td>
-				<td>
-					<div class="btn-group" role="group">
-						<a class="btn btn-primary" asp-action="" asp-route-id="@item.idUsuario" title="Editar">
-							Editar
-						</a>
-						<a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.idUsuario" title="Eliminar">
-						Eliminar	
-						</a>
-					</div>
-				</td>
-			</tr>
-		}	
-	</tbody>
-</table>
+
+<p>
+    @if (User.IsInRole("Administrador"))
+    {
+        <a class="btn btn-info" asp-action="Create">Agregar Usuario</a>}
+    </p>
+    <table height="100" width="100" class="table">
+        <thead>
+            <tr>
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.nombre)
+                </th>
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.apellido)
+                </th>
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.email)
+                </th>
+
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.rol)
+                </th>
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.avatar)
+                </th>
+                <th class="bg-light">
+
+                </th>
+                <th class="bg-light">
+                <th class="bg-light">
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.rol)
+                </td>
+                <td>
+                    <img width="32" src="@item.avatar" />
+                </td>
+
+                <td>
+                    <i class="fa fa-user-circle"></i>
+                    @Html.ActionLink("Perfil", "Details", new { id = item.idUsuario })
+                </td>
+
+                <td>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <i class="fa fa-edit"></i>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.idUsuario })}
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <i class="fa fa-trash"></i>
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.idUsuario })}
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>

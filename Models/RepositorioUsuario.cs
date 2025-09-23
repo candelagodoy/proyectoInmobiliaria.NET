@@ -93,7 +93,7 @@ public class RepositorioUsuario : RepositorioBase
         }
         return usuarios;
     }
-    
+
     public Usuario? ObtenerPorId(int id)
     {
         Usuario? usuario = null;
@@ -103,6 +103,35 @@ public class RepositorioUsuario : RepositorioBase
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idUsuario", id);
+                connection.Open();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        usuario = new Usuario();
+                        usuario.idUsuario = reader.GetInt32("idUsuario");
+                        usuario.nombre = reader.GetString("nombre");
+                        usuario.apellido = reader.GetString("apellido");
+                        usuario.email = reader.GetString("email");
+                        usuario.clave = reader.GetString("clave");
+                        usuario.avatar = reader.GetString("avatar");
+                        usuario.rol = reader.GetInt16("rol");
+                    }
+                }
+            }
+        }
+        return usuario;
+    }
+    
+    public Usuario? ObtenerPorEmail(string email)
+    {
+        Usuario? usuario = null;
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            var sql = "SELECT * FROM usuario WHERE email = @email";
+            using (MySqlCommand command = new MySqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
                 connection.Open();
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {

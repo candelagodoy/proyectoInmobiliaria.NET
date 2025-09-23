@@ -1,0 +1,53 @@
+@model proyectoInmobiliaria.NET.Models.Usuario
+
+
+@{ ViewData["Title"] = "Crear Usuario"; }
+
+<h1 class="text-lg-center bg-info font-italic text-white">Usuarios</h1>
+<br />
+<br />
+<h4 class="bg-dark text-white">Datos del Usuario: </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="apellido" class="control-label"></label>
+                <input asp-for="apellido" class="form-control" />
+                <span asp-validation-for="apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input asp-for="email" class="form-control" type="email" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="clave" class="control-label"></label>
+                <input asp-for="clave" class="form-control" type="password" />
+                <span asp-validation-for="clave" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="rol" class="control-label">Rol</label>
+                <select class="form-control" name="Rol">
+                   
+                  <option value="Administrador">Administrador</option>
+                  <option value="Propietario">Propietario</option>
+                    
+                </select>
+                <span asp-validation-for="rol" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Agregar" class="btn btn-success" /> |
+                <a class="btn btn-info" asp-action="Index">Regresar Lista Usuarios</a>
+            </div>
+        </form>
+    </div>
+</div>
