@@ -1,0 +1,56 @@
+@model proyectoInmobiliaria.NET.Models.Usuario
+
+@{ ViewData["Title"] = "Editar Usuario"; }
+
+<h1 class="text-lg-center bg-info font-italic text-white">Actualización de Datos</h1>
+<br />
+<br />
+<h4 class="bg-dark text-white">Datos del Usuario:</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="idUsuario" type="hidden" class="form-control" />
+                <span asp-validation-for="idUsuario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="apellido" class="control-label"></label>
+                <input asp-for="apellido" class="form-control" />
+                <span asp-validation-for="apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input asp-for="email" class="form-control" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="clave" class="control-label" hidden></label>
+                <input asp-for="clave" class="form-control" hidden />
+                <span asp-validation-for="clave" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="rol" class="control-label">Rol</label>
+                <select class="form-control" name="Rol">
+                    
+                    <option value = 1>Administrador</option>
+                    <option value = 2>Empleado</option>
+
+                </select>
+                <span asp-validation-for="rol" class="text-danger"></span>
+            </div>
+        
+            <div class="form-group">
+                <input type="submit" value="Modificar" class="btn btn-success" />  |
+                <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+            </div>
+        </form>
+    </div>
+</div>

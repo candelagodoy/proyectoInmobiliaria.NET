@@ -96,110 +96,115 @@ public class UsuarioController : Controller
     }
 
     [Authorize(Policy = "Administrador")]
-        public ActionResult Create()
+    public ActionResult Create()
     {
         return View();
     }
 
-        // POST: Admin/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Policy = "Administrador")]
-        public ActionResult Create(Usuario u)
+    // POST: Admin/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Create(Usuario u)
+    {
+        if (!ModelState.IsValid)
+            return View();
+        try
         {
-            if (!ModelState.IsValid)
-                return View();
-            try
-            {
-                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                        password: u.clave,
-                        salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
-                        prf: KeyDerivationPrf.HMACSHA1,
-                        iterationCount: 1000,
-                        numBytesRequested: 256 / 8));
-                u.clave = hashed;
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: u.clave,
+                    salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 1000,
+                    numBytesRequested: 256 / 8));
+            u.clave = hashed;
 
-                var nbreRnd = Guid.NewGuid();
-                repo.Alta(u);
-                
+            var nbreRnd = Guid.NewGuid();
+            repo.Alta(u);
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ViewBag.Error = ex.Message;
+            ViewBag.StackTrate = ex.StackTrace;
+            return View();
+        }
+    }
+
+
+
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Edit(int id)
+    {
+        var i = repo.ObtenerPorId(id);
+        return View(i);
+    }
+
+    // POST: Admin/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Edit(int id, Usuario i)
+    {
+        try
+        {
+            //if (ModelState.IsValid)
+            {
+
+                i.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: i.clave,
+                    salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 1000,
+                    numBytesRequested: 256 / 8));
+                repo.Modificacion(i);
                 return RedirectToAction(nameof(Index));
+
             }
-            catch (Exception ex)
+            /*else
             {
-                ViewBag.Error = ex.Message;
-                ViewBag.StackTrate = ex.StackTrace;
+                ModelState.AddModelError("", "Error al actualizar!!");
                 return View();
-            }
+            }*/
+
         }
-
-
-
-     [Authorize(Policy = "Administrador")]
-        public ActionResult Edit(int id)
+        catch
         {
-            var i = repo.ObtenerPorId(id);
-            return View(i);
+            return View();
         }
+    }
 
-        // POST: Admin/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Policy = "Administrador")]
-        public ActionResult Edit(int id, Usuario i)
+    // GET: Admin/Delete/5
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Delete(int id)
+    {
+        var i = repo.ObtenerPorId(id);
+        return View(i);
+    }
+
+    // POST: Admin/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Delete(int id, Usuario i)
+    {
+        try
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-
-
-                    i.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                        password: i.clave,
-                        salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
-                        prf: KeyDerivationPrf.HMACSHA1,
-                        iterationCount: 1000,
-                        numBytesRequested: 256 / 8));
-                    repo.Modificacion(i);
-                    return RedirectToAction(nameof(Index));
-
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Error al actualizar!!");
-                    return View();
-                }
-
-
-            }
-            catch
-            {
-                return View();
-            }
+            repo.Baja(id);
+            return RedirectToAction(nameof(Index));
         }
-
-        // GET: Admin/Delete/5
-        [Authorize(Policy = "Administrador")]
-        public ActionResult Delete(int id)
+        catch
         {
-            var i = repo.ObtenerPorId(id);
-            return View(i);
+            return View();
+        }
+    }
+        
+    public ActionResult Details(int id)
+        {
+            Usuario u = repo.ObtenerPorId(id);
+            return View(u);
         }
 
-        // POST: Admin/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Policy = "Administrador")]
-        public ActionResult Delete(int id, Usuario i)
-        {
-            try
-            {
-                repo.Baja(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
 }

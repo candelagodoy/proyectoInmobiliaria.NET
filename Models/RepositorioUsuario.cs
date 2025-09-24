@@ -122,7 +122,7 @@ public class RepositorioUsuario : RepositorioBase
         }
         return usuario;
     }
-    
+
     public Usuario? ObtenerPorEmail(string email)
     {
         Usuario? usuario = null;
@@ -151,5 +151,6 @@ public class RepositorioUsuario : RepositorioBase
         }
         return usuario;
     }
+    
 }
     
