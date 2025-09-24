@@ -97,19 +97,15 @@ public class UsuarioController : Controller
 
     [Authorize(Policy = "Administrador")]
         public ActionResult Create()
-        {
-            return View();
-        }
+    {
+        return View();
+    }
 
         // POST: Admin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Administrador")]
-#pragma warning disable CS0161 // 'UsuariosController.Create(Usuarios)': no todas las rutas de acceso de código devuelven un valor
-
         public ActionResult Create(Usuario u)
-#pragma warning restore CS0161 // 'UsuariosController.Create(Usuarios)': no todas las rutas de acceso de código devuelven un valor
-
         {
             if (!ModelState.IsValid)
                 return View();

@@ -13,14 +13,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Usuario/Login";
         options.LogoutPath = "/Usuario/Logout";
-        options.AccessDeniedPath = "/Home/Restringido";
         //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);//Tiempo de expiración
     });
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Administrador", policy =>
-        policy.RequireRole("Admininistrador"));
+        policy.RequireRole("Administrador"));
 });
 
 var app = builder.Build();
