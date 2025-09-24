@@ -1,0 +1,62 @@
+@model IEnumerable<proyectoInmobiliaria.NET.Models.Inmueble>
+
+@{
+	ViewData["Title"] = "DisponiblesFecha";
+}
+
+
+<h1>Inmuebles disponibles por fecha</h1>
+
+<div class="row-md-4">
+    <form asp-action="DisponiblesFecha">
+        <label class="control-label">Desde</label>
+        <input  class="form-control" type="date" name="inicio"/>
+
+        <label class="control-label">Hasta</label>
+        <input  class="form-control" type="date" name="final"/>
+
+        <div class="form-group">
+            <input type="submit" value="Buscar" class="btn btn-primary m-2" />
+        </div>
+    </form>
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.direccion)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.uso)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.precio)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null && Model.Any())
+		{
+			@foreach (var item in Model)
+			{
+				<tr>
+
+					<td>
+						@Html.DisplayFor(modelItem => item.direccion)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.uso)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.precio)
+					</td>
+				</tr>
+			}
+ }
+	</tbody>
+</table>
+
+<div>
+	<a class="btn btn-primary m-2" asp-action="Index">Volver</a>
+</div>

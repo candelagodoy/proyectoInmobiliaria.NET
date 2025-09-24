@@ -3,7 +3,7 @@ using MySql.Data.MySqlClient;
 namespace proyectoInmobiliaria.NET.Models;
 
 public class RepositorioInmueble : RepositorioBase
-{   
+{
     public RepositorioInmueble() { }
 
     public void Alta(Inmueble inmueble)
@@ -15,7 +15,7 @@ public class RepositorioInmueble : RepositorioBase
                             VALUES (@direccion, @uso, @tipo, @cantidadAmb, @coordenadas, @precio, @idPropietario, @estado);";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@direccion", inmueble.direccion);  
+                command.Parameters.AddWithValue("@direccion", inmueble.direccion);
                 command.Parameters.AddWithValue("@uso", (int)inmueble.uso);
                 command.Parameters.AddWithValue("@tipo", (int)inmueble.tipo);
                 command.Parameters.AddWithValue("@cantidadAmb", inmueble.cantidadAmb);
@@ -39,7 +39,7 @@ public class RepositorioInmueble : RepositorioBase
                             WHERE idInmueble = @idInmueble";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@direccion", inmueble.direccion); 
+                command.Parameters.AddWithValue("@direccion", inmueble.direccion);
                 command.Parameters.AddWithValue("@uso", (int)inmueble.uso);
                 command.Parameters.AddWithValue("@tipo", (int)inmueble.tipo);
                 command.Parameters.AddWithValue("@cantidadAmb", inmueble.cantidadAmb);
@@ -103,7 +103,8 @@ public class RepositorioInmueble : RepositorioBase
         return inmuebles;
     }
 
-    public List<Inmueble> obtenerDisponibles() { 
+    public List<Inmueble> obtenerDisponibles()
+    {
         List<Inmueble> inmuebles = new List<Inmueble>();
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
@@ -131,7 +132,7 @@ public class RepositorioInmueble : RepositorioBase
             }
             connection.Close();
         }
-        return inmuebles;    
+        return inmuebles;
     }
 
     public Inmueble? ObtenerPorId(int id)
@@ -165,6 +166,37 @@ public class RepositorioInmueble : RepositorioBase
         }
         return inmueble;
 
+    }
+    
+    public List<Inmueble> obtenerInmueblesDisponibles(DateOnly fechaDesde, DateOnly fechaHasta)
+    {
+        List<Inmueble> inmuebles = new List<Inmueble>();
+
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            string sql = "SELECT * FROM inmueble i WHERE i.idInmueble NOT IN ( SELECT c.idInmueble FROM contrato c WHERE c.estado = 1 AND c.fechaDesde <= @fechaDesde AND c.fechaHasta >= @fechaHasta );";
+            using (MySqlCommand command = new MySqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@fechaDesde", fechaDesde);
+                command.Parameters.AddWithValue("@fechaHasta", fechaHasta);
+                connection.Open();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Inmueble inmueble = new Inmueble();
+                        inmueble.idInmueble = reader.GetInt32("idInmueble");
+                        inmueble.direccion = reader.GetString("direccion");
+                        inmueble.precio = reader.GetDecimal("precio");
+                        inmuebles.Add(inmueble);
+                    }
+                }
+                connection.Close();
+            }
+        }
+
+        return inmuebles;
+        
     }
 
 }

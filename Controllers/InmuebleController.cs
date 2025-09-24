@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using proyectoInmobiliaria.NET.Models;
@@ -128,6 +129,21 @@ public class inmuebleController : Controller
         var lista = repo.obtenerDisponibles();
         return View("Disponibles", lista);
 
+    }
+
+    public IActionResult DisponiblesFecha()
+    {
+        return View();
+
+    }
+
+    [HttpPost]
+    public IActionResult DisponiblesFecha(String inicio, String final)
+    {
+        var desde = DateOnly.ParseExact(inicio, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var hasta = DateOnly.ParseExact(final, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        var lista = repo.obtenerInmueblesDisponibles(desde,hasta); 
+        return View("Disponibles", lista);
     }
 
 

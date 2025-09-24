@@ -92,7 +92,7 @@ public class UsuarioController : Controller
     {
         await HttpContext.SignOutAsync(
             CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Login", "Usuario");
     }
 
     [Authorize(Policy = "Administrador")]

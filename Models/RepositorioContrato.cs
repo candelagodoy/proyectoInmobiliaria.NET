@@ -130,7 +130,8 @@ public class RepositorioContrato : RepositorioBase
                 connection.Close();
             }
         }
-    }   
+    }
+
     
 }
     
