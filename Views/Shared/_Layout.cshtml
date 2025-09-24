@@ -10,9 +10,19 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/proyectoInmobiliaria.NET.styles.css" asp-append-version="true" />
     <link rel="icon" href="~/img/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .nav-item {
+            margin-right: 50px;
+            font-family: inherit;
+            font-size: 20px;
+        }
+    </style>
+
 </head>
 
 <body>
+
     <header>
         <nav
             class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary bg-gradient border-bottom box-shadow mb-3">
@@ -25,7 +35,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class= "nav">
                    
                         @if (User.IsInRole("Administrador"))
                         {
@@ -83,5 +93,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+
 
 </html>
