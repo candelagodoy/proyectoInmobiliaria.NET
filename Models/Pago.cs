@@ -26,11 +26,14 @@ namespace proyectoInmobiliaria.NET.Models
         [Required]
         [Display(Name = "Importe($)")]
         public decimal importe { get; set; }
-        
+
         [Display(Name = "Estado")]
-        public bool estado { get; set; } 
-        
+        public bool estado { get; set; }
+
         [Display(Name = "Nº de Pago")]
         public int numPago { get; set; }
+        
+        [Display(Name = "Nº de Usuario")]
+        public int idUsuario { get; set; }
     }
 }

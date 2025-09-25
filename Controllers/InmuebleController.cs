@@ -71,7 +71,7 @@ public class inmuebleController : Controller
 
     }
 
- [Authorize(Policy = "Administrador")]
+    [Authorize(Policy = "Administrador")]
     public IActionResult Eliminar(int id)
     {
         repo.Baja(id);
@@ -79,7 +79,7 @@ public class inmuebleController : Controller
     }
 
 
- [Authorize(Policy = "Administrador")]
+    [Authorize(Policy = "Administrador")]
     public IActionResult Edit(int id)
     {
         try
@@ -96,7 +96,7 @@ public class inmuebleController : Controller
             throw;
         }
     }
- [Authorize(Policy = "Administrador")]
+    [Authorize(Policy = "Administrador")]
     [HttpPost]
     public IActionResult Edit(Inmueble inmueble)
     {
@@ -143,10 +143,10 @@ public class inmuebleController : Controller
     [HttpPost]
     public IActionResult DisponiblesFecha(string inicio, string final)
     {
-       /*  if (string.IsNullOrEmpty(final))
-        {
-            throw new NullReferenceException();
-        } */
+        /*  if (string.IsNullOrEmpty(final))
+         {
+             throw new NullReferenceException();
+         } */
         var lista = repo.obtenerInmueblesDisponibles(inicio, final);
         return View("Disponibles", lista);
     }

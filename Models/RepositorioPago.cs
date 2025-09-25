@@ -8,7 +8,7 @@ namespace proyectoInmobiliaria.NET.Models
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string sql = "INSERT INTO pago VALUES (@idPago, @descripcion, @idContrato, @fechaPago, @importe, @estado, @numPago);";
+                string sql = "INSERT INTO pago VALUES (@idPago, @descripcion, @idContrato, @fechaPago, @importe, @estado, @numPago, @idUsuario);";
                 using (MySqlCommand command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@idPago", pago.idPago);
@@ -18,6 +18,7 @@ namespace proyectoInmobiliaria.NET.Models
                     command.Parameters.AddWithValue("@importe", pago.importe);
                     command.Parameters.AddWithValue("@estado", pago.estado);
                     command.Parameters.AddWithValue("@numPago", pago.numPago);
+                    command.Parameters.AddWithValue("@idUsuario", pago.idUsuario);
                     connection.Open();
                     command.ExecuteNonQuery();
                     connection.Close();
