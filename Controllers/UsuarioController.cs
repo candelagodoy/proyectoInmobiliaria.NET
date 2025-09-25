@@ -58,7 +58,7 @@ public class UsuarioController : Controller
                  numBytesRequested: 256 / 8));
 
                 var e = repo.ObtenerPorEmail(login.Email);
-                if (e == null)
+                if (e == null || e.clave != hashed)
                 {
                     ModelState.AddModelError("", "El email y/o el password son incorrectos");
                     return View();
