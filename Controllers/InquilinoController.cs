@@ -1,8 +1,11 @@
+using System.Configuration;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
+
 
 public class InquilinoController : Controller
 {
@@ -50,7 +53,7 @@ public class InquilinoController : Controller
         try
         {
             var entidad = repo.ObtenerPorId(id);
-            return View("Edit",entidad);
+            return View("Edit", entidad);
         }
         catch (Exception)
         {
@@ -78,7 +81,7 @@ public class InquilinoController : Controller
         var inquilino = repo.ObtenerPorId(id);
         if (inquilino == null)
         {
-        return NotFound();
+            return NotFound();
         }
 
         return View(inquilino);
@@ -91,16 +94,16 @@ public class InquilinoController : Controller
 
 
 
-    
-
-    
 
 
 
-    
 
 
 
-    
+
+
+
+
+
 
 }

@@ -1,11 +1,13 @@
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
 
+[Authorize(Policy = "EmpleadoOAdministrador")]
 public class inmuebleController : Controller
 {
     private RepositorioInmueble repo;
@@ -36,7 +38,7 @@ public class inmuebleController : Controller
 
     }
 
-
+    [Authorize(Policy = "Administrador")]
     public IActionResult Create()
     {
         ViewBag.Propietarios = new RepositorioPropietario().ObtenerTodos();
@@ -69,6 +71,7 @@ public class inmuebleController : Controller
 
     }
 
+ [Authorize(Policy = "Administrador")]
     public IActionResult Eliminar(int id)
     {
         repo.Baja(id);
@@ -76,7 +79,7 @@ public class inmuebleController : Controller
     }
 
 
-
+ [Authorize(Policy = "Administrador")]
     public IActionResult Edit(int id)
     {
         try
@@ -93,7 +96,7 @@ public class inmuebleController : Controller
             throw;
         }
     }
-
+ [Authorize(Policy = "Administrador")]
     [HttpPost]
     public IActionResult Edit(Inmueble inmueble)
     {
@@ -114,8 +117,8 @@ public class inmuebleController : Controller
         var inmueble = repo.ObtenerPorId(id);
         var propietario = repoPropietario.ObtenerPorId(inmueble.idPropietario);
         ViewBag.nombrePropietario = propietario.nombre + " " + propietario.apellido;
-        ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text", (int)inmueble.uso);
-        ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text", (int)inmueble.tipo);
+        // ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text", (int)inmueble.uso);
+        //  ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text", (int)inmueble.tipo);
         if (inmueble == null)
         {
             return NotFound();
@@ -138,11 +141,13 @@ public class inmuebleController : Controller
     }
 
     [HttpPost]
-    public IActionResult DisponiblesFecha(String inicio, String final)
+    public IActionResult DisponiblesFecha(string inicio, string final)
     {
-        var desde = DateOnly.ParseExact(inicio, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        var hasta = DateOnly.ParseExact(final, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        var lista = repo.obtenerInmueblesDisponibles(desde,hasta); 
+       /*  if (string.IsNullOrEmpty(final))
+        {
+            throw new NullReferenceException();
+        } */
+        var lista = repo.obtenerInmueblesDisponibles(inicio, final);
         return View("Disponibles", lista);
     }
 

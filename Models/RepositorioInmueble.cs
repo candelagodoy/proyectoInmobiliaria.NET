@@ -168,13 +168,13 @@ public class RepositorioInmueble : RepositorioBase
 
     }
     
-    public List<Inmueble> obtenerInmueblesDisponibles(DateOnly fechaDesde, DateOnly fechaHasta)
+    public List<Inmueble> obtenerInmueblesDisponibles(string fechaDesde, string fechaHasta)
     {
         List<Inmueble> inmuebles = new List<Inmueble>();
 
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "SELECT * FROM inmueble i WHERE i.idInmueble NOT IN ( SELECT c.idInmueble FROM contrato c WHERE c.estado = 1 AND c.fechaDesde <= @fechaDesde AND c.fechaHasta >= @fechaHasta );";
+            string sql = "SELECT * FROM inmueble i WHERE i.estado = 1 AND NOT EXISTS ( SELECT * FROM contrato c WHERE c.idInmueble = i.idInmueble AND c.estado = 1 AND NOT (c.fechaHasta < @fechaDesde OR c.fechaDesde > @fechaHasta ));";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@fechaDesde", fechaDesde);
@@ -188,6 +188,8 @@ public class RepositorioInmueble : RepositorioBase
                         inmueble.idInmueble = reader.GetInt32("idInmueble");
                         inmueble.direccion = reader.GetString("direccion");
                         inmueble.precio = reader.GetDecimal("precio");
+                        inmueble.uso = (UsoInmueble)reader.GetByte("uso");
+                        inmueble.tipo = (TipoInmueble)reader.GetByte("tipo");
                         inmuebles.Add(inmueble);
                     }
                 }

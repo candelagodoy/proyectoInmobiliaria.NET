@@ -21,6 +21,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Administrador", policy =>
         policy.RequireRole("Administrador"));
+
+       options.AddPolicy("EmpleadoOAdministrador",
+        policy => policy.RequireRole("Empleado", "Administrador"));
+    
 });
 
 var app = builder.Build();

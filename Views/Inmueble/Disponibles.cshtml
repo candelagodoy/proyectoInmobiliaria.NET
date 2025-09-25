@@ -1,7 +1,7 @@
 @model IEnumerable<proyectoInmobiliaria.NET.Models.Inmueble>
 
 @{
-    ViewData["Title"] = "Disponibles";
+	ViewData["Title"] = "Disponibles";
 }
 
 <table class="table">
@@ -13,31 +13,37 @@
 			<th>
 				@Html.DisplayNameFor(model => model.uso)
 			</th>
+
+			<th>
+				@Html.DisplayNameFor(model => model.tipo)
+			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.precio)
 			</th>
-			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var item in Model)
 		{
 			<tr>
-			
-				<td> 
+
+				<td>
 					@Html.DisplayFor(modelItem => item.direccion)
 				</td>
-				<td> 
+				<td>
 					@Html.DisplayFor(modelItem => item.uso)
 				</td>
-				<td> 
+				<td>
+					@Html.DisplayFor(modelItem => item.tipo)
+				</td>
+				<td>
 					@Html.DisplayFor(modelItem => item.precio)
 				</td>
 			</tr>
-		}	
+		}
 	</tbody>
 </table>
 
 <div>
-    <a class="btn btn-primary m-2" asp-action="Index">Volver</a>
+	<a class="btn btn-primary m-2" asp-action="Index">Volver</a>
 </div>
