@@ -1,9 +1,10 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
-
+[Authorize(Policy = "EmpleadoOAdministrador")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
