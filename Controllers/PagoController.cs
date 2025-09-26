@@ -87,11 +87,4 @@ public class pagoController : Controller
         }
     }
 
-
-
-
-
-
-
-
 }

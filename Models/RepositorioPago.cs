@@ -24,7 +24,7 @@ namespace proyectoInmobiliaria.NET.Models
                     }
                     else
                     {
-                        pago.numPago = pagos[pagos.Count - 1].numPago + 1;   
+                        pago.numPago = pagos[pagos.Count - 1].numPago + 1;
                     }
                     command.Parameters.AddWithValue("@numPago", pago.numPago);
                     command.Parameters.AddWithValue("@idUsuario", pago.idUsuario);
@@ -87,6 +87,7 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
+                            pago.idUsuario = reader.GetInt32("idUsuario");
                             pagos.Add(pago);
                         }
                     }
@@ -117,6 +118,7 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
+                            pago.idUsuario = reader.GetInt32("idUsuario");
                         }
                     }
                 }
@@ -147,6 +149,7 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
+                            pago.idUsuario = reader.GetInt32("idUsuario");
                             pagos.Add(pago);
                         }
                     }
