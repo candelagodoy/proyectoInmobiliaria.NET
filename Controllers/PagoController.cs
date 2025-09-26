@@ -8,6 +8,7 @@ using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
 
+[Authorize]
 public class pagoController : Controller
 {
     private RepositorioPago repoPago;
@@ -28,7 +29,7 @@ public class pagoController : Controller
         return View(lista);
     }
 
-    
+
     public IActionResult Create()
     {
         ViewBag.Contratos = repoContrato.ObtenerTodos();
@@ -62,7 +63,7 @@ public class pagoController : Controller
 
     }
 
-    
+
 
 
 

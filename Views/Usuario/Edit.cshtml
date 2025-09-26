@@ -1,6 +1,8 @@
 @model proyectoInmobiliaria.NET.Models.Usuario
 
-@{ ViewData["Title"] = "Editar Usuario"; }
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
 
 <h1 class="text-lg-center bg-info font-italic text-white">Actualización de Datos</h1>
 <br />
@@ -38,17 +40,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="rol" class="control-label">Rol</label>
-                <select class="form-control" name="Rol">
-                    
-                    <option value = 1>Administrador</option>
-                    <option value = 2>Empleado</option>
-
+                <select asp-for="rol" class="form-control">
+                    <option value="1">Administrador</option>
+                    <option value="2">Empleado</option>
                 </select>
                 <span asp-validation-for="rol" class="text-danger"></span>
             </div>
-        
+
             <div class="form-group">
-                <input type="submit" value="Modificar" class="btn btn-success" />  |
+                <input type="submit" value="Modificar" class="btn btn-success" /> |
                 <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
             </div>
         </form>

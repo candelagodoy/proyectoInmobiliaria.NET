@@ -23,7 +23,7 @@ namespace proyectoInmobiliaria.NET.Models
         public string clave { get; set; }
         [Display(Name = "Avatar")]
         public string avatar { get; set; } = "";
-      // public FileAvatar avatarFile { get; set; }
+        public IFormFile? avatarFile { get; set; }
         [Display(Name = "Rol")]
         public int rol { get; set; }
         public string rolNombre => rol > 0 ? ((enRoles)rol).ToString() : "";

@@ -5,27 +5,33 @@ namespace proyectoInmobiliaria.NET.Models;
 
 public class RepositorioUsuario : RepositorioBase
 {
-    public void Alta(Usuario usuario)
+ public int Alta(Usuario usuario)
+{
+    int id = 0;
+    using (MySqlConnection connection = new MySqlConnection(connectionString))
     {
-        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        string sql = @"INSERT INTO usuario 
+                        (nombre, apellido, email, clave, avatar, rol)
+                        VALUES (@nombre, @apellido, @email, @clave, @avatar, @rol);
+                       SELECT LAST_INSERT_ID();";  // devuelve el id recién insertado
+
+        using (MySqlCommand command = new MySqlCommand(sql, connection))
         {
-            string sql = @"INSERT INTO usuario 
-                            (nombre, apellido, email, clave, avatar, rol)
-                            VALUES ( @nombre, @apellido, @email, @clave, @avatar, @rol);";
-            using (MySqlCommand command = new MySqlCommand(sql, connection))
-            {
-                command.Parameters.AddWithValue("@nombre", usuario.nombre);
-                command.Parameters.AddWithValue("@apellido", usuario.apellido);
-                command.Parameters.AddWithValue("@email", usuario.email);
-                command.Parameters.AddWithValue("@clave", usuario.clave);
-                command.Parameters.AddWithValue("@avatar", usuario.avatar);
-                command.Parameters.AddWithValue("@rol", usuario.rol);
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
+            command.Parameters.AddWithValue("@nombre", usuario.nombre);
+            command.Parameters.AddWithValue("@apellido", usuario.apellido);
+            command.Parameters.AddWithValue("@email", usuario.email);
+            command.Parameters.AddWithValue("@clave", usuario.clave);
+            command.Parameters.AddWithValue("@avatar", usuario.avatar);
+            command.Parameters.AddWithValue("@rol", usuario.rol);
+
+            connection.Open();
+            id = Convert.ToInt32(command.ExecuteScalar()); // obtiene el id
+            connection.Close();
         }
     }
+    return id;
+}
+
 
     public void Baja(int id)
     {

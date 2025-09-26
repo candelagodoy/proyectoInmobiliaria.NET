@@ -55,14 +55,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.email)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.rolNombre)
                 </td>
                 <td>
-                    <img width="32" src="@item.avatar" />
+                    <img width="42" height="64" src="@item.avatar" alt="Sin avatar" />
                 </td>
-
                 <td>
                     <i class="fa fa-user-circle"></i>
                     @Html.ActionLink("Perfil", "Details", new { id = item.idUsuario })

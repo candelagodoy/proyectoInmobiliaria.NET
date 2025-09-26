@@ -21,10 +21,12 @@ namespace proyectoInmobiliaria.NET.Controllers;
 public class UsuarioController : Controller
 {
 
+    private readonly IWebHostEnvironment environment;
     private RepositorioUsuario repo;
 
-    public UsuarioController()
+    public UsuarioController(IWebHostEnvironment env)
     {
+        environment = env;
         repo = new RepositorioUsuario();
     }
     public IActionResult Index()
@@ -101,35 +103,52 @@ public class UsuarioController : Controller
     }
 
     // POST: Admin/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [Authorize(Policy = "Administrador")]
-    public ActionResult Create(Usuario u)
+  [HttpPost]
+[ValidateAntiForgeryToken]
+[Authorize(Policy = "Administrador")]
+public IActionResult Create(Usuario u)
+{
+
+    if (!ModelState.IsValid) return View(u);
+
+    string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+        password: u.clave,
+        salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+        prf: KeyDerivationPrf.HMACSHA1,
+        iterationCount: 1000,
+        numBytesRequested: 256 / 8));
+    u.clave = hashed;
+
+    var id = repo.Alta(u);
+    u.idUsuario = id;
+
+    if (u.avatarFile is { Length: > 0 })
     {
-        if (!ModelState.IsValid)
-            return View();
-        try
-        {
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: u.clave,
-                    salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
-                    prf: KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 1000,
-                    numBytesRequested: 256 / 8));
-            u.clave = hashed;
 
-            var nbreRnd = Guid.NewGuid();
-            repo.Alta(u);
+        var wwwPath = environment.WebRootPath;
+        var folderName = "Uploads"; // mantenemos el mismo nombre que usabas
+        var physicalFolder = Path.Combine(wwwPath, folderName);
+        if (!Directory.Exists(physicalFolder))
+            Directory.CreateDirectory(physicalFolder);
 
-            return RedirectToAction(nameof(Index));
-        }
-        catch (Exception ex)
-        {
-            ViewBag.Error = ex.Message;
-            ViewBag.StackTrate = ex.StackTrace;
-            return View();
-        }
+        var ext = Path.GetExtension(u.avatarFile.FileName);
+
+        var fileName = $"avatar_{id}_{Guid.NewGuid():N}{ext}";
+        var physicalPath = Path.Combine(physicalFolder, fileName);
+
+        using var stream = new FileStream(physicalPath, FileMode.Create);
+        u.avatarFile.CopyTo(stream);
+
+        u.avatar = $"/{folderName}/{fileName}";
+
+        repo.Modificacion(u);
     }
+
+    return RedirectToAction(nameof(Index));
+}
+
+      
+    
 
 
 
@@ -148,7 +167,7 @@ public class UsuarioController : Controller
     {
         try
         {
-            //if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 i.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -161,11 +180,11 @@ public class UsuarioController : Controller
                 return RedirectToAction(nameof(Index));
 
             }
-            /*else
+            else
             {
                 ModelState.AddModelError("", "Error al actualizar!!");
                 return View();
-            }*/
+            }
 
         }
         catch
@@ -198,12 +217,12 @@ public class UsuarioController : Controller
             return View();
         }
     }
-        
+
     public ActionResult Details(int id)
-        {
-            Usuario u = repo.ObtenerPorId(id);
-            return View(u);
-        }
+    {
+        Usuario u = repo.ObtenerPorId(id);
+        return View(u);
+    }
 
 
 }

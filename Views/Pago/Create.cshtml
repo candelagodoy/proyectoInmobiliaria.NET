@@ -16,8 +16,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="numPago" class="control-label"></label>
-                <input asp-for="numPago" class="form-control" />
+                <label asp-for="numPago" class="control-label">Numero de Pago @Model.numPago</label>
             </div>
             <div class="form-group">
                 <label asp-for="descripcion" class="control-label"></label>

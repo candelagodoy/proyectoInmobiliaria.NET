@@ -17,6 +17,15 @@ namespace proyectoInmobiliaria.NET.Models
                     command.Parameters.AddWithValue("@fechaPago", pago.fechaPago);
                     command.Parameters.AddWithValue("@importe", pago.importe);
                     command.Parameters.AddWithValue("@estado", pago.estado);
+                    List<Pago> pagos = ObtenerPorContrato(pago.idContrato);
+                    if (pagos.Count == 0)
+                    {
+                        pago.numPago = 1;
+                    }
+                    else
+                    {
+                        pago.numPago = pagos[pagos.Count - 1].numPago + 1;   
+                    }
                     command.Parameters.AddWithValue("@numPago", pago.numPago);
                     command.Parameters.AddWithValue("@idUsuario", pago.idUsuario);
                     connection.Open();
@@ -62,7 +71,7 @@ namespace proyectoInmobiliaria.NET.Models
             List<Pago> pagos = new List<Pago>();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                var sql = "SELECT * FROM pago;";
+                var sql = "SELECT * FROM pago WHERE estado = 1;";
                 using (MySqlCommand command = new MySqlCommand(sql, connection))
                 {
                     connection.Open();
@@ -92,7 +101,7 @@ namespace proyectoInmobiliaria.NET.Models
             List<Pago> pagos = new List<Pago>();
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                var sql = "SELECT * FROM pago WHERE idContrato = @idContrato;";
+                var sql = "SELECT * FROM pago WHERE idContrato = @idContrato AND estado = 1;";
                 using (MySqlCommand command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@idContrato", idContrato);
@@ -117,8 +126,8 @@ namespace proyectoInmobiliaria.NET.Models
             }
             return pagos;
         }
-        
-        
+
+
 
     }
 }
