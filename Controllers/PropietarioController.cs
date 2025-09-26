@@ -50,7 +50,7 @@ public class PropietarioController : Controller
         {
             throw;
         }
-    } 
+    }
 
     [HttpPost]
     public ActionResult Edit(Propietario propietario)
@@ -64,24 +64,25 @@ public class PropietarioController : Controller
         {
             return View(propietario);
         }
-    }  
+    }
 
     public IActionResult Eliminar(int id)
-    { try
     {
-        repo.Baja(id); 
-        TempData["Ok"] = "Propietario eliminado.";
-    }
-    catch (MySqlException ex) when (ex.Number == 1451) // FK: tiene datos relacionados
-    {
-        TempData["Error"] = "No se puede eliminar: tiene inmuebles y/o contratos asociados.";
-    }
-    catch (Exception)
-    {
-        TempData["Error"] = "Ocurrió un error al eliminar el propietario.";
-    }
+        try
+        {
+            repo.Baja(id);
+            TempData["Ok"] = "Propietario eliminado.";
+        }
+        catch (MySqlException ex) when (ex.Number == 1451) // FK: tiene datos relacionados
+        {
+            TempData["Error"] = "No se puede eliminar: tiene inmuebles y/o contratos asociados.";
+        }
+        catch (Exception)
+        {
+            TempData["Error"] = "Ocurrió un error al eliminar el propietario.";
+        }
 
-    return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Detalles(int id)
@@ -96,16 +97,16 @@ public class PropietarioController : Controller
         return View(propietario);
     }
 
-    
-
-    
-    
-
-    
 
 
 
-  
+
+
+
+
+
+
+
 
 
 }

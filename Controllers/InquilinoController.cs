@@ -2,6 +2,7 @@ using System.Configuration;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
@@ -41,9 +42,23 @@ public class InquilinoController : Controller
         }
     }
 
+
     public IActionResult Eliminar(int id)
     {
-        repo.Baja(id);
+        try
+        {
+            repo.Baja(id);
+            TempData["Ok"] = "Inquilino eliminado.";
+        }
+        catch (MySqlException ex) when (ex.Number == 1451)
+        {
+            TempData["Error"] = "No se puede eliminar: tiene inmuebles y/o contratos asociados.";
+        }
+        catch (Exception)
+        {
+            TempData["Error"] = "Ocurrió un error al eliminar el inquilino.";
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

@@ -8,6 +8,9 @@
     <thead>
         <tr>
             <th class="bg-light">
+                @Html.DisplayNameFor(model => model.idContrato)
+            </th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.idInquilino)
             </th>
             <th class="bg-light">
@@ -22,34 +25,22 @@
             <th class="bg-light">
                 @Html.DisplayNameFor(model => model.fechaHasta)
             </th>
-            @if ((User.IsInRole("Administrador")))
-            {
-                <th class="bg-light">
-                    @Html.DisplayNameFor(model => model.idUsuarioAlta)
-                </th>
-            }
-            @if ((User.IsInRole("Administrador")))
-            {
-                @if (Model.Any(p => p.idUsuarioBaja != 0))
-                {
-                    <th>@Html.DisplayNameFor(m => m.idUsuarioBaja)</th>
-                }
-                else
-                {
-                    <th>No se anuló el pago</th>
-                }
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.idUsuarioAlta)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.idUsuarioBaja)
+            </th>
 
-            }
-
-            <th class="bg-light"></th>
-            <th class="bg-light"></th>
-            <th class="bg-light"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idContrato)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.idInquilino)
                 </td>

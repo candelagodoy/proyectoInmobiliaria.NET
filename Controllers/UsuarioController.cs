@@ -29,7 +29,7 @@ public class UsuarioController : Controller
         environment = env;
         repo = new RepositorioUsuario();
     }
-[Authorize(Policy = "Administrador")]
+    [Authorize(Policy = "Administrador")]
     public IActionResult Index()
     {
         var lista = repo.ObtenerTodos();
@@ -173,28 +173,40 @@ public class UsuarioController : Controller
     [Authorize]
     public async Task<IActionResult> Edit(Usuario i)
     {
+        var esAdmin = User.IsInRole("Administrador");
 
+        // Clave opcional: si viene vacía, ignorar validación
         if (string.IsNullOrWhiteSpace(i.clave))
         {
             ModelState.Remove(nameof(i.clave));
             ModelState.ClearValidationState(nameof(i.clave));
         }
 
-
-        if (!ModelState.IsValid)
+        // Si NO es admin, también ignorá validaciones de campos que no están en el form
+        if (!esAdmin)
         {
-            return View(i);
+            foreach (var k in new[] { nameof(i.nombre), nameof(i.apellido), nameof(i.email), nameof(i.rol) })
+            {
+                ModelState.Remove(k);
+                ModelState.ClearValidationState(k);
+            }
         }
-
+        if (!ModelState.IsValid)
+            return View(i);
 
         var db = repo.ObtenerPorId(i.idUsuario);
         if (db is null) return NotFound();
 
-        db.nombre = i.nombre;
-        db.apellido = i.apellido;
-        db.email = i.email;
-        db.rol = i.rol;
+        // Solo el admin puede modificar estos campos
+        if (esAdmin)
+        {
+            db.nombre = i.nombre;
+            db.apellido = i.apellido;
+            db.email = i.email;
+            db.rol = i.rol;
+        }
 
+        // Clave: solo si viene una nueva
         if (!string.IsNullOrWhiteSpace(i.clave))
         {
             db.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -205,7 +217,7 @@ public class UsuarioController : Controller
                 numBytesRequested: 256 / 8));
         }
 
-
+        // Avatar: reemplazar solo si suben archivo
         if (i.avatarFile is { Length: > 0 })
         {
             var wwwPath = environment.WebRootPath;
@@ -220,7 +232,7 @@ public class UsuarioController : Controller
             using (var fs = new FileStream(fullPath, FileMode.Create))
                 await i.avatarFile.CopyToAsync(fs);
 
-            // borrar el anterior
+            // borrar anterior (si existía)
             if (!string.IsNullOrWhiteSpace(db.avatar))
             {
                 var old = Path.Combine(environment.WebRootPath, db.avatar.TrimStart('/', '\\'));
@@ -231,8 +243,17 @@ public class UsuarioController : Controller
         }
 
         repo.Modificacion(db);
+
+        if (!esAdmin)
+        {
+            var id = int.Parse(User.FindFirst("Id")?.Value);
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
         return RedirectToAction(nameof(Index));
+
     }
+    
 
 
 
@@ -270,3 +291,4 @@ public class UsuarioController : Controller
 
 
 }
+

@@ -3,6 +3,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MySql.Data.MySqlClient;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
@@ -19,11 +20,6 @@ public class inmuebleController : Controller
         repoPropietario = new RepositorioPropietario();
     }
 
-    /// Convierte un enum en una lista de SelectListItem.
-
-    /// <typeparam name="TEnum">El tipo de enum a convertir.</typeparam>
-
-    /// <returns>Una lista de SelectListItem.</returns>
     private static IEnumerable<SelectListItem> EnumToSelectList<TEnum>() where TEnum : Enum =>
         Enum.GetValues(typeof(TEnum))
             .Cast<TEnum>()
@@ -41,7 +37,7 @@ public class inmuebleController : Controller
     [Authorize(Policy = "Administrador")]
     public IActionResult Create()
     {
-        ViewBag.Propietarios = new RepositorioPropietario().ObtenerTodos();
+        ViewBag.Propietarios = repoPropietario.ObtenerTodos();
         ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text");
         ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text");
         return View();
@@ -74,7 +70,20 @@ public class inmuebleController : Controller
     [Authorize(Policy = "Administrador")]
     public IActionResult Eliminar(int id)
     {
-        repo.Baja(id);
+         try
+        {
+            repo.Baja(id);
+            TempData["Ok"] = "Inmueble eliminado.";
+        }
+        catch (MySqlException ex) when (ex.Number == 1451)
+        {
+            TempData["Error"] = "No se puede eliminar: tiene contratos asociados.";
+        }
+        catch (Exception)
+        {
+            TempData["Error"] = "Ocurrió un error al eliminar el Inmueble.";
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

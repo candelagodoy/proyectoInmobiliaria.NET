@@ -53,7 +53,7 @@
 							Editar
 						</a>
 						@if (User.IsInRole("Administrador")) {
-							<a class="btn btn-danger btnOpcion" asp-action="Delete" asp-route-id="@item.id"
+							<a class="btn btn-danger btnOpcion" asp-action="Eliminar" asp-route-id="@item.id"
 							title="Eliminar">
 							Eliminar
 						</a>

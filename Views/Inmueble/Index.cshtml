@@ -4,6 +4,14 @@
 	ViewData["Title"] = "Home Page";
 }
 
+@if (TempData["Ok"] is string ok) {
+  <div class="alert alert-success">@ok</div>
+}
+@if (TempData["Error"] is string err) {
+  <div class="alert alert-danger">@err</div>
+}
+
+
 <h1>
 	Inmuebles
 	<div class="btn-group pull-right">
@@ -48,7 +56,7 @@
 							Editar
 						</a>
 						@if (User.IsInRole("Administrador")) {
-							<a class="btn btn-danger btnOpcion" asp-action="Delete" asp-route-id="@item.idInmueble"
+							<a class="btn btn-danger btnOpcion" asp-action="Eliminar" asp-route-id="@item.idInmueble"
 							title="Eliminar">
 							Eliminar
 						</a>
