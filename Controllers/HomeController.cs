@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
-[Authorize(Policy = "EmpleadoOAdministrador")]
+
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -19,6 +20,7 @@ public class HomeController : Controller
         return View();
     }
 
+    [AllowAnonymous]
     public IActionResult Privacy()
     {
         return View();

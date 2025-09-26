@@ -1,15 +1,51 @@
 @{
-    ViewData["Title"] = "Restringido";
+    ViewData["Title"] = "Acceso restringido";
 }
 
-<h2 class="text-center bg-dark text-white"> Pagina Restringida</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-<h6 class="alert alert-danger text-center"> ¡Error! USTED NO TIENE PERMISO PARA ACCEDER A ESTA PAGINA!!!! <i class="fa fa-optin-monster fa-5x" aria-hidden="true"></i> </h6>
-<div class="card bg-dark text-white">
-    <div class="text-center">
-        <p style="font-family:'Century Gothic'; font-weight:500;"> Lideres en el mercado inmobiliario, estamos para brindarte el mejor lugar.</p>
+            <div class="card border-0 shadow-lg overflow-hidden">
+                <!-- Hero con imagen + overlay -->
+                <div class="position-relative">
+                    <img src="https://media.imna.ir/d/2019/07/09/4/1581542.jpg"
+                         class="w-100" style="height:180px; object-fit:cover;" alt="Ciudad">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                        <i class="fa-solid fa-lock fa-3x mb-2"></i>
+                        <h1 class="h4 fw-bold m-0">Acceso restringido</h1>
+                    </div>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity:.35;"></div>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                        <div> No tenés permiso para acceder a esta página. </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        Si creés que es un error, contactá al administrador. También podés volver atrás o ir al inicio.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                            <i class="fa-solid fa-house me-1"></i> Ir al inicio
+                        </a>
+                        <a asp-controller="Usuario" asp-action="Login" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i> Iniciar sesión
+                        </a>
+                        <button type="button" class="btn btn-light" onclick="history.back()">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Volver
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-3 small">
+                Inmobiliaria F&amp;C — líderes en el mercado inmobiliario, estamos para brindarte el mejor lugar.
+            </p>
+
+        </div>
     </div>
-    <img style="width: 100%;" src="https://media.imna.ir/d/2019/07/09/4/1581542.jpg" alt="Card image cap">
-
-
 </div>

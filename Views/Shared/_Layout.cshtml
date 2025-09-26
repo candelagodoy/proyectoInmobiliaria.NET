@@ -26,7 +26,7 @@
 </head>
 
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-sm navbar-dark bg-primary bg-gradient border-bottom shadow-sm mb-3">
             <div class="container-fluid">
@@ -98,17 +98,20 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+   <main role="main" class="flex-fill">
+    <div class="container py-3">
+        @RenderBody()
     </div>
+</main>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Inmobiliaria F&C - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    
+
+   <footer class="mt-auto border-top bg-light">
+    <div class="container small text-muted py-3 d-flex justify-content-between">
+        <span>© @DateTime.Now.Year - Inmobiliaria F&C</span>
+        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

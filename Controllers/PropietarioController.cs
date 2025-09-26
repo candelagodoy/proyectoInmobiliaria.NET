@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
@@ -66,11 +67,21 @@ public class PropietarioController : Controller
     }  
 
     public IActionResult Eliminar(int id)
+    { try
     {
-    
-        repo.Baja(id);
-        
-        return RedirectToAction(nameof(Index));
+        repo.Baja(id); 
+        TempData["Ok"] = "Propietario eliminado.";
+    }
+    catch (MySqlException ex) when (ex.Number == 1451) // FK: tiene datos relacionados
+    {
+        TempData["Error"] = "No se puede eliminar: tiene inmuebles y/o contratos asociados.";
+    }
+    catch (Exception)
+    {
+        TempData["Error"] = "Ocurrió un error al eliminar el propietario.";
+    }
+
+    return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Detalles(int id)
@@ -79,7 +90,7 @@ public class PropietarioController : Controller
         var propietario = repo.ObtenerPorId(id);
         if (propietario == null)
         {
-        return NotFound();
+            return NotFound();
         }
 
         return View(propietario);
