@@ -34,6 +34,7 @@ public class pagoController : Controller
     {
         ViewBag.Contratos = repoContrato.ObtenerTodos();
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+        ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View();
     }
 
@@ -86,5 +87,18 @@ public class pagoController : Controller
             return View();
         }
     }
+    public IActionResult Edit(int id)
+    {
+        var pago = repoPago.ObtenerPorContrato(id);
+        ViewBag.Contratos = repoContrato.ObtenerTodos();
+        ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+        return View("Edit", pago);
+    }
+
+
+
+
+
+>>>>>>> Stashed changes
 
 }
