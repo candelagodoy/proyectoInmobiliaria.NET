@@ -1,0 +1,67 @@
+@model IEnumerable<proyectoInmobiliaria.NET.Models.Pago>
+
+@{
+    ViewData["Title"] = "Pago";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="bg-light" hidden>
+                @Html.DisplayNameFor(model => model.idPago)
+            </th>
+            <th class="bg-light" hidden>
+                @Html.DisplayNameFor(model => model.descripcion)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.idContrato)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.numPago)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.fechaPago)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.importe)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.estado)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.idPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.numPago)
+                </td>
+                <td>
+                   @item.fechaPago.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importe)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.estado)
+                </td>
+
+                <td>
+                    <i class="fa fa-edit"></i>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.idPago })
+                </td>
+                <td>
+                    <i class="fa fa-trash"></i>
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idPago })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

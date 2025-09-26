@@ -26,11 +26,7 @@
             <div class="form-group">
                 <label asp-for="idUsuarioAlta" class="control-label">Usuario</label>
                 <select class="form-control" name="idUsuario">
-                    <option value="null"></option>
-                    @foreach (Usuario item in listaUsuarios)
-                    {
-                        <option value="@item.idUsuario">@(item.ToString())</option>
-                    }
+                    <option value="@ViewBag.UsuarioLogin.idUsuario">@(ViewBag.UsuarioLogin.ToString())</option>
                 </select>
             </div>
             <div class="form-group">
@@ -44,7 +40,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="fechaPago" class="control-label">Fecha de Pago</label>
+                <label asp-for="fechaPago" class="control-label">Fecha de</label>
                 <input asp-for="fechaPago" class="form-control" type="date" />
             </div>
             <div class="form-group form-check m-2">

@@ -69,6 +69,7 @@ public class UsuarioController : Controller
                         new Claim(ClaimTypes.Email, e.email),
                         new Claim("FullName", e.nombre + " " + e.apellido),
                         new Claim(ClaimTypes.Role, e.rolNombre),
+                        new Claim("Id", e.idUsuario.ToString())
                     };
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
