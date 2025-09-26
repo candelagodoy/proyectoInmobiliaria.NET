@@ -37,8 +37,8 @@ public class ContratoController : Controller
     [HttpPost]
     public IActionResult Create(Contrato contrato)
     {
-            repo.Alta(contrato);
-            return RedirectToAction(nameof(Index));
+        repo.Alta(contrato);
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Edit(int id)
@@ -57,19 +57,22 @@ public class ContratoController : Controller
     public IActionResult Edit(Contrato contrato)
     {
 
-            repo.Modificacion(contrato);
-            return RedirectToAction(nameof(Index));
+        repo.Modificacion(contrato);
+        return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Eliminar(int id)
+    public IActionResult Delete(int id)
     {
-       
-        var con = repo.ObtenerPorId(id);
+        int usuarioLogeadoId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+        repo.Baja(id, usuarioLogeadoId);
+        return RedirectToAction(nameof(Index));
+
+        /*var con = repo.ObtenerPorId(id);
         int idUsuarioLogin = int.Parse(User.FindFirst("Id")?.Value);
         con.idUsuarioBaja = idUsuarioLogin;
         repo.Modificacion(con);
-         repo.Baja(id);
-        return RedirectToAction(nameof(Index));
+        repo.Baja(id);
+        return RedirectToAction(nameof(Index));*/
     }
 
     public IActionResult Detalles(int id)
@@ -82,12 +85,18 @@ public class ContratoController : Controller
         ViewBag.PropietarioNombre = inquilino.nombre + " " + inquilino.apellido;
         ViewBag.Inmueble = inmueble.direccion;
         ViewBag.Usuario = usuario.ToString();
-    
+
         if (contrato == null)
         {
             return NotFound();
         }
 
         return View(contrato);
+    }
+    
+    public IActionResult Anulados()
+    {
+        var lista = repo.ObtenerContratosTerminados();
+        return View("Anulados", lista);
     }
 }

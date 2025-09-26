@@ -63,7 +63,7 @@
 							title="Editar">
 							Editar
 						</a>
-						<a class="btn btn-danger btnOpcion" asp-action="Eliminar" asp-route-id="@item.idContrato"
+						<a class="btn btn-danger btnOpcion" asp-action="Delete" asp-route-id="@item.idContrato"
 							title="Eliminar">
 							Eliminar
 						</a>
@@ -77,3 +77,8 @@
 		}
 	</tbody>
 </table>
+@if(User.IsInRole(role:"Administrador")){
+    <div class="btn-group pull-right">
+    <a class="btn btn-primary" asp-action="Anulados" title="Crear"> Contratos finalizados </a>
+    </div>
+}

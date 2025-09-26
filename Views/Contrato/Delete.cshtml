@@ -1,0 +1,56 @@
+@model proyectoInmobiliaria.NET.Models.Contrato
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<p>
+    <h1 class="bg-info font-italic text-white text-lg-center">Finalizar contrato</h1>
+    <br />
+    <br />
+    <br />
+    <h3 class="text-lg-center bg-danger text-white"> ¿Está seguro que desea finalizar el siguiente contrato</h3>
+</p>
+<div>
+
+    <hr />
+    <dl class="row">
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.idContrato)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.idContrato)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.idInquilino)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.idInquilino)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.idInmueble)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.idInmueble)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.monto)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.monto)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.idUsuarioBaja)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.idUsuarioBaja)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="Borrar Pago" class="btn btn-danger" />  |
+        <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+    </form>
+</div>
+

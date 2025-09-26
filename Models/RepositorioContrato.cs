@@ -60,7 +60,9 @@ public class RepositorioContrato : RepositorioBase
                         contrato.idInmueble = reader.GetInt32("idInmueble");
                         contrato.idInquilino = reader.GetInt32("idInquilino");
                         contrato.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
-                        contrato.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                        contrato.idUsuarioBaja = reader.IsDBNull(reader.GetOrdinal("idUsuarioBaja"))
+    ? null
+    : reader.GetInt32("idUsuarioBaja");
                         contrato.estado = reader.GetBoolean("estado");
                         contratos.Add(contrato);
                     }
@@ -93,9 +95,9 @@ public class RepositorioContrato : RepositorioBase
                         contrato.idInquilino = reader.GetInt32("idInquilino");
                         contrato.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
                         var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
-                              contrato.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
-                            ? (int?)null
-                            : reader.GetInt32(ordIdUsuarioBaja);
+                        contrato.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                      ? (int?)null
+                      : reader.GetInt32(ordIdUsuarioBaja);
                         contrato.estado = reader.GetBoolean("estado");
                     }
                 }
@@ -104,14 +106,15 @@ public class RepositorioContrato : RepositorioBase
         return contrato;
     }
 
-    public void Baja(int id)
+    public void Baja(int id, int idUsuarioLogeado)
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "UPDATE contrato SET estado = 0 WHERE idContrato = @idContrato;";
+            string sql = "UPDATE contrato SET estado = 0 , idUsuarioBaja = @idUsuarioBaja WHERE idContrato = @idContrato;";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idContrato", id);
+                command.Parameters.AddWithValue("@idUsuarioBaja", idUsuarioLogeado);
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();

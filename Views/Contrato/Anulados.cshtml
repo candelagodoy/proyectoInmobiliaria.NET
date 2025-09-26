@@ -1,0 +1,80 @@
+@model IEnumerable<proyectoInmobiliaria.NET.Models.Contrato>
+
+<h1 class="text-lg-center bg-info font-italic text-white">Contratos finalizados</h1>
+<br />
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.idInquilino)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.idInmueble)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.monto)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.fechaDesde)
+            </th>
+            <th class="bg-light">
+                @Html.DisplayNameFor(model => model.fechaHasta)
+            </th>
+            @if ((User.IsInRole("Administrador")))
+            {
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.idUsuarioAlta)
+                </th>
+            }
+            @if ((User.IsInRole("Administrador")))
+            {
+                @if (Model.Any(p => p.idUsuarioBaja != 0))
+                {
+                    <th>@Html.DisplayNameFor(m => m.idUsuarioBaja)</th>
+                }
+                else
+                {
+                    <th>No se anuló el pago</th>
+                }
+
+            }
+
+            <th class="bg-light"></th>
+            <th class="bg-light"></th>
+            <th class="bg-light"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idInquilino)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idInmueble)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.monto)
+                </td>
+                <td>
+                    @item.fechaDesde.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @item.fechaHasta.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idUsuarioBaja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idUsuarioBaja)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="form-group">
+    <a class="btn btn-info" asp-action="Index">Regresar</a>
+</div>
