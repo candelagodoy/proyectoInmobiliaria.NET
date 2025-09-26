@@ -54,7 +54,7 @@
                     @Html.DisplayFor(modelItem => item.numPago)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.fechaPago)
+                   @item.fechaPago.ToString("dd/MM/yyyy")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.importe)
