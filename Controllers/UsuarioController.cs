@@ -103,52 +103,52 @@ public class UsuarioController : Controller
     }
 
     // POST: Admin/Create
-  [HttpPost]
-[ValidateAntiForgeryToken]
-[Authorize(Policy = "Administrador")]
-public IActionResult Create(Usuario u)
-{
-
-    if (!ModelState.IsValid) return View(u);
-
-    string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-        password: u.clave,
-        salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
-        prf: KeyDerivationPrf.HMACSHA1,
-        iterationCount: 1000,
-        numBytesRequested: 256 / 8));
-    u.clave = hashed;
-
-    var id = repo.Alta(u);
-    u.idUsuario = id;
-
-    if (u.avatarFile is { Length: > 0 })
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = "Administrador")]
+    public IActionResult Create(Usuario u)
     {
 
-        var wwwPath = environment.WebRootPath;
-        var folderName = "Uploads"; // mantenemos el mismo nombre que usabas
-        var physicalFolder = Path.Combine(wwwPath, folderName);
-        if (!Directory.Exists(physicalFolder))
-            Directory.CreateDirectory(physicalFolder);
+        if (!ModelState.IsValid) return View(u);
 
-        var ext = Path.GetExtension(u.avatarFile.FileName);
+        string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: u.clave,
+            salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+            prf: KeyDerivationPrf.HMACSHA1,
+            iterationCount: 1000,
+            numBytesRequested: 256 / 8));
+        u.clave = hashed;
 
-        var fileName = $"avatar_{id}_{Guid.NewGuid():N}{ext}";
-        var physicalPath = Path.Combine(physicalFolder, fileName);
+        var id = repo.Alta(u);
+        u.idUsuario = id;
 
-        using var stream = new FileStream(physicalPath, FileMode.Create);
-        u.avatarFile.CopyTo(stream);
+        if (u.avatarFile is { Length: > 0 })
+        {
 
-        u.avatar = $"/{folderName}/{fileName}";
+            var wwwPath = environment.WebRootPath;
+            var folderName = "Uploads"; // mantenemos el mismo nombre que usabas
+            var physicalFolder = Path.Combine(wwwPath, folderName);
+            if (!Directory.Exists(physicalFolder))
+                Directory.CreateDirectory(physicalFolder);
 
-        repo.Modificacion(u);
+            var ext = Path.GetExtension(u.avatarFile.FileName);
+
+            var fileName = $"avatar_{id}_{Guid.NewGuid():N}{ext}";
+            var physicalPath = Path.Combine(physicalFolder, fileName);
+
+            using var stream = new FileStream(physicalPath, FileMode.Create);
+            u.avatarFile.CopyTo(stream);
+
+            u.avatar = $"/{folderName}/{fileName}";
+
+            repo.Modificacion(u);
+        }
+
+        return RedirectToAction(nameof(Index));
     }
 
-    return RedirectToAction(nameof(Index));
-}
 
-      
-    
+
 
 
 

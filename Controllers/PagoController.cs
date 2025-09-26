@@ -63,6 +63,30 @@ public class pagoController : Controller
 
     }
 
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Delete(int id)
+    {
+        var i = repoPago.ObtenerPorId(id);
+        return View(i);
+    }
+
+    // POST: Admin/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = "Administrador")]
+    public ActionResult Delete(int id, Usuario i)
+    {
+        try
+        {
+            repoPago.Baja(id);
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View();
+        }
+    }
+
 
 
 

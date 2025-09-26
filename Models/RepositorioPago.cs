@@ -96,6 +96,35 @@ namespace proyectoInmobiliaria.NET.Models
             return pagos;
         }
 
+        public Pago ObtenerPorId(int id)
+        {
+            Pago pago = new Pago();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                var sql = "SELECT * FROM pago WHERE idPago = @idPago;";
+                using (MySqlCommand command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@idPago", id);
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            pago.idPago = reader.GetInt32("idPago");
+                            pago.descripcion = reader.GetString("descripcion");
+                            pago.idContrato = reader.GetInt32("idContrato");
+                            pago.fechaPago = reader.GetDateTime("fechaPago");
+                            pago.importe = reader.GetDecimal("importe");
+                            pago.estado = reader.GetBoolean("estado");
+                            pago.numPago = reader.GetInt32("numPago");
+                        }
+                    }
+                }
+                connection.Close();
+            }
+            return pago;
+        }
+
         public List<Pago> ObtenerPorContrato(int idContrato)
         {
             List<Pago> pagos = new List<Pago>();
