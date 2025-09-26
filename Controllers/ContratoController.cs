@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using proyectoInmobiliaria.NET.Models;
 
@@ -34,10 +35,37 @@ public class ContratoController : Controller
         return View();
     }
 
+
+
     [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Policy = "Administrador")]
     public IActionResult Create(Contrato contrato)
     {
+
+        if (!ModelState.IsValid) return View(contrato);
+        if (contrato.fechaDesde > contrato.fechaHasta)
+        {
+            ModelState.AddModelError("", "La fecha de inicio no puede ser posterior a la de fin.");
+            ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
+            ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
+            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+            ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
+            return View(contrato);
+        }
+
+        if (repo.ExisteSuperposicion(contrato.idInmueble, contrato.fechaDesde, contrato.fechaHasta, null))
+        {
+            ModelState.AddModelError("", "Se superpone con otro contrato de este inmueble.");
+            ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
+            ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
+            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+            ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
+            return View(contrato);
+        }
+
         repo.Alta(contrato);
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -56,6 +84,31 @@ public class ContratoController : Controller
     [HttpPost]
     public IActionResult Edit(Contrato contrato)
     {
+
+        if (!ModelState.IsValid) return View(contrato);
+        if (contrato.fechaDesde > contrato.fechaHasta)
+        {
+            ModelState.AddModelError("", "La fecha de inicio no puede ser posterior a la de fin.");
+            ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
+            ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
+            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+            ViewBag.InquilinoSelected = contrato.idInquilino;
+            ViewBag.InmuebleSelected = contrato.idInmueble;
+            ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
+            return View(contrato);
+        }
+
+        if (repo.ExisteSuperposicion(contrato.idInmueble, contrato.fechaDesde, contrato.fechaHasta, null))
+        {
+            ModelState.AddModelError("", "Se superpone con otro contrato de este inmueble.");
+            ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
+            ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
+            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+            ViewBag.InquilinoSelected = contrato.idInquilino;
+            ViewBag.InmuebleSelected = contrato.idInmueble;
+            ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
+            return View(contrato);
+        }
 
         repo.Modificacion(contrato);
         return RedirectToAction(nameof(Index));
@@ -93,10 +146,50 @@ public class ContratoController : Controller
 
         return View(contrato);
     }
-    
+
     public IActionResult Anulados()
     {
         var lista = repo.ObtenerContratosTerminados();
         return View("Anulados", lista);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Renovar(int idContrato, DateTime fechaDesde, DateTime fechaHasta, decimal monto)
+    {
+        var actual = repo.ObtenerPorId(idContrato);
+        if (actual == null) return NotFound();
+
+        // Defensa en servidor: recalculo el "desde" por si tocaron el hidden en el cliente
+        var desdeServidor = actual.fechaHasta.AddDays(1);
+
+        if (fechaHasta < desdeServidor)
+        {
+            TempData["Error"] = $"La fecha 'Hasta' debe ser >= {desdeServidor:yyyy-MM-dd}.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var nuevo = new Contrato
+        {
+            idInmueble = actual.idInmueble,
+            idInquilino = actual.idInquilino,
+            fechaDesde = desdeServidor,    
+            fechaHasta = fechaHasta,
+            monto = monto,
+            idUsuarioAlta = int.Parse(User.FindFirst("Id")!.Value),
+            estado = true
+        };
+
+
+        if (repo.ExisteSuperposicion(nuevo.idInmueble, nuevo.fechaDesde, nuevo.fechaHasta, null))
+        {
+            TempData["Error"] = "No se puede renovar: el rango nuevo se superpone con otro contrato del mismo inmueble.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        repo.Alta(nuevo);
+        TempData["Ok"] = "Contrato renovado con éxito.";
+        return RedirectToAction(nameof(Index));
+    }
+
 }

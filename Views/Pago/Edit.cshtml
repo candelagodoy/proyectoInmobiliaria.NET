@@ -8,12 +8,28 @@
 <hr />
 <div class="row">
 	<div class="col-md-4">
+		<h3>N° Pago </h3>
+		<p>@Model.idPago</p>
+		<h3>N° Contrato </h3>
+		<p>@Model.idPago</p>
+		<h3>Usuario Alta </h3>
+		<p>@ViewBag.Usuario.ToString()</p>
+		<h3>Fecha de Pago </h3>
+		<p>@Model.fechaPago.ToString("dd/MM/yyyy")</p>
+		<h3>Importe $</h3>
+		<p>@Model.importe</p>
+		@if (ViewBag.UsuarioBaja != null)
+		{
+			<h3>Usuario Alta </h3>
+			<p>@ViewBag.UsuarioBaja.ToString()</p>
+		}
 		<form asp-action="Edit">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="descripcion" class="control-label"></label>
 				<input asp-for="descripcion" class="form-control" />
 				<span asp-validation-for="descripcion" class="text-danger"></span>
+				<input asp-for="idPago" class="form-control" value="@Model.idPago" hidden/>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Guardar" class="btn btn-primary m-2" />

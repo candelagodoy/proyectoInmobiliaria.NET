@@ -20,7 +20,7 @@ public class Contrato
 
     public int idInquilino { get; set; }
 
-    [Display(Name = "Inmueble")]    
+    [Display(Name = "Inmueble")]
 
     public int idInmueble { get; set; }
 
@@ -28,7 +28,7 @@ public class Contrato
 
     public decimal monto { get; set; }
 
-    [Display(Name = "Usuario alta")] 
+    [Display(Name = "Usuario alta")]
 
     public int idUsuarioAlta { get; set; }
 
@@ -36,7 +36,7 @@ public class Contrato
     public int? idUsuarioBaja { get; set; }
 
     [Display(Name = "Estado")]
-    
+
     public bool estado { get; set; }
 
     override

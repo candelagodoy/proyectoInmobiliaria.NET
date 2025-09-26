@@ -1,69 +1,84 @@
 @model proyectoInmobiliaria.NET.Models.Usuario
-
 @{
     ViewData["Title"] = "Login";
 }
 
-<h1 class="text-lg-center bg-info font-italic text-white">Ingresar</h1>
+<div class="container min-vh-100 d-flex py-5">
+    <div class="row justify-content-center w-100">
+        <div class="col-12 col-md-8 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-info text-white text-center py-3">
+                    <h1 class="h4 mb-0"><i class="fa fa-sign-in-alt mr-2"></i>Ingresar</h1>
+                </div>
 
-<div class="row text-lg-center">
-    <div class="d-flex justify-content-center">
-        <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <i class="fa fa-user-circle  fa-1x"></i>
-                <label asp-for="email" class="control-label fs-4">  E-mail  </label>
-                <input asp-for="email" class="form-control" type="email" />
-                <span asp-validation-for="email" class="text-danger"></span>
+                <div class="card-body p-4">
+                    <form asp-action="Login">
 
-            </div>
-            <div class="form-group">
-                <i class="fa fa-unlock-alt fa-1x"></i>
-                    <label asp-for="clave" class="control-label fs-4">Contraseña</i> </label>
-                <div class="input-group mb-3">
-                    <input asp-for="clave" class="form-control" id="password" type="password" />
-                    <span asp-validation-for="clave" class="text-danger"></span>
-                    <div class="input-group-append">
-            <button id="show_password" class="btn btn-primary" type="button" onclick="mostrarPassword()">
-                <span class="fa fa-eye-slash icon"></span>
-            </button>
-        </div>
+                        @if (!ViewData.ModelState.IsValid )
+                        {
+                            <div class="alert alert-danger pb-2 small " role="alert" asp-validation-summary="ModelOnly">
+                            </div>
+
+                        }
+                        <!-- Email -->
+                        <div class="form-group mb-3">
+                            <label asp-for="email" class="control-label font-weight-semibold">
+                                <i class="fa fa-user-circle mr-1"></i> E-mail
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="email" class="form-control" type="email"
+                                    placeholder="Correo Electronico" />
+                            </div>
+
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group mb-4">
+                            <label asp-for="clave" class="control-label font-weight-semibold">
+                                <i class="fa fa-unlock-alt mr-1"></i> Contraseña
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="clave" class="form-control" id="password" type="password"
+                                    placeholder="Contraseña" />
+                                <div class="input-group-append">
+                                    <button id="show_password" class="btn btn-outline-secondary" type="button"
+                                        onclick="mostrarPassword()">
+                                        <span class="fa fa-eye-slash icon"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Botón -->
+                        <div class="form-group mb-0">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                <i class="fa fa-sign-in-alt mr-1"></i> Ingresar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-
-            <div class="form-group">
-                <input type="submit" value="Ingresar" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-<div class="bg-dark text-white">
-    <div class="text-center">
 
-        <p style="font-family:'Century Gothic'; font-weight:500;"> Lideres en el mercado inmobiliario, estamos para
-            brindarte el mejor lugar.</p>
+<script>
+    function mostrarPassword() {
+        let input = document.getElementById("password");
+        let icon = document.querySelector("#show_password .icon");
 
-    </div>
-    <img style="width: 100%;" src="https://media.imna.ir/d/2019/07/09/4/1581542.jpg" alt="image cap">
-    <script>
-        function mostrarPassword() {
-            let input = document.getElementById("password");
-            let icon = document.querySelector("#show_password .icon");
-
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            } else {
-                input.type = "password";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            }
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
         }
+    }
 </script>
-
-</div>
 
 @section Scripts {
     @{

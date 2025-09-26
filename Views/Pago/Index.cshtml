@@ -38,22 +38,6 @@
                     @Html.DisplayNameFor(model => model.idUsuarioAlta)
                 </th>
             }
-            @if ((User.IsInRole("Administrador")))
-            {
-                @if (Model.Any(p => p.idUsuarioBaja != 0))
-                {
-                    <th>@Html.DisplayNameFor(m => m.idUsuarioBaja)</th>
-                }
-                else
-                {
-                    <th>No se anuló el pago</th>
-                }
-
-            }
-
-            <th class="bg-light"></th>
-            <th class="bg-light"></th>
-            <th class="bg-light"></th>
         </tr>
     </thead>
     <tbody>
@@ -81,14 +65,7 @@
                 @if ((User.IsInRole("Administrador")))
                 {
                     <td>
-                        @Html.DisplayFor(modelItem => item.idUsuarioAlta)
-                    </td>
-                }
-                @if ((User.IsInRole("Administrador")))
-                {
-                    <td>@item.idUsuarioAlta</td>
-                    <td>
-                        @(item.idUsuarioAlta != 0 ? item.idUsuarioBaja : "No se anuló el pago")
+                        @Html.DisplayFor(modelItem => @item.idUsuarioAlta )
                     </td>
                 }
 
