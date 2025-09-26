@@ -36,20 +36,21 @@ namespace proyectoInmobiliaria.NET.Models
             }
         }
 
-        public void Baja(int id)
+        public void Baja(int idPago, int idUsuarioLogeado)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string sql = "UPDATE pago SET estado = 0 WHERE idPago = @idPago;";
+                string sql = "UPDATE pago SET estado = 0, idUsuarioBaja = @idUsuarioBaja WHERE idPago = @idPago;";
                 using (MySqlCommand command = new MySqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@idPago", id);
+                    command.Parameters.AddWithValue("@idPago", idPago);
+                    command.Parameters.AddWithValue("@idUsuarioBaja", idUsuarioLogeado);
                     connection.Open();
                     command.ExecuteNonQuery();
-                    connection.Close();
                 }
             }
         }
+
 
         public void ModificacionDescripcion(Pago pago)
         {
@@ -90,9 +91,9 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.numPago = reader.GetInt32("numPago");
                             pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
                             var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
-                              pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
-                            ? (int?)null
-                            : reader.GetInt32(ordIdUsuarioBaja);
+                            pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                          ? (int?)null
+                          : reader.GetInt32(ordIdUsuarioBaja);
                             pagos.Add(pago);
                         }
                     }
@@ -125,9 +126,9 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.numPago = reader.GetInt32("numPago");
                             pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
                             var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
-                              pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
-                            ? (int?)null
-                            : reader.GetInt32(ordIdUsuarioBaja);
+                            pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                          ? (int?)null
+                          : reader.GetInt32(ordIdUsuarioBaja);
                         }
                     }
                 }
@@ -160,9 +161,9 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.numPago = reader.GetInt32("numPago");
                             pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
                             var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
-                              pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
-                            ? (int?)null
-                            : reader.GetInt32(ordIdUsuarioBaja);
+                            pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                          ? (int?)null
+                          : reader.GetInt32(ordIdUsuarioBaja);
                             pagos.Add(pago);
                         }
                     }
@@ -194,7 +195,9 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
                             pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
-                            pago.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                            pago.idUsuarioBaja = reader.IsDBNull(reader.GetOrdinal("idUsuarioBaja"))
+                     ? (int?)null
+                     : reader.GetInt32("idUsuarioBaja");
                             pagos.Add(pago);
                         }
                     }
@@ -203,6 +206,6 @@ namespace proyectoInmobiliaria.NET.Models
             }
             return pagos;
         }
-        
+
     }
 }

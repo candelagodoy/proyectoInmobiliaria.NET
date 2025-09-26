@@ -1,16 +1,9 @@
 @model IEnumerable<proyectoInmobiliaria.NET.Models.Pago>
 
-@{
-    ViewData["Title"] = "Pago";
-}
-
-<h1 class="text-lg-center bg-info font-italic text-white">Registro de Pagos</h1>
+<h1 class="text-lg-center bg-info font-italic text-white">Pagos anulados</h1>
 <br />
 <br />
 
-<div class="btn-group pull-right">
-    <a class="btn btn-primary" asp-action="Create" title="Crear"> Registrar nuevo pago </a>
-</div>
 <table class="table">
     <thead>
         <tr>
@@ -78,34 +71,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.estado)
                 </td>
-                @if ((User.IsInRole("Administrador")))
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.idUsuarioAlta)
-                    </td>
-                }
-                @if ((User.IsInRole("Administrador")))
-                {
-                    <td>@item.idUsuarioAlta</td>
-                    <td>
-                        @(item.idUsuarioAlta != 0 ? item.idUsuarioBaja : "No se anuló el pago")
-                    </td>
-                }
 
                 <td>
-                    <i class="fa fa-edit"></i>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.idPago })
+                    @Html.DisplayFor(modelItem => item.idUsuarioAlta)
                 </td>
                 <td>
-                    <i class="fa fa-trash"></i>
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idPago })
+                    @(item.idUsuarioBaja.ToString())
                 </td>
+
             </tr>
         }
     </tbody>
 </table>
-@if(User.IsInRole(role:"Administrador")){
-    <div class="btn-group pull-right">
-    <a class="btn btn-primary" asp-action="Anulados" title="Crear"> Pagos anulados </a>
-    </div>
-}
+<div class="form-group">
+    <a class="btn btn-info" asp-action="Index">Regresar</a>
+</div>

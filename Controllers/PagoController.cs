@@ -32,7 +32,7 @@ public class pagoController : Controller
 
     public IActionResult Create()
     {
-    
+
         ViewBag.Contratos = repoContrato.ObtenerTodos();
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
         ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
@@ -43,20 +43,20 @@ public class pagoController : Controller
     [HttpPost]
     public IActionResult Create(Pago pago)
     {
-      
-            if (ModelState.IsValid)
-            {
-                repoPago.Alta(pago);
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                ViewBag.Contratos = repoContrato.ObtenerTodos();
-                ViewBag.Usuarios = repoUsuario.ObtenerTodos();
-                return View(pago);
-            }
 
-    
+        if (ModelState.IsValid)
+        {
+            repoPago.Alta(pago);
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            ViewBag.Contratos = repoContrato.ObtenerTodos();
+            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+            return View(pago);
+        }
+
+
     }
 
     [Authorize(Policy = "Administrador")]
@@ -72,16 +72,12 @@ public class pagoController : Controller
     [Authorize(Policy = "Administrador")]
     public ActionResult Delete(int id, Usuario i)
     {
-        try
-        {
-            repoPago.Baja(id);
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
+        int usuarioLogeadoId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+        repoPago.Baja(id, usuarioLogeadoId);
+        return RedirectToAction(nameof(Index));
     }
+
+
     public IActionResult Edit(int id)
     {
         var pago = repoPago.ObtenerPorContrato(id);
@@ -90,5 +86,26 @@ public class pagoController : Controller
         return View("Edit", pago);
     }
 
+    [HttpPost]
+    public IActionResult Edit(Pago pago)
+    {
+        if (ModelState.IsValid)
+        {
+            repoPago.ModificacionDescripcion(pago);
+            return RedirectToAction(nameof(Index));
+        }
+        else
+        {
+            ViewBag.Contratos = repoContrato.ObtenerTodos();
+            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+            return View(pago);
+        }
+    }
+
+    public IActionResult Anulados()
+    {
+        var lista = repoPago.PagosAnulados();
+        return View("Anulados", lista);
+    }
 
 }

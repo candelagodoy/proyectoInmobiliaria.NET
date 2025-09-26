@@ -1,49 +1,28 @@
 @model proyectoInmobiliaria.NET.Models.Pago
 
 @{
-    ViewData["Title"] = "Actualizar Pagos";
-    
+	ViewData["Title"] = "Editar descripcion de pago";
 }
 
-<h1 class="text-lg-center bg-info font-italic text-white">Actualización de Datos</h1>
-<br />
-<br />
-<h4 class="bg-dark text-white">Datos del Pago:</h4>
+<h4>Editar descripcion de pago</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="numPago" class="control-label">Nº Pago</label>
-                <input asp-for="numPago" class="form-control" readonly />
-                <span asp-validation-for="numPago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="idContrato" class="control-label">Nº Contrato</label>
-                <input asp-for="idContrato" class="form-control" readonly />
-                <span asp-validation-for="idContrato" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fechaPago" class="control-label">Fecha Pago</label>
-                <input asp-for="fechaPago" class="form-control" />
-                <span asp-validation-for="fechaPago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="importe" class="control-label"></label>
-                <input asp-for="importe" class="form-control" value=""/>
-                <span asp-validation-for="importe" class="text-danger"></span>
-            </div>
-             	<div class="form-group">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
 				<label asp-for="descripcion" class="control-label"></label>
 				<input asp-for="descripcion" class="form-control" />
 				<span asp-validation-for="descripcion" class="text-danger"></span>
 			</div>
-            <div class="form-group">
-                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />   |
-                <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+			<div class="form-group">
+				<input type="submit" value="Guardar" class="btn btn-primary m-2" />
+			</div>
+		</form>
+	</div>
+</div>
 
-            </div>
-        </form>
-    </div>
+
+<div>
+	<a class="btn btn-primary m-2" asp-action="Index">Volver</a>
 </div>
