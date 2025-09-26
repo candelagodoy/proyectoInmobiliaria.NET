@@ -30,15 +30,17 @@ public class pagoController : Controller
     }
 
 
-    public IActionResult Create()
+    private void CargarListas()
     {
-    
-        ViewBag.Contratos = repoContrato.ObtenerTodos();
-        ViewBag.Usuarios = repoUsuario.ObtenerTodos();
-        ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
-        return View();
+        ViewBag.Usuarios = repoUsuario.ObtenerTodos() ?? new List<Usuario>();
+        ViewBag.Contratos = repoContrato.ObtenerTodos() ?? new List<Contrato>();
     }
 
+    public IActionResult Create()
+    {
+        CargarListas();
+        return View();
+    }
 
     [HttpPost]
     public IActionResult Create(Pago pago)
@@ -52,17 +54,15 @@ public class pagoController : Controller
             }
             else
             {
-                ViewBag.Contratos = repoContrato.ObtenerTodos();
-                ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+                CargarListas();
                 return View(pago);
             }
-
         }
         catch (Exception)
         {
+            CargarListas();
             return View(pago);
         }
-
     }
 
     [Authorize(Policy = "Administrador")]
@@ -95,13 +95,4 @@ public class pagoController : Controller
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
         return View("Edit", pago);
     }
-
-
-
-
-
-
-
->>>>>>> Stashed changes
-
 }

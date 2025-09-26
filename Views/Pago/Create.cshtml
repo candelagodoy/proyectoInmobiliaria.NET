@@ -15,46 +15,46 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<<<<<<< Updated upstream
-=======
-            
->>>>>>> Stashed changes
-            <div class="form-group">
-                <label asp-for="descripcion" class="control-label"></label>
-                <input asp-for="descripcion" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="importe" class="control-label"></label>
-                <input asp-for="importe" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="idUsuarioAlta" class="control-label">Usuario</label>
-                <select class="form-control" name="idUsuarioAlta">
-                    <option value="@ViewBag.UsuarioLogin.idUsuarioAlta">@(ViewBag.UsuarioLogin.ToString())</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="idContrato" class="control-label">Contrato</label>
-                <select class="form-control" name="idContrato">
-                    <option value="null"></option>
-                    @foreach (Contrato item in listaContratos)
-                    {
-                        <option value="@item.idContrato">@(item.ToString())</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="fechaPago" class="control-label">Fecha de</label>
-                <input asp-for="fechaPago" class="form-control" type="date" />
-            </div>
-            <div class="form-group form-check m-2">
-                <input asp-for="estado" class="form-check-input" type="checkbox" />
-                <label asp-for="estado" class="form-check-label">Estado</label>
-            </div>
-            <form asp-action="Create">
-            <input type="submit" class="btn btn-success" value="Agregar Pago" />  |
-            <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
-    </form>
+           
+                <div class="form-group">
+                    <label asp-for="descripcion" class="control-label"></label>
+                    <input asp-for="descripcion" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="importe" class="control-label"></label>
+                    <input asp-for="importe" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="idUsuarioAlta" class="control-label">Usuario</label>
+                    <select class="form-control" asp-for="idUsuarioAlta">
+                        @foreach (Usuario item in listaUsuarios)
+                        {
+                            <option value="@item.idUsuario">@(item.ToString())</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="idContrato" class="control-label">Contrato</label>
+                    <select class="form-control" name="idContrato">
+                        <option value="null"></option>
+                        @foreach (Contrato item in listaContratos)
+                        {
+                            <option value="@item.idContrato">@(item.ToString())</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="fechaPago" class="control-label">Fecha de</label>
+                    <input asp-for="fechaPago" class="form-control" type="date" />
+                </div>
+                <div class="form-group form-check m-2">
+                    <input asp-for="estado" class="form-check-input" type="checkbox" />
+                    <label asp-for="estado" class="form-check-label">Estado</label>
+                </div>
+                <form asp-action="Create">
+                    <input type="submit" class="btn btn-success" value="Agregar Pago" /> |
+                    <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+                </form>
         </form>
     </div>
 </div>
