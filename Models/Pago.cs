@@ -37,6 +37,6 @@ namespace proyectoInmobiliaria.NET.Models
         public int idUsuarioAlta { get; set; } 
 
         [Display(Name = "Nº de Usuario BAJA")]
-        public int idUsuarioBaja { get; set; }
+        public int? idUsuarioBaja { get; set; }
     }
 }

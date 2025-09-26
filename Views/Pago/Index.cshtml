@@ -9,8 +9,8 @@
 <br />
 
 <div class="btn-group pull-right">
-		<a class="btn btn-primary" asp-action="Create" title="Crear"> Registrar nuevo pago </a>
-	</div>
+    <a class="btn btn-primary" asp-action="Create" title="Crear"> Registrar nuevo pago </a>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +20,7 @@
             <th class="bg-light">
                 @Html.DisplayNameFor(model => model.numPago)
             </th>
-             <th class="bg-light">
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.idContrato)
             </th>
             <th class="bg-light">
@@ -32,9 +32,25 @@
             <th class="bg-light">
                 @Html.DisplayNameFor(model => model.estado)
             </th>
-            <th class="bg-light">
-                @Html.DisplayNameFor(model => model.idUsuarioAlta)
-            </th>
+            @if ((User.IsInRole("Administrador")))
+            {
+                <th class="bg-light">
+                    @Html.DisplayNameFor(model => model.idUsuarioAlta)
+                </th>
+            }
+            @if ((User.IsInRole("Administrador")))
+            {
+                @if (Model.Any(p => p.idUsuarioBaja != 0))
+                {
+                    <th>@Html.DisplayNameFor(m => m.idUsuarioBaja)</th>
+                }
+                else
+                {
+                    <th>No se anuló el pago</th>
+                }
+
+            }
+
             <th class="bg-light"></th>
             <th class="bg-light"></th>
             <th class="bg-light"></th>
@@ -54,7 +70,7 @@
                     @Html.DisplayFor(modelItem => item.idContrato)
                 </td>
                 <td>
-                   @item.fechaPago.ToString("dd/MM/yyyy")
+                    @item.fechaPago.ToString("dd/MM/yyyy")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.importe)
@@ -62,9 +78,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.estado)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idUsuarioAlta)
-                </td>
+                @if ((User.IsInRole("Administrador")))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.idUsuarioAlta)
+                    </td>
+                }
+                @if ((User.IsInRole("Administrador")))
+                {
+                    <td>@item.idUsuarioAlta</td>
+                    <td>
+                        @(item.idUsuarioBaja != 0 ? item.idUsuarioBaja : "No se anuló el pago")
+                    </td>
+                }
+
 
                 <td>
                     <i class="fa fa-edit"></i>

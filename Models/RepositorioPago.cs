@@ -163,7 +163,37 @@ namespace proyectoInmobiliaria.NET.Models
             return pagos;
         }
 
-
-
+        public List<Pago> PagosAnulados()
+        {
+            List<Pago> pagos = new List<Pago>();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                var sql = "SELECT * FROM pago WHERE estado = 0;";
+                using (MySqlCommand command = new MySqlCommand(sql, connection))
+                {
+                    connection.Open();
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Pago pago = new Pago();
+                            pago.idPago = reader.GetInt32("idPago");
+                            pago.descripcion = reader.GetString("descripcion");
+                            pago.idContrato = reader.GetInt32("idContrato");
+                            pago.fechaPago = reader.GetDateTime("fechaPago");
+                            pago.importe = reader.GetDecimal("importe");
+                            pago.estado = reader.GetBoolean("estado");
+                            pago.numPago = reader.GetInt32("numPago");
+                            pago.idUsuarioAlta = reader.GetInt32("idUsuario");
+                            pago.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                            pagos.Add(pago);
+                        }
+                    }
+                }
+                connection.Close();
+            }
+            return pagos;
+        }
+        
     }
 }
