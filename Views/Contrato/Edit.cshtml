@@ -13,20 +13,22 @@
 		<form asp-action="Edit">
 			<div class="form-group m-2 mx-0">
 				<label asp-for="idContrato" class="control-label">Contrato Nroº @Model.idContrato</label>
-				<input asp-for="idContrato" class="form-control" value="@Model.idContrato" type="hidden"/>
+				<input asp-for="idContrato" class="form-control" value="@Model.idContrato" type="hidden" />
 			</div>
 			<div class="form-group">
 				<label class="control-label">Inmueble</label>
 				<select class="form-control" name="idInmueble">
 					@foreach (Inmueble item in listaInmuebles)
 					{
-						if(item.idInmueble == ViewBag.InmuebleSelected)
+						if (item.idInmueble == ViewBag.InmuebleSelected)
 						{
-							<option value="@item.idInmueble" selected="selected" >@(item.ToString())</option>
-						}else{
-							<option value="@item.idInmueble" >@(item.ToString())</option>
+							<option value="@item.idInmueble" selected="selected">@(item.ToString())</option>
 						}
-						
+						else
+						{
+							<option value="@item.idInmueble">@(item.ToString())</option>
+						}
+
 					}
 				</select>
 			</div>
@@ -35,11 +37,13 @@
 				<select class="form-control" name="idInquilino">
 					@foreach (Inquilino item in listaInquilinos)
 					{
-						
-						if(item.id == ViewBag.InquilinoSelected)
+
+						if (item.id == ViewBag.InquilinoSelected)
 						{
 							<option value="@item.id" selected="selected">@(item.ToString())</option>
-						}else{
+						}
+						else
+						{
 							<option value="@item.id">@(item.ToString())</option>
 						}
 					}
@@ -47,19 +51,9 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Usuario</label>
-                 <select class="form-control" name="idUsuario">
-                    @foreach (Usuario item in listaUsuarios)
-                    {
-
-						if(item.idUsuario == ViewBag.UsuarioSelected)
-						{
-							<option value="@item.idUsuario" selected="selected" >@(item.ToString())</option>
-						}else{
-							 <option value="@item.idUsuario">@(item.ToString())</option>
-						}
-                       
-                    }
-                </select>
+				<select class="form-control" name="idUsuario">
+					<option value="@ViewBag.UsuarioLogin.idUsuario">@(ViewBag.UsuarioLogin.ToString())</option>
+				</select>
 			</div>
 			<div class="form-group">
 				<label asp-for="monto" class="control-label">Monto</label>

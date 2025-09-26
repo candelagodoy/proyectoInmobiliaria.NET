@@ -28,14 +28,17 @@ public class Contrato
 
     public decimal monto { get; set; }
 
-    [Display(Name = "Usuario")] 
+    [Display(Name = "Usuario alta")] 
 
-    public int idUsuario { get; set; }
+    public int idUsuarioAlta { get; set; }
+
+    [Display(Name = "Usuario baja")]
+    public int? idUsuarioBaja { get; set; }
 
     [Display(Name = "Estado")]
     
     public bool estado { get; set; }
 
     override
-        public String ToString() => $"{idContrato}, {fechaDesde}, {fechaHasta}, {monto}, {idInmueble}, {idInquilino}, {idUsuario}, {estado}";
+        public String ToString() => $"{idContrato}, {fechaDesde}, {fechaHasta}, {monto}, {idInmueble}, {idInquilino}, {idUsuarioAlta}, {idUsuarioBaja}, {estado}";
 }

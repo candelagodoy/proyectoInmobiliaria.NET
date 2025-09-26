@@ -96,9 +96,4 @@ public class pagoController : Controller
     }
 
 
-
-
-
->>>>>>> Stashed changes
-
 }

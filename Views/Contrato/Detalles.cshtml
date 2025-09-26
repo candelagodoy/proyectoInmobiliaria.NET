@@ -32,14 +32,22 @@
         <td>@Html.DisplayFor(model => model.monto)</td>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.idUsuario)</th>
+        <th>@Html.DisplayNameFor(model => model.idUsuarioAlta)</th>
         <td>@ViewBag.Usuario</td>
     </tr>
+    @if (ViewBag.Usuario != null)
+    {
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.idUsuarioBaja)</th>
+            <td>@ViewBag.Usuario</td>
+        </tr>
+    }
+
     <tr>
         <th>@Html.DisplayNameFor(model => model.estado)</th>
         <td>@Html.DisplayFor(model => model.estado)</td>
     </tr>
-    
+
 </table>
 <div>
     <a class="btn btn-primary m-2" asp-action="Index">Volver</a>

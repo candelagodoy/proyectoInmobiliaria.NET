@@ -10,7 +10,7 @@ public class RepositorioContrato : RepositorioBase
         List<Contrato> contratos = new List<Contrato>();
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "SELECT * FROM contrato";
+            string sql = "SELECT * FROM contrato WHERE estado = 1;";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 connection.Open();
@@ -25,7 +25,42 @@ public class RepositorioContrato : RepositorioBase
                         contrato.monto = reader.GetDecimal("monto");
                         contrato.idInmueble = reader.GetInt32("idInmueble");
                         contrato.idInquilino = reader.GetInt32("idInquilino");
-                        contrato.idUsuario = reader.GetInt32("idUsuario");
+                        contrato.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
+                        var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
+                        contrato.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                            ? (int?)null
+                            : reader.GetInt32(ordIdUsuarioBaja);
+                        contrato.estado = reader.GetBoolean("estado");
+                        contratos.Add(contrato);
+                    }
+                }
+            }
+        }
+        return contratos;
+    }
+
+    public List<Contrato> ObtenerContratosTerminados()
+    {
+        List<Contrato> contratos = new List<Contrato>();
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            string sql = "SELECT * FROM contrato WHERE estado = 0;";
+            using (MySqlCommand command = new MySqlCommand(sql, connection))
+            {
+                connection.Open();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Contrato contrato = new Contrato();
+                        contrato.idContrato = reader.GetInt32("idContrato");
+                        contrato.fechaDesde = reader.GetDateTime("fechaDesde");
+                        contrato.fechaHasta = reader.GetDateTime("fechaHasta");
+                        contrato.monto = reader.GetDecimal("monto");
+                        contrato.idInmueble = reader.GetInt32("idInmueble");
+                        contrato.idInquilino = reader.GetInt32("idInquilino");
+                        contrato.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
+                        contrato.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
                         contrato.estado = reader.GetBoolean("estado");
                         contratos.Add(contrato);
                     }
@@ -40,7 +75,7 @@ public class RepositorioContrato : RepositorioBase
         Contrato? contrato = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "SELECT * FROM contrato WHERE idContrato = @idContrato";
+            string sql = "SELECT * FROM contrato WHERE idContrato = @idContrato AND estado = 1";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idContrato", id);
@@ -56,7 +91,8 @@ public class RepositorioContrato : RepositorioBase
                         contrato.monto = reader.GetDecimal("monto");
                         contrato.idInmueble = reader.GetInt32("idInmueble");
                         contrato.idInquilino = reader.GetInt32("idInquilino");
-                        contrato.idUsuario = reader.GetInt32("idUsuario");
+                        contrato.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
+                        contrato.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
                         contrato.estado = reader.GetBoolean("estado");
                     }
                 }
@@ -69,7 +105,7 @@ public class RepositorioContrato : RepositorioBase
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "DELETE FROM contrato WHERE idContrato = @idContrato";
+            string sql = "UPDATE contrato SET estado = 0 WHERE idContrato = @idContrato;";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idContrato", id);
@@ -84,8 +120,8 @@ public class RepositorioContrato : RepositorioBase
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = @"INSERT INTO contrato (fechaDesde, fechaHasta, monto, idInmueble, idInquilino, idUsuario, estado)
-                            VALUES (@fechaDesde, @fechaHasta, @monto, @idInmueble, @idInquilino, @idUsuario, @estado);";
+            string sql = @"INSERT INTO contrato (fechaDesde, fechaHasta, monto, idInmueble, idInquilino, idUsuarioAlta, idUsuarioBaja, estado)
+                            VALUES (@fechaDesde, @fechaHasta, @monto, @idInmueble, @idInquilino, @idUsuarioAlta, NULL , @estado);";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@fechaDesde", contrato.fechaDesde);
@@ -93,7 +129,7 @@ public class RepositorioContrato : RepositorioBase
                 command.Parameters.AddWithValue("@monto", contrato.monto);
                 command.Parameters.AddWithValue("@idInmueble", contrato.idInmueble);
                 command.Parameters.AddWithValue("@idInquilino", contrato.idInquilino);
-                command.Parameters.AddWithValue("@idUsuario", contrato.idUsuario);
+                command.Parameters.AddWithValue("@idUsuarioAlta", contrato.idUsuarioAlta);
                 command.Parameters.AddWithValue("@estado", contrato.estado);
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -112,7 +148,8 @@ public class RepositorioContrato : RepositorioBase
                             monto = @monto,
                             idInmueble = @idInmueble,
                             idInquilino = @idInquilino,
-                            idUsuario = @idUsuario,
+                            idUsuarioAlta = @idUsuarioAlta,
+                            idUsuarioBaja = @idUsuarioBaja,
                             estado = @estado
                             WHERE idContrato = @idContrato;";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -123,7 +160,8 @@ public class RepositorioContrato : RepositorioBase
                 command.Parameters.AddWithValue("@monto", contrato.monto);
                 command.Parameters.AddWithValue("@idInmueble", contrato.idInmueble);
                 command.Parameters.AddWithValue("@idInquilino", contrato.idInquilino);
-                command.Parameters.AddWithValue("@idUsuario", contrato.idUsuario);
+                command.Parameters.AddWithValue("@idUsuarioAlta", contrato.idUsuarioAlta);
+                command.Parameters.AddWithValue("@idUsuarioBaja", contrato.idUsuarioBaja);
                 command.Parameters.AddWithValue("@estado", contrato.estado);
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -132,6 +170,5 @@ public class RepositorioContrato : RepositorioBase
         }
     }
 
-    
+
 }
-    
