@@ -80,9 +80,16 @@ public class pagoController : Controller
 
     public IActionResult Edit(int id)
     {
-        var pago = repoPago.ObtenerPorContrato(id);
-        ViewBag.Contratos = repoContrato.ObtenerTodos();
-        ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+        Pago pago = repoPago.ObtenerPorId(id);
+        ViewBag.Usuario = repoUsuario.ObtenerPorId(pago.idUsuarioAlta);
+        if (pago.idUsuarioBaja != null)
+        {
+            ViewBag.UsuarioBaja = repoUsuario.ObtenerPorId((int)pago.idUsuarioBaja);
+        }
+        else
+        {
+            ViewBag.UsuarioBaja = null;
+        }
         return View("Edit", pago);
     }
 

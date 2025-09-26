@@ -5,32 +5,32 @@ namespace proyectoInmobiliaria.NET.Models;
 
 public class RepositorioUsuario : RepositorioBase
 {
- public int Alta(Usuario usuario)
-{
-    int id = 0;
-    using (MySqlConnection connection = new MySqlConnection(connectionString))
+    public int Alta(Usuario usuario)
     {
-        string sql = @"INSERT INTO usuario 
+        int id = 0;
+        using (MySqlConnection connection = new MySqlConnection(connectionString))
+        {
+            string sql = @"INSERT INTO usuario 
                         (nombre, apellido, email, clave, avatar, rol)
                         VALUES (@nombre, @apellido, @email, @clave, @avatar, @rol);
                        SELECT LAST_INSERT_ID();";  // devuelve el id recién insertado
 
-        using (MySqlCommand command = new MySqlCommand(sql, connection))
-        {
-            command.Parameters.AddWithValue("@nombre", usuario.nombre);
-            command.Parameters.AddWithValue("@apellido", usuario.apellido);
-            command.Parameters.AddWithValue("@email", usuario.email);
-            command.Parameters.AddWithValue("@clave", usuario.clave);
-            command.Parameters.AddWithValue("@avatar", usuario.avatar);
-            command.Parameters.AddWithValue("@rol", usuario.rol);
+            using (MySqlCommand command = new MySqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@nombre", usuario.nombre);
+                command.Parameters.AddWithValue("@apellido", usuario.apellido);
+                command.Parameters.AddWithValue("@email", usuario.email);
+                command.Parameters.AddWithValue("@clave", usuario.clave);
+                command.Parameters.AddWithValue("@avatar", usuario.avatar);
+                command.Parameters.AddWithValue("@rol", usuario.rol);
 
-            connection.Open();
-            id = Convert.ToInt32(command.ExecuteScalar()); // obtiene el id
-            connection.Close();
+                connection.Open();
+                id = Convert.ToInt32(command.ExecuteScalar()); // obtiene el id
+                connection.Close();
+            }
         }
+        return id;
     }
-    return id;
-}
 
 
     public void Baja(int id)
@@ -157,6 +157,7 @@ public class RepositorioUsuario : RepositorioBase
         }
         return usuario;
     }
-    
+
+
 }
     

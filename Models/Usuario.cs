@@ -15,14 +15,14 @@ namespace proyectoInmobiliaria.NET.Models
         public int idUsuario { get; set; }
         [Display(Name = "Nombre")]
         public string nombre { get; set; }
-        [Display(Name = "Aoellido")]
+        [Display(Name = "Apellido")]
         public string apellido { get; set; }
         [Display(Name = "E-mail")]
         public string email { get; set; }
         [Display(Name = "Contraseña")]
         public string clave { get; set; }
         [Display(Name = "Avatar")]
-        public string avatar { get; set; } = "";
+        public string? avatar { get; set; } = "";
         public IFormFile? avatarFile { get; set; }
         [Display(Name = "Rol")]
         public int rol { get; set; }

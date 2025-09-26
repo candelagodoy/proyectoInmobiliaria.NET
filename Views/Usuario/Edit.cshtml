@@ -1,56 +1,94 @@
 @model proyectoInmobiliaria.NET.Models.Usuario
-
 @{
     ViewData["Title"] = "Editar Usuario";
 }
 
-<h1 class="text-lg-center bg-info font-italic text-white">Actualización de Datos</h1>
-<br />
-<br />
-<h4 class="bg-dark text-white">Datos del Usuario:</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="idUsuario" type="hidden" class="form-control" />
-                <span asp-validation-for="idUsuario" class="text-danger"></span>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">Actualización de Datos</h5>
+        </div>
+
+        <div class="card-body">
+          <form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-3">
+            @Html.AntiForgeryToken()
+            <input asp-for="idUsuario" type="hidden" />
+
+            <div class="col-12">
+              <div class="form-text">ID Usuario N.º @Model?.idUsuario</div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="nombre" class="control-label"></label>
+            @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Administrador"))
+            {
+              <div class="col-sm-6">
+                <label asp-for="nombre" class="form-label"></label>
                 <input asp-for="nombre" class="form-control" />
                 <span asp-validation-for="nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="apellido" class="control-label"></label>
+              </div>
+
+              <div class="col-sm-6">
+                <label asp-for="apellido" class="form-label"></label>
                 <input asp-for="apellido" class="form-control" />
                 <span asp-validation-for="apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="email" class="control-label"></label>
+              </div>
+
+              <div class="col-12">
+                <label asp-for="email" class="form-label"></label>
                 <input asp-for="email" class="form-control" />
                 <span asp-validation-for="email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="clave" class="control-label" hidden></label>
-                <input asp-for="clave" class="form-control" hidden />
-                <span asp-validation-for="clave" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="rol" class="control-label">Rol</label>
-                <select asp-for="rol" class="form-control">
-                    <option value="1">Administrador</option>
-                    <option value="2">Empleado</option>
+              </div>
+
+              <!-- Password SIEMPRE vacía -->
+              <div class="col-12">
+                <label class="form-label">Clave</label>
+                <!-- NO usamos asp-for para no precargarla -->
+                <input name="clave" type="password" class="form-control"
+                       placeholder="Dejar vacío para mantener la actual"
+                       autocomplete="new-password" />
+                <small class="form-text text-muted">Si no escribís nada, se conservará la clave actual.</small>
+              </div>
+
+              <div class="col-12">
+                <label asp-for="rol" class="form-label">Rol</label>
+                <select asp-for="rol" class="form-select">
+                  <option value="1">Administrador</option>
+                  <option value="2">Empleado</option>
                 </select>
                 <span asp-validation-for="rol" class="text-danger"></span>
+              </div>
+            }
+
+            <!-- Avatar -->
+            <div class="col-12">
+              <label class="form-label">Avatar</label>
+              <div class="text-center mb-2">
+                @if (!string.IsNullOrWhiteSpace(Model?.avatar))
+                {
+                  <img src="@Model.avatar" alt="Avatar" class="img-fluid rounded"
+                       style="max-height:220px; border:10px solid silver;" />
+                }
+                else
+                {
+                  <p class="text-muted mb-0">Sin avatar</p>
+                }
+              </div>
+
+              <input asp-for="avatarFile" type="file" accept="image/*" class="form-control" />
+              <small class="form-text text-muted">Si no seleccionás una imagen, se mantiene el avatar actual.</small>
+              <span asp-validation-for="avatarFile" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Modificar" class="btn btn-success" /> |
-                <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+            <div class="col-12 d-flex gap-2 pt-2">
+              <button type="submit" class="btn btn-success">Modificar</button>
+              <a asp-action="Index" class="btn btn-outline-secondary">Volver al listado</a>
             </div>
-        </form>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

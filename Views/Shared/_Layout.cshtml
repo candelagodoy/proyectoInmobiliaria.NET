@@ -11,70 +11,89 @@
     <link rel="stylesheet" href="~/proyectoInmobiliaria.NET.styles.css" asp-append-version="true" />
     <link rel="icon" href="~/img/favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
-        .nav-item {
-            margin-right: 50px;
-            font-family: inherit;
-            font-size: 20px;
+        /* Ajustes sutiles de tamaño/espaciado */
+        .navbar-nav .nav-link {
+            padding: .5rem .75rem;
+        }
+
+        .navbar-brand {
+            letter-spacing: .5px;
         }
     </style>
 
 </head>
 
-<body>
 
+<body>
     <header>
-        <nav
-            class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary bg-gradient border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-primary bg-gradient border-bottom shadow-sm mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand text-uppercase fw-bold fs-4 text-white" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand text-uppercase fw-bold fs-5 text-white" asp-controller="Home" asp-action="Index">
                     Inmobiliaria F&amp;C
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class= "nav">
+
+                <div id="mainNav" class="collapse navbar-collapse">
+                    <!-- IZQUIERDA -->
+                    <ul class="navbar-nav me-auto mb-2 mb-sm-0 fw-semibold fs-6">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home"
-                                asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated){
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Propietario"
+                                    asp-action="Index">Propietarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Inquilino" asp-action="Index">Inquilinos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Inmueble" asp-action="Index">Inmuebles</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Contrato" asp-action="Index">Contratos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Pago" asp-action="Index">Pagos</a>
+                            </li>
                             @if (User.IsInRole("Administrador"))
                             {
-                            <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Propietario"
-                                asp-action="Index">Propietarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Inquilino"
-                                    asp-action="Index">Inquilinos</a>
-                            </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-controller="Usuario" asp-action="Index">Usuarios</a>
+                                </li>
+
                             }
-                            <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Inmueble"
-                                asp-action="Index">Inmuebles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Contrato"
-                                asp-action="Index">Contratos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Usuario"
-                                asp-action="Index">Usuarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Pago"
-                                asp-action="Index">Pagos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Usuario"
-                                    asp-action="Logout">Cerrar sesion</a>
-                            </li>
+
                         }
-                        
                     </ul>
+
+                    <!-- DERECHA -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-light btn-sm px-3" asp-controller="Usuario" asp-action="Details"
+                                    asp-route-id="@User.FindFirst("Id")?.Value">
+                                    <i class="fa fa-user me-1"></i> Ver perfil
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-light btn-sm text-primary px-3" asp-controller="Usuario"
+                                    asp-action="Logout">
+                                    <i class="fa fa-right-from-bracket me-1"></i> Cerrar sesión
+                                </a>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>

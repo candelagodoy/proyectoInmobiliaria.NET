@@ -29,6 +29,7 @@ public class UsuarioController : Controller
         environment = env;
         repo = new RepositorioUsuario();
     }
+[Authorize(Policy = "Administrador")]
     public IActionResult Index()
     {
         var lista = repo.ObtenerTodos();
@@ -59,9 +60,14 @@ public class UsuarioController : Controller
                  numBytesRequested: 256 / 8));
 
                 var e = repo.ObtenerPorEmail(login.Email);
-                if (e == null || e.clave != hashed)
+                if (e == null || e.clave == null)
                 {
-                    ModelState.AddModelError("", "El email y/o el password son incorrectos");
+                    ModelState.AddModelError(string.Empty, "Complete todos los campos");
+                    return View();
+                }
+                if (e.email != login.Email || e.clave != hashed)
+                {
+                    ModelState.AddModelError(string.Empty, "El email y/o el password son incorrectos");
                     return View();
                 }
                 var claims = new List<Claim>
@@ -153,46 +159,82 @@ public class UsuarioController : Controller
 
 
 
-    [Authorize(Policy = "Administrador")]
-    public ActionResult Edit(int id)
+    [Authorize]
+    public IActionResult Edit(int id)
     {
-        var i = repo.ObtenerPorId(id);
-        return View(i);
+        var db = repo.ObtenerPorId(id);
+        if (db is null) return NotFound();
+
+        return View(db);
     }
 
-    // POST: Admin/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Policy = "Administrador")]
-    public ActionResult Edit(int id, Usuario i)
+    [Authorize]
+    public async Task<IActionResult> Edit(Usuario i)
     {
-        try
+
+        if (string.IsNullOrWhiteSpace(i.clave))
         {
-            if (ModelState.IsValid)
-            {
-
-                i.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: i.clave,
-                    salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
-                    prf: KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 1000,
-                    numBytesRequested: 256 / 8));
-                repo.Modificacion(i);
-                return RedirectToAction(nameof(Index));
-
-            }
-            else
-            {
-                ModelState.AddModelError("", "Error al actualizar!!");
-                return View();
-            }
-
+            ModelState.Remove(nameof(i.clave));
+            ModelState.ClearValidationState(nameof(i.clave));
         }
-        catch
+
+
+        if (!ModelState.IsValid)
         {
-            return View();
+            return View(i);
         }
+
+
+        var db = repo.ObtenerPorId(i.idUsuario);
+        if (db is null) return NotFound();
+
+        db.nombre = i.nombre;
+        db.apellido = i.apellido;
+        db.email = i.email;
+        db.rol = i.rol;
+
+        if (!string.IsNullOrWhiteSpace(i.clave))
+        {
+            db.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: i.clave,
+                salt: System.Text.Encoding.ASCII.GetBytes("Salt"),
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 1000,
+                numBytesRequested: 256 / 8));
+        }
+
+
+        if (i.avatarFile is { Length: > 0 })
+        {
+            var wwwPath = environment.WebRootPath;
+            var folderName = "Uploads";
+            var physicalDir = Path.Combine(wwwPath, folderName);
+            if (!Directory.Exists(physicalDir)) Directory.CreateDirectory(physicalDir);
+
+            var ext = Path.GetExtension(i.avatarFile.FileName);
+            var fileName = $"avatar_{db.idUsuario}_{Guid.NewGuid():N}{ext}";
+            var fullPath = Path.Combine(physicalDir, fileName);
+
+            using (var fs = new FileStream(fullPath, FileMode.Create))
+                await i.avatarFile.CopyToAsync(fs);
+
+            // borrar el anterior
+            if (!string.IsNullOrWhiteSpace(db.avatar))
+            {
+                var old = Path.Combine(environment.WebRootPath, db.avatar.TrimStart('/', '\\'));
+                if (System.IO.File.Exists(old)) System.IO.File.Delete(old);
+            }
+
+            db.avatar = $"/{folderName}/{fileName}";
+        }
+
+        repo.Modificacion(db);
+        return RedirectToAction(nameof(Index));
     }
+
+
 
     // GET: Admin/Delete/5
     [Authorize(Policy = "Administrador")]
@@ -222,6 +264,7 @@ public class UsuarioController : Controller
     public ActionResult Details(int id)
     {
         Usuario u = repo.ObtenerPorId(id);
+        ViewBag.UsuarioLogin = repo.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View(u);
     }
 

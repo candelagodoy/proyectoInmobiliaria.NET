@@ -176,5 +176,30 @@ public class RepositorioContrato : RepositorioBase
         }
     }
 
+    public bool ExisteSuperposicion(
+    int idInmueble,
+    DateTime nuevoDesde,
+    DateTime nuevoHasta,
+    int? excluirContratoId = null)
+    {
+        const string sql = @"
+        SELECT COUNT(*) 
+        FROM contrato
+        WHERE idInmueble = @idInmueble AND estado = 1
+          AND (@excluir IS NULL OR idContrato <> @excluir)
+          AND @nuevoDesde <= fechaHasta
+          AND @nuevoHasta  >= fechaDesde;";
+
+        using var cn = new MySqlConnection(connectionString);
+        using var cmd = new MySqlCommand(sql, cn);
+        cmd.Parameters.AddWithValue("@idInmueble", idInmueble);
+        cmd.Parameters.AddWithValue("@excluir", (object?)excluirContratoId ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@nuevoDesde", nuevoDesde);
+        cmd.Parameters.AddWithValue("@nuevoHasta", nuevoHasta);
+        cn.Open();
+        var count = Convert.ToInt32(cmd.ExecuteScalar());
+        return count > 0;
+    
+}
 
 }
