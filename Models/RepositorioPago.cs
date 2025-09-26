@@ -27,7 +27,7 @@ namespace proyectoInmobiliaria.NET.Models
                         pago.numPago = pagos[pagos.Count - 1].numPago + 1;
                     }
                     command.Parameters.AddWithValue("@numPago", pago.numPago);
-                    command.Parameters.AddWithValue("@idUsuario", pago.idUsuarioAlta);
+                    command.Parameters.AddWithValue("@idUsuarioAlta", pago.idUsuarioAlta);
                     command.Parameters.AddWithValue("@idUsuarioBaja", pago.idUsuarioBaja);
                     connection.Open();
                     command.ExecuteNonQuery();
