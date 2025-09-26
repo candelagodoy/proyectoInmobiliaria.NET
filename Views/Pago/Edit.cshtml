@@ -1,67 +1,49 @@
-@model IEnumerable<proyectoInmobiliaria.NET.Models.Pago>
+@model proyectoInmobiliaria.NET.Models.Pago
 
 @{
-    ViewData["Title"] = "Pago";
+    ViewData["Title"] = "Actualizar Pagos";
+    
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th class="bg-light" hidden>
-                @Html.DisplayNameFor(model => model.idPago)
-            </th>
-            <th class="bg-light" hidden>
-                @Html.DisplayNameFor(model => model.descripcion)
-            </th>
-            <th class="bg-light">
-                @Html.DisplayNameFor(model => model.idContrato)
-            </th>
-            <th class="bg-light">
-                @Html.DisplayNameFor(model => model.numPago)
-            </th>
-            <th class="bg-light">
-                @Html.DisplayNameFor(model => model.fechaPago)
-            </th>
-            <th class="bg-light">
-                @Html.DisplayNameFor(model => model.importe)
-            </th>
-            <th class="bg-light">
-                @Html.DisplayNameFor(model => model.estado)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td hidden>
-                    @Html.DisplayFor(modelItem => item.idPago)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.numPago)
-                </td>
-                <td>
-                   @item.fechaPago.ToString("dd/MM/yyyy")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.importe)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.estado)
-                </td>
+<h1 class="text-lg-center bg-info font-italic text-white">Actualización de Datos</h1>
+<br />
+<br />
+<h4 class="bg-dark text-white">Datos del Pago:</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="numPago" class="control-label">Nº Pago</label>
+                <input asp-for="numPago" class="form-control" readonly />
+                <span asp-validation-for="numPago" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="idContrato" class="control-label">Nº Contrato</label>
+                <input asp-for="idContrato" class="form-control" readonly />
+                <span asp-validation-for="idContrato" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fechaPago" class="control-label">Fecha Pago</label>
+                <input asp-for="fechaPago" class="form-control" />
+                <span asp-validation-for="fechaPago" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="importe" class="control-label"></label>
+                <input asp-for="importe" class="form-control" value=""/>
+                <span asp-validation-for="importe" class="text-danger"></span>
+            </div>
+             	<div class="form-group">
+				<label asp-for="descripcion" class="control-label"></label>
+				<input asp-for="descripcion" class="form-control" />
+				<span asp-validation-for="descripcion" class="text-danger"></span>
+			</div>
+            <div class="form-group">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />   |
+                <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
 
-                <td>
-                    <i class="fa fa-edit"></i>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.idPago })
-                </td>
-                <td>
-                    <i class="fa fa-trash"></i>
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.idPago })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            </div>
+        </form>
+    </div>
+</div>

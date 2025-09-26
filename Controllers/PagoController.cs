@@ -95,4 +95,13 @@ public class pagoController : Controller
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
         return View("Edit", pago);
     }
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
+
 }

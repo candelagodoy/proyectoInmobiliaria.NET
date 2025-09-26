@@ -26,6 +26,12 @@
 			<th>
 				@Html.DisplayNameFor(model => model.fechaHasta)
 			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.idUsuarioAlta)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.idUsuarioBaja)
+			</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -44,6 +50,21 @@
 				<td>
 					@item.fechaHasta.ToString("dd/MM/yyyy")
 				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.idUsuarioAlta)
+				</td>
+				@if (item.idUsuarioBaja != null)
+				{
+					<td>
+						@Html.DisplayFor(modelItem => item.idUsuarioBaja)
+					</td>
+				}
+				else
+				{
+					<td>
+						Vigente
+					</td>
+				}
 				<td>
 					<div class="btn-group" role="group">
 						<a class="btn btn-primary btnOpcion" asp-action="Edit" asp-route-id="@item.idContrato"

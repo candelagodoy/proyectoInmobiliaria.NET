@@ -30,21 +30,15 @@ public class ContratoController : Controller
         ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
         ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
+        ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View();
     }
 
     [HttpPost]
     public IActionResult Create(Contrato contrato)
     {
-        try
-        {
             repo.Alta(contrato);
             return RedirectToAction(nameof(Index));
-        }
-        catch (Exception)
-        {
-            return View(contrato);
-        }
     }
 
     public IActionResult Edit(int id)
@@ -55,7 +49,7 @@ public class ContratoController : Controller
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
         ViewBag.InquilinoSelected = contrato.idInquilino;
         ViewBag.InmuebleSelected = contrato.idInmueble;
-        ViewBag.UsuarioSelected = contrato.idUsuario;
+        ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View(contrato);
     }
 
@@ -76,6 +70,9 @@ public class ContratoController : Controller
     public IActionResult Eliminar(int id)
     {
         repo.Baja(id);
+        var con = repo.ObtenerPorId(id);
+        con.idUsuarioBaja = int.Parse(User.FindFirst("Id")?.Value);
+        repo.Modificacion(con);
         return RedirectToAction(nameof(Index));
     }
 
@@ -85,7 +82,7 @@ public class ContratoController : Controller
         var contrato = repo.ObtenerPorId(id);
         var inquilino = repoInquilino.ObtenerPorId(contrato.idInquilino);
         var inmueble = repoInmueble.ObtenerPorId(contrato.idInmueble);
-        var usuario = repoUsuario.ObtenerPorId(contrato.idUsuario);
+        var usuario = repoUsuario.ObtenerPorId(contrato.idUsuarioAlta);
         ViewBag.PropietarioNombre = inquilino.nombre + " " + inquilino.apellido;
         ViewBag.Inmueble = inmueble.direccion;
         ViewBag.Usuario = usuario.ToString();
