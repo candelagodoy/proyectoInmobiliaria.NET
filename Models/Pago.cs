@@ -32,8 +32,11 @@ namespace proyectoInmobiliaria.NET.Models
 
         [Display(Name = "Nº de Pago")]
         public int numPago { get; set; }
-        
-        [Display(Name = "Nº de Usuario")]
-        public int idUsuario { get; set; }
+
+        [Display(Name = "Nº de Usuario ALTA")]
+        public int idUsuarioAlta { get; set; } 
+
+        [Display(Name = "Nº de Usuario BAJA")]
+        public int idUsuarioBaja { get; set; }
     }
 }
