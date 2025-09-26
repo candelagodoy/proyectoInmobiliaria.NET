@@ -66,7 +66,7 @@ public class pagoController : Controller
         return View(i);
     }
 
-    // POST: Admin/Delete/5
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Policy = "Administrador")]
