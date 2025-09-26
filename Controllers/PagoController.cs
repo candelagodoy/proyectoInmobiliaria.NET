@@ -32,11 +32,7 @@ public class pagoController : Controller
 
     public IActionResult Create()
     {
-<<<<<<< Updated upstream
 
-=======
-    
->>>>>>> Stashed changes
         ViewBag.Contratos = repoContrato.ObtenerTodos();
         ViewBag.Usuarios = repoUsuario.ObtenerTodos();
         ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
@@ -70,7 +66,7 @@ public class pagoController : Controller
         return View(i);
     }
 
-    // POST: Admin/Delete/5
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Policy = "Administrador")]

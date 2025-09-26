@@ -44,9 +44,12 @@
 						<a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.id" title="Editar">
 							Editar
 						</a>
-						<a class="btn btn-danger" asp-action="Eliminar" asp-route-id="@item.id" title="Eliminar">
+						@if (User.IsInRole("Administrador")) {
+							<a class="btn btn-danger btnOpcion" asp-action="Delete" asp-route-id="@item.id"
+							title="Eliminar">
 							Eliminar
 						</a>
+						}
 						<a class="btn btn-secondary" asp-action="Detalles" asp-controller="Propietario" asp-route-id="@item.id" title="Detalles">
 							Detalles
 						</a>

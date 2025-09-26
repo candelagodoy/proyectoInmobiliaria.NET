@@ -62,22 +62,28 @@
                     <img width="42" height="64" src="@item.avatar" alt="Sin avatar" />
                 </td>
                 <td>
-                    <i class="fa fa-user-circle"></i>
-                    @Html.ActionLink("Perfil", "Details", new { id = item.idUsuario })
-                </td>
-
-                <td>
-                    @if (User.IsInRole("Administrador"))
-                    {
-                        <i class="fa fa-edit"></i>
-                        @Html.ActionLink("Editar", "Edit", new { id = item.idUsuario })}
-                </td>
-                <td>
-                    @if (User.IsInRole("Administrador"))
-                    {
-                        <i class="fa fa-trash"></i>
-                        @Html.ActionLink("Eliminar", "Delete", new { id = item.idUsuario })}
-                </td>
+					<div class="btn-group" role="group">
+						<a class="btn btn-primary btnOpcion" asp-action="Details" asp-route-id="@item.idUsuario"
+							title="Perfil">
+							Perfil
+						</a>
+                        @if(User.IsInRole("Administrador")){
+                            <a class="btn btn-secondary" asp-action="Edit" asp-controller="Usuario"
+							asp-route-id="@item.idUsuario" title="Editar">
+							Editar
+						</a>
+						
+                        }
+						
+						@if (User.IsInRole("Administrador")) {
+							<a class="btn btn-danger btnOpcion" asp-action="Delete" asp-route-id="@item.idUsuario"
+							title="Eliminar">
+							Eliminar
+						</a>
+						}
+						
+					</div>
+				</td>
             </tr>
             }
         </tbody>
