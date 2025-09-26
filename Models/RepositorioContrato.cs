@@ -92,7 +92,10 @@ public class RepositorioContrato : RepositorioBase
                         contrato.idInmueble = reader.GetInt32("idInmueble");
                         contrato.idInquilino = reader.GetInt32("idInquilino");
                         contrato.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
-                        contrato.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                        var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
+                              contrato.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                            ? (int?)null
+                            : reader.GetInt32(ordIdUsuarioBaja);
                         contrato.estado = reader.GetBoolean("estado");
                     }
                 }

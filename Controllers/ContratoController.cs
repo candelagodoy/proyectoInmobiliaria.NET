@@ -56,23 +56,19 @@ public class ContratoController : Controller
     [HttpPost]
     public IActionResult Edit(Contrato contrato)
     {
-        try
-        {
+
             repo.Modificacion(contrato);
             return RedirectToAction(nameof(Index));
-        }
-        catch (Exception)
-        {
-            return View(contrato);
-        }
     }
 
     public IActionResult Eliminar(int id)
     {
-        repo.Baja(id);
+       
         var con = repo.ObtenerPorId(id);
-        con.idUsuarioBaja = int.Parse(User.FindFirst("Id")?.Value);
+        int idUsuarioLogin = int.Parse(User.FindFirst("Id")?.Value);
+        con.idUsuarioBaja = idUsuarioLogin;
         repo.Modificacion(con);
+         repo.Baja(id);
         return RedirectToAction(nameof(Index));
     }
 
@@ -86,7 +82,7 @@ public class ContratoController : Controller
         ViewBag.PropietarioNombre = inquilino.nombre + " " + inquilino.apellido;
         ViewBag.Inmueble = inmueble.direccion;
         ViewBag.Usuario = usuario.ToString();
-
+    
         if (contrato == null)
         {
             return NotFound();
