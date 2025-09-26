@@ -8,7 +8,7 @@ namespace proyectoInmobiliaria.NET.Models
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string sql = "INSERT INTO pago VALUES (@idPago, @descripcion, @idContrato, @fechaPago, @importe, @estado, @numPago, @idUsuarioAlta, @idUsuarioBaja);";
+                string sql = "INSERT INTO pago VALUES (@idPago, @descripcion, @idContrato, @fechaPago, @importe, @estado, @numPago, @idUsuarioAlta, NULL);";
                 using (MySqlCommand command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@idPago", pago.idPago);
@@ -88,8 +88,11 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
-                            pago.idUsuarioAlta = reader.GetInt32("idUsuario");
-                            pago.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                            pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
+                            var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
+                              pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                            ? (int?)null
+                            : reader.GetInt32(ordIdUsuarioBaja);
                             pagos.Add(pago);
                         }
                     }
@@ -120,8 +123,11 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
-                            pago.idUsuarioAlta = reader.GetInt32("idUsuario");
-                            pago.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                            pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
+                            var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
+                              pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                            ? (int?)null
+                            : reader.GetInt32(ordIdUsuarioBaja);
                         }
                     }
                 }
@@ -152,8 +158,11 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
-                            pago.idUsuarioAlta = reader.GetInt32("idUsuario");
-                            pago.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
+                            pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
+                            var ordIdUsuarioBaja = reader.GetOrdinal("idUsuarioBaja");
+                              pago.idUsuarioBaja = reader.IsDBNull(ordIdUsuarioBaja)
+                            ? (int?)null
+                            : reader.GetInt32(ordIdUsuarioBaja);
                             pagos.Add(pago);
                         }
                     }
@@ -184,7 +193,7 @@ namespace proyectoInmobiliaria.NET.Models
                             pago.importe = reader.GetDecimal("importe");
                             pago.estado = reader.GetBoolean("estado");
                             pago.numPago = reader.GetInt32("numPago");
-                            pago.idUsuarioAlta = reader.GetInt32("idUsuario");
+                            pago.idUsuarioAlta = reader.GetInt32("idUsuarioAlta");
                             pago.idUsuarioBaja = reader.GetInt32("idUsuarioBaja");
                             pagos.Add(pago);
                         }
