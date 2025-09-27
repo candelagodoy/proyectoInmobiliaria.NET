@@ -76,7 +76,7 @@ public class PropietarioController : Controller
             repo.Baja(id);
             TempData["Ok"] = "Propietario eliminado.";
         }
-        catch (MySqlException ex) when (ex.Number == 1451) // FK: tiene datos relacionados
+        catch (MySqlException ex) when (ex.Number == 1451) 
         {
             TempData["Error"] = "No se puede eliminar: tiene inmuebles y/o contratos asociados.";
         }

@@ -34,7 +34,7 @@ public class Inmueble
 
     [Display(Name = "Tipo")]
 
-    public TipoInmueble tipo { get; set; }
+    public int idTipoInmueble { get; set; }
 
     [Display(Name = "Cantidad Ambientes")]
 

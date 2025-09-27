@@ -14,10 +14,13 @@ public class inmuebleController : Controller
     private RepositorioInmueble repo;
     private RepositorioPropietario repoPropietario;
 
+    private RepositorioTipoInmueble repositorioTipoInmueble;
+
     public inmuebleController()
     {
         repo = new RepositorioInmueble();
         repoPropietario = new RepositorioPropietario();
+        repositorioTipoInmueble = new RepositorioTipoInmueble();
     }
 
     private static IEnumerable<SelectListItem> EnumToSelectList<TEnum>() where TEnum : Enum =>
@@ -39,7 +42,6 @@ public class inmuebleController : Controller
     {
         ViewBag.Propietarios = repoPropietario.ObtenerTodos();
         ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text");
-        ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text");
         return View();
     }
 
@@ -97,7 +99,6 @@ public class inmuebleController : Controller
             ViewBag.Propietarios = repoPropietario.ObtenerTodos();
             ViewBag.PropietarioSelected = entidad.idPropietario;
             ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text", (int)entidad.uso);
-            ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text", (int)entidad.tipo);
             return View("Edit", entidad);
         }
         catch (Exception)
