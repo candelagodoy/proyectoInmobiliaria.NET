@@ -8,7 +8,7 @@ using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
 
-[Authorize(Policy = "EmpleadoOAdministrador")]
+[Authorize]
 public class inmuebleController : Controller
 {
     private RepositorioInmueble repo;
@@ -34,7 +34,7 @@ public class inmuebleController : Controller
 
     }
 
-    [Authorize(Policy = "Administrador")]
+
     public IActionResult Create()
     {
         ViewBag.Propietarios = repoPropietario.ObtenerTodos();
@@ -88,7 +88,7 @@ public class inmuebleController : Controller
     }
 
 
-    [Authorize(Policy = "Administrador")]
+
     public IActionResult Edit(int id)
     {
         try
@@ -105,7 +105,7 @@ public class inmuebleController : Controller
             throw;
         }
     }
-    [Authorize(Policy = "Administrador")]
+
     [HttpPost]
     public IActionResult Edit(Inmueble inmueble)
     {
@@ -155,7 +155,7 @@ public class inmuebleController : Controller
         /*  if (string.IsNullOrEmpty(final))
          {
              throw new NullReferenceException();
-         } */
+         } */ //esto es para el video de debug
         var lista = repo.obtenerInmueblesDisponibles(inicio, final);
         return View("Disponibles", lista);
     }

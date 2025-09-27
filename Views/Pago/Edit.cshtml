@@ -1,44 +1,59 @@
 @model proyectoInmobiliaria.NET.Models.Pago
 
 @{
-	ViewData["Title"] = "Editar descripcion de pago";
+	ViewData["Title"] = "Editar descripción de pago";
 }
 
-<h4>Editar descripcion de pago</h4>
-<hr />
-<div class="row">
-	<div class="col-md-4">
-		<h3>N° Pago </h3>
-		<p>@Model.idPago</p>
-		<h3>N° Contrato </h3>
-		<p>@Model.idPago</p>
-		<h3>Usuario Alta </h3>
-		<p>@ViewBag.Usuario.ToString()</p>
-		<h3>Fecha de Pago </h3>
-		<p>@Model.fechaPago.ToString("dd/MM/yyyy")</p>
-		<h3>Importe $</h3>
-		<p>@Model.importe</p>
-		@if (ViewBag.UsuarioBaja != null)
-		{
-			<h3>Usuario Alta </h3>
-			<p>@ViewBag.UsuarioBaja.ToString()</p>
-		}
-		<form asp-action="Edit">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group">
-				<label asp-for="descripcion" class="control-label"></label>
-				<input asp-for="descripcion" class="form-control" />
-				<span asp-validation-for="descripcion" class="text-danger"></span>
-				<input asp-for="idPago" class="form-control" value="@Model.idPago" hidden/>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Guardar" class="btn btn-primary m-2" />
-			</div>
-		</form>
+<div class="container-xxl py-3">
+	<div class="card shadow-sm">
+		<div class="card-header bg-info text-white">
+			<h4 class="mb-0 fw-semibold">Editar descripción de pago</h4>
+		</div>
+
+		<div class="card-body">
+			<dl class="row">
+				<dt class="col-sm-4">Codigo de Pago</dt>
+				<dd class="col-sm-8">@Model.idPago</dd>
+				
+				<dt class="col-sm-4">N° Pago</dt>
+				<dd class="col-sm-8">@Model.numPago</dd>
+
+				<dt class="col-sm-4">N° Contrato</dt>
+				<dd class="col-sm-8">@Model.idContrato</dd>
+
+				<dt class="col-sm-4">Usuario Alta</dt>
+				<dd class="col-sm-8">@ViewBag.Usuario?.ToString()</dd>
+
+				<dt class="col-sm-4">Fecha de Pago</dt>
+				<dd class="col-sm-8">@Model.fechaPago.ToString("dd/MM/yyyy")</dd>
+
+				<dt class="col-sm-4">Importe $</dt>
+				<dd class="col-sm-8">@Model.importe</dd>
+
+				@if (ViewBag.UsuarioBaja != null)
+				{
+					<dt class="col-sm-4">Usuario Baja</dt>
+					<dd class="col-sm-8">@ViewBag.UsuarioBaja.ToString()</dd>
+				}
+			</dl>
+
+			<form asp-action="Edit" class="mt-3">
+				<div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+				<div class="mb-3">
+					<label asp-for="descripcion" class="form-label"></label>
+					<input asp-for="descripcion" class="form-control" />
+					<span asp-validation-for="descripcion" class="text-danger"></span>
+					<input asp-for="idPago" type="hidden" value="@Model.idPago" />
+				</div>
+				<div class="d-flex gap-2">
+					<button type="submit" class="btn btn-primary">
+						<i class="bi bi-save"></i> Guardar
+					</button>
+					<a class="btn btn-outline-secondary" asp-action="Index">
+						<i class="bi bi-arrow-left"></i> Volver
+					</a>
+				</div>
+			</form>
+		</div>
 	</div>
-</div>
-
-
-<div>
-	<a class="btn btn-primary m-2" asp-action="Index">Volver</a>
 </div>

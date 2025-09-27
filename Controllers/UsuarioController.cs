@@ -165,48 +165,64 @@ public class UsuarioController : Controller
         var db = repo.ObtenerPorId(id);
         if (db is null) return NotFound();
 
-        return View(db);
+        if (User.IsInRole("Administrador"))
+        {
+
+            return View(db);
+        }
+        else
+        {
+            if (id != int.Parse(User.FindFirst("Id")?.Value))
+            {
+                return RedirectToAction("Restringido", "Home");
+
+            }
+            else
+            {
+                return View(db);
+            }
+        }
+
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize]
-    public async Task<IActionResult> Edit(Usuario i)
+    public async Task<IActionResult> Edit(Usuario i, bool eliminarAvatar = false)
     {
         var esAdmin = User.IsInRole("Administrador");
+        if (!esAdmin)
+        {
+            if (i.idUsuario != int.Parse(User.FindFirst("Id")?.Value))
+                return RedirectToAction("Restringido", "Home");
+        }
 
-        // Clave opcional: si viene vacía, ignorar validación
         if (string.IsNullOrWhiteSpace(i.clave))
         {
             ModelState.Remove(nameof(i.clave));
             ModelState.ClearValidationState(nameof(i.clave));
         }
-
-        // Si NO es admin, también ignorá validaciones de campos que no están en el form
         if (!esAdmin)
         {
-            foreach (var k in new[] { nameof(i.nombre), nameof(i.apellido), nameof(i.email), nameof(i.rol) })
+            foreach (var k in new[] { nameof(i.rol) })
             {
                 ModelState.Remove(k);
                 ModelState.ClearValidationState(k);
             }
         }
-        if (!ModelState.IsValid)
-            return View(i);
+        if (!ModelState.IsValid) return View(i);
 
         var db = repo.ObtenerPorId(i.idUsuario);
         if (db is null) return NotFound();
 
-        // Solo el admin puede modificar estos campos
-        if (esAdmin)
-        {
-            db.nombre = i.nombre;
-            db.apellido = i.apellido;
-            db.email = i.email;
-            db.rol = i.rol;
-        }
+        // Admin-only
+        if (esAdmin) db.rol = i.rol;
 
-        // Clave: solo si viene una nueva
+        db.nombre = i.nombre;
+        db.apellido = i.apellido;
+        db.email = i.email;
+
+        // Clave opcional
         if (!string.IsNullOrWhiteSpace(i.clave))
         {
             db.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -217,8 +233,21 @@ public class UsuarioController : Controller
                 numBytesRequested: 256 / 8));
         }
 
-        // Avatar: reemplazar solo si suben archivo
-        if (i.avatarFile is { Length: > 0 })
+        // ---- Avatar: 1) ¿pide eliminar? (y NO sube nuevo) -> borrar físico + null
+        // Si sube archivo nuevo, la subida tiene prioridad (ignora eliminarAvatar)
+        var hayArchivoNuevo = i.avatarFile is { Length: > 0 };
+        if (eliminarAvatar && !hayArchivoNuevo && !string.IsNullOrWhiteSpace(db.avatar))
+        {
+            var oldPath = Path.Combine(environment.WebRootPath, db.avatar.TrimStart('/', '\\'));
+            if (System.IO.File.Exists(oldPath))
+            {
+                try { System.IO.File.Delete(oldPath); } catch { /* log si querés */ }
+            }
+            db.avatar = null;
+        }
+
+        // 2) ¿subieron archivo nuevo? -> guardar y borrar el viejo
+        if (hayArchivoNuevo)
         {
             var wwwPath = environment.WebRootPath;
             var folderName = "Uploads";
@@ -236,7 +265,10 @@ public class UsuarioController : Controller
             if (!string.IsNullOrWhiteSpace(db.avatar))
             {
                 var old = Path.Combine(environment.WebRootPath, db.avatar.TrimStart('/', '\\'));
-                if (System.IO.File.Exists(old)) System.IO.File.Delete(old);
+                if (System.IO.File.Exists(old))
+                {
+                    try { System.IO.File.Delete(old); } catch { /* log */ }
+                }
             }
 
             db.avatar = $"/{folderName}/{fileName}";
@@ -249,11 +281,9 @@ public class UsuarioController : Controller
             var id = int.Parse(User.FindFirst("Id")?.Value);
             return RedirectToAction(nameof(Details), new { id });
         }
-
         return RedirectToAction(nameof(Index));
-
     }
-    
+
 
 
 
@@ -288,6 +318,20 @@ public class UsuarioController : Controller
         ViewBag.UsuarioLogin = repo.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View(u);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EliminarAvatar(int id)
+    {
+        var usuario = repo.ObtenerPorId(id);
+        if (usuario == null) return NotFound();
+
+        usuario.avatar = null; // o ruta por defecto
+        repo.Modificacion(usuario);
+
+        return RedirectToAction("Edit", new { id = id });
+    }
+
 
 
 }

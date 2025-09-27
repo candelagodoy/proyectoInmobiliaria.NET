@@ -1,10 +1,12 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
 
+[Authorize]
 public class PropietarioController : Controller
 {
     private RepositorioPropietario repo;
@@ -66,6 +68,7 @@ public class PropietarioController : Controller
         }
     }
 
+    [Authorize(Policy = "Administrador")]
     public IActionResult Eliminar(int id)
     {
         try

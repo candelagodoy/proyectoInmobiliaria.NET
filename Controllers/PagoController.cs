@@ -63,6 +63,7 @@ public class pagoController : Controller
     public ActionResult Delete(int id)
     {
         var i = repoPago.ObtenerPorId(id);
+        ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View(i);
     }
 

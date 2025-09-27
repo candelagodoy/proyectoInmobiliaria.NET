@@ -1,56 +1,124 @@
 @model proyectoInmobiliaria.NET.Models.Usuario
 
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
 
-@{ ViewData["Title"] = "Crear Usuario"; }
+<div class="container-xxl py-3">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h1 class="h5 mb-0 fw-semibold">Crear usuario</h1>
+        </div>
 
-<h1 class="text-lg-center bg-info font-italic text-white">Usuarios</h1>
-<br />
-<br />
-<h4 class="bg-dark text-white">Datos del Usuario: </h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data" class="needs-validation" novalidate>
+                @Html.AntiForgeryToken()
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="nombre" class="control-label"></label>
-                <input asp-for="nombre" class="form-control" />
-                <span asp-validation-for="nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="apellido" class="control-label"></label>
-                <input asp-for="apellido" class="form-control" />
-                <span asp-validation-for="apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="email" class="control-label"></label>
-                <input asp-for="email" class="form-control" type="email" />
-                <span asp-validation-for="email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="clave" class="control-label"></label>
-                <input asp-for="clave" class="form-control" type="password" />
-                <span asp-validation-for="clave" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="avatarFile" class="control-label"></label>
-                <input type='file' name="avatarFile" accept="image/*"/>
-                <span asp-validation-for="avatarFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="rol" class="control-label">Rol</label>
-                <select class="form-control" name="Rol">                  
-                  <option value="1">Administrador</option>
-                  <option value="2">Empleado</option>
-                </select>
-                <span asp-validation-for="rol" class="text-danger"></span>
-            </div>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2" role="alert"></div>
 
-            <div class="form-group">
-                <input type="submit" value="Agregar" class="btn btn-success" /> |
-                <a class="btn btn-info" asp-action="Index">Regresar Lista Usuarios</a>
-            </div>
-        </form>
+                <div class="row g-4">
+                    <!-- Columna principal -->
+                    <div class="col-lg-7">
+
+                        <div class="mb-3">
+                            <label asp-for="nombre" class="form-label"></label>
+                            <input asp-for="nombre" class="form-control" />
+                            <span asp-validation-for="nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="apellido" class="form-label"></label>
+                            <input asp-for="apellido" class="form-control" />
+                            <span asp-validation-for="apellido" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="email" class="form-label"></label>
+                            <input asp-for="email" type="email" class="form-control" />
+                            <span asp-validation-for="email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="clave" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="clave" type="password" class="form-control" id="pwd" />
+                                <button type="button" class="btn btn-outline-secondary" id="btnTogglePwd">Mostrar</button>
+                            </div>
+                            <span asp-validation-for="clave" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="rol" class="form-label">Rol</label>
+                            <!-- Mantengo la lógica: 1=Administrador, 2=Empleado -->
+                            <select asp-for="rol" class="form-select">
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                            </select>
+                            <span asp-validation-for="rol" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- Columna lateral: Avatar -->
+                    <div class="col-lg-5">
+                        <div class="mb-2">
+                            <label class="form-label">Avatar (opcional)</label>
+                            <input asp-for="avatarFile" type="file" accept="image/*" class="form-control" id="avatarInput" />
+                            <span asp-validation-for="avatarFile" class="text-danger"></span>
+                        </div>
+                        <div class="border rounded p-2 text-center">
+                            <img id="avatarPreview" src="#" alt="Vista previa" class="img-fluid rounded d-none" />
+                            <div id="avatarPlaceholder" class="text-muted small">Aún no seleccionaste imagen.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a class="btn btn-outline-secondary" asp-action="Index">Regresar a la lista</a>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Toggle mostrar/ocultar contraseña
+        (function () {
+            const btn = document.getElementById('btnTogglePwd');
+            const input = document.getElementById('pwd');
+            if (btn && input) {
+                btn.addEventListener('click', function () {
+                    const isPwd = input.type === 'password';
+                    input.type = isPwd ? 'text' : 'password';
+                    btn.textContent = isPwd ? 'Ocultar' : 'Mostrar';
+                });
+            }
+        })();
+
+        // Preview de avatar
+        (function () {
+            const input = document.getElementById('avatarInput');
+            const img = document.getElementById('avatarPreview');
+            const placeholder = document.getElementById('avatarPlaceholder');
+            if (input && img) {
+                input.addEventListener('change', function (e) {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) {
+                        img.classList.add('d-none');
+                        placeholder.classList.remove('d-none');
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        img.src = ev.target.result;
+                        img.classList.remove('d-none');
+                        if (placeholder) placeholder.classList.add('d-none');
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        })();
+    </script>
+}

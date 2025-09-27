@@ -8,6 +8,7 @@ using proyectoInmobiliaria.NET.Models;
 namespace proyectoInmobiliaria.NET.Controllers;
 
 
+[Authorize]
 public class InquilinoController : Controller
 {
 
@@ -42,7 +43,7 @@ public class InquilinoController : Controller
         }
     }
 
-
+    [Authorize(Policy = "Administrador")]
     public IActionResult Eliminar(int id)
     {
         try

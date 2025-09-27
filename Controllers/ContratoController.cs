@@ -5,6 +5,7 @@ using proyectoInmobiliaria.NET.Models;
 
 namespace proyectoInmobiliaria.NET.Controllers;
 
+[Authorize]
 public class ContratoController : Controller
 {
     private RepositorioContrato repo;
@@ -39,7 +40,6 @@ public class ContratoController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Policy = "Administrador")]
     public IActionResult Create(Contrato contrato)
     {
 
@@ -113,7 +113,7 @@ public class ContratoController : Controller
         repo.Modificacion(contrato);
         return RedirectToAction(nameof(Index));
     }
-
+    [Authorize(Policy = "Administrador")]
     public IActionResult Delete(int id)
     {
         int usuarioLogeadoId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
@@ -173,7 +173,7 @@ public class ContratoController : Controller
         {
             idInmueble = actual.idInmueble,
             idInquilino = actual.idInquilino,
-            fechaDesde = desdeServidor,    
+            fechaDesde = desdeServidor,
             fechaHasta = fechaHasta,
             monto = monto,
             idUsuarioAlta = int.Parse(User.FindFirst("Id")!.Value),

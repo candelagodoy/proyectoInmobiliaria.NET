@@ -1,6 +1,6 @@
 @model proyectoInmobiliaria.NET.Models.Usuario
 @{
-    ViewData["Title"] = "Editar Usuario";
+  ViewData["Title"] = "Editar Usuario";
 }
 
 <div class="container py-4">
@@ -13,43 +13,41 @@
 
         <div class="card-body">
           <form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-3">
-           @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
             <input asp-for="idUsuario" type="hidden" />
 
             <div class="col-12">
               <div class="form-text">ID Usuario N.º @Model?.idUsuario</div>
             </div>
 
+            <div class="col-sm-6">
+              <label asp-for="nombre" class="form-label"></label>
+              <input asp-for="nombre" class="form-control" />
+              <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+
+            <div class="col-sm-6">
+              <label asp-for="apellido" class="form-label"></label>
+              <input asp-for="apellido" class="form-control" />
+              <span asp-validation-for="apellido" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+              <label asp-for="email" class="form-label"></label>
+              <input asp-for="email" class="form-control" />
+              <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+
+            <!-- Password SIEMPRE vacía -->
+            <div class="col-12">
+              <label class="form-label">Clave</label>
+              <input name="clave" type="password" class="form-control" placeholder="Dejar vacío para mantener la actual"
+                autocomplete="new-password" />
+              <small class="form-text text-muted">Si no escribís nada, se conservará la clave actual.</small>
+            </div>
+
             @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Administrador"))
             {
-              <div class="col-sm-6">
-                <label asp-for="nombre" class="form-label"></label>
-                <input asp-for="nombre" class="form-control" />
-                <span asp-validation-for="nombre" class="text-danger"></span>
-              </div>
-
-              <div class="col-sm-6">
-                <label asp-for="apellido" class="form-label"></label>
-                <input asp-for="apellido" class="form-control" />
-                <span asp-validation-for="apellido" class="text-danger"></span>
-              </div>
-
-              <div class="col-12">
-                <label asp-for="email" class="form-label"></label>
-                <input asp-for="email" class="form-control" />
-                <span asp-validation-for="email" class="text-danger"></span>
-              </div>
-
-              <!-- Password SIEMPRE vacía -->
-              <div class="col-12">
-                <label class="form-label">Clave</label>
-                <!-- NO usamos asp-for para no precargarla -->
-                <input name="clave" type="password" class="form-control"
-                       placeholder="Dejar vacío para mantener la actual"
-                       autocomplete="new-password" />
-                <small class="form-text text-muted">Si no escribís nada, se conservará la clave actual.</small>
-              </div>
-
               <div class="col-12">
                 <label asp-for="rol" class="form-label">Rol</label>
                 <select asp-for="rol" class="form-select">
@@ -63,26 +61,66 @@
             <!-- Avatar -->
             <div class="col-12">
               <label class="form-label">Avatar</label>
-              <div class="text-center mb-2">
-                @if (!string.IsNullOrWhiteSpace(Model?.avatar))
-                {
-                  <img src="@Model.avatar" alt="Avatar" class="img-fluid rounded"
-                       style="max-height:220px; border:10px solid silver;" />
-                }
-                else
-                {
-                  <p class="text-muted mb-0">Sin avatar</p>
-                }
+
+              <div class="row g-3 align-items-center mb-2">
+                <div class="col-md-6">
+                  <div class="border rounded p-2 text-center h-100">
+                    <div class="fw-semibold mb-2">Actual</div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model?.avatar))
+                    {
+                      <img id="avatarActualImg" src="@Model.avatar" alt="Avatar actual" class="img-fluid rounded mb-2"
+                        style="max-height:220px; border:6px solid #e9ecef;" />
+
+                      <!-- Botón eliminar (marca la bandera) -->
+                      <button type="button" id="btnEliminarAvatar" class="btn btn-outline-danger btn-sm w-100">
+                        <i class="fa fa-trash"></i> Eliminar foto y dejar sin avatar
+                      </button>
+                      <button type="button" id="btnDeshacerEliminar"
+                        class="btn btn-outline-secondary btn-sm w-100 mt-2 d-none">
+                        Deshacer eliminación
+                      </button>
+                    }
+                    else
+                    {
+                      <div id="avatarActualPlaceholder" class="text-muted">Sin avatar</div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Nueva vista previa -->
+                <div class="col-md-6">
+                  <div class="border rounded p-2 text-center h-100">
+                    <div class="fw-semibold mb-2">Nueva vista previa</div>
+                    <img id="avatarPreview" src="#" alt="Vista previa" class="img-fluid rounded d-none"
+                      style="max-height:220px; border:6px dashed #e9ecef;" />
+                    <div id="avatarPlaceholder" class="text-muted">Aún no seleccionaste imagen.</div>
+                  </div>
+                </div>
               </div>
 
-              <input asp-for="avatarFile" type="file" accept="image/*" class="form-control" />
+              <div class="input-group">
+                <input asp-for="avatarFile" id="avatarInput" type="file" accept="image/*" class="form-control" />
+                <button class="btn btn-outline-secondary" type="button" id="btnResetAvatar">Quitar selección</button>
+              </div>
               <small class="form-text text-muted">Si no seleccionás una imagen, se mantiene el avatar actual.</small>
               <span asp-validation-for="avatarFile" class="text-danger"></span>
+
+              <!-- bandera oculta que viaja al Edit -->
+              <input type="hidden" name="eliminarAvatar" id="eliminarAvatar" value="false" />
             </div>
+
 
             <div class="col-12 d-flex gap-2 pt-2">
               <button type="submit" class="btn btn-success">Modificar</button>
-              <a asp-action="Index" class="btn btn-outline-secondary">Volver al listado</a>
+              @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Administrador"))
+              {
+                <a asp-action="Index" class="btn btn-outline-secondary">Volver al listado</a>
+              }
+              else
+              {
+                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Volver al Inicio</a>
+              }
             </div>
           </form>
         </div>
@@ -91,4 +129,89 @@
   </div>
 </div>
 
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+
+  <script>
+    (function () {
+      // --- Elementos NUEVA selección y vista previa ---
+      const input     = document.getElementById('avatarInput');
+      const imgNew    = document.getElementById('avatarPreview');
+      const phNew     = document.getElementById('avatarPlaceholder');
+      const btnR      = document.getElementById('btnResetAvatar');
+
+      // --- Elementos AVATAR actual + botones eliminar/deshacer ---
+      const btnDel    = document.getElementById('btnEliminarAvatar');
+      const btnUndo   = document.getElementById('btnDeshacerEliminar');
+      const flagDel   = document.getElementById('eliminarAvatar');
+      const imgActual = document.getElementById('avatarActualImg');
+      const actualPh  = document.getElementById('avatarActualPlaceholder');
+
+      // Preview de la nueva imagen seleccionada
+      input?.addEventListener('change', function (e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) {
+          imgNew.classList.add('d-none');
+          phNew.classList.remove('d-none');
+          imgNew.src = '#';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          imgNew.src = ev.target.result;
+          imgNew.classList.remove('d-none');
+          phNew.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+
+        // Al elegir archivo nuevo, cancelamos la eliminación (si estaba marcada)
+        if (flagDel) {
+          flagDel.value = 'false';
+          btnUndo?.classList.add('d-none');
+          if (btnDel) btnDel.disabled = false;
+          if (imgActual) imgActual.classList.remove('opacity-50');
+          if (actualPh) actualPh.classList.remove('text-decoration-line-through');
+        }
+      });
+
+      // Botón "Quitar selección" de la nueva imagen
+      btnR?.addEventListener('click', function () {
+        if (input) input.value = '';
+        imgNew.src = '#';
+        imgNew.classList.add('d-none');
+        phNew.classList.remove('d-none');
+      });
+
+      // Botón "Eliminar foto"
+      btnDel?.addEventListener('click', function () {
+        if (!confirm('¿Seguro que querés eliminar la foto de perfil?')) return;
+
+        // Marcamos la bandera para el controlador
+        if (flagDel) flagDel.value = 'true';
+
+        // Feedback visual
+        btnDel.disabled = true;
+        btnUndo?.classList.remove('d-none');
+        if (imgActual) imgActual.classList.add('opacity-50');
+        if (actualPh) actualPh.classList.add('text-decoration-line-through');
+
+        // Anular cualquier archivo nuevo que se hubiera seleccionado
+        if (input) {
+          input.value = '';
+          imgNew.src = '#';
+          imgNew.classList.add('d-none');
+          phNew.classList.remove('d-none');
+        }
+      });
+
+      // Botón "Deshacer eliminación"
+      btnUndo?.addEventListener('click', function () {
+        if (flagDel) flagDel.value = 'false';
+        btnUndo.classList.add('d-none');
+        if (btnDel) btnDel.disabled = false;
+        if (imgActual) imgActual.classList.remove('opacity-50');
+        if (actualPh) actualPh.classList.remove('text-decoration-line-through');
+      });
+    })();
+  </script>
+}
