@@ -11,14 +11,14 @@ public class RepositorioTipoInmueble : RepositorioBase
         int res = -1;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = @"INSERT INTO TiposInmuebles 
+            string sql = @"INSERT INTO tipoinmueble 
                             (nombre, descripcion)
-                            VALUES (@nombre, @descripcion);";
+                            VALUES (@nombre, @descripción);";
 
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@nombre", tipoInmueble.nombre);
-                command.Parameters.AddWithValue("@descripcion", tipoInmueble.descripcion);
+                command.Parameters.AddWithValue("@descripción", tipoInmueble.descripcion);
                 connection.Open();
                 command.ExecuteNonQuery();
                 res = (int)command.LastInsertedId; // ID del nuevo Propietario
@@ -31,7 +31,7 @@ public class RepositorioTipoInmueble : RepositorioBase
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = "DELETE FROM TiposInmuebles WHERE idTipoInmueble = @idTipoInmueble";
+            string sql = "DELETE FROM tipoinmueble WHERE idTipoInmueble = @idTipoInmueble";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idTipoInmueble", id);
@@ -46,14 +46,14 @@ public class RepositorioTipoInmueble : RepositorioBase
     {
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            string sql = @"UPDATE TiposInmuebles 
-                            SET nombre=@nombre, descripcion=@descripcion
+            string sql = @"UPDATE tipoinmueble
+                            SET nombre=@nombre, descripción=@descripción
                             WHERE idTipoInmueble = @idTipoInmueble;";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idTipoInmueble", tipoInmueble.idTipoInmueble);
                 command.Parameters.AddWithValue("@nombre", tipoInmueble.nombre);
-                command.Parameters.AddWithValue("@descripcion", tipoInmueble.descripcion);
+                command.Parameters.AddWithValue("@descripción", tipoInmueble.descripcion);
                 connection.Open();
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -66,7 +66,7 @@ public class RepositorioTipoInmueble : RepositorioBase
         List<TipoInmueble> tiposInmuebles = new List<TipoInmueble>();
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var sql = "SELECT * FROM TiposInmuebles";
+            var sql = "SELECT * FROM tipoinmueble";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 connection.Open();
@@ -77,7 +77,7 @@ public class RepositorioTipoInmueble : RepositorioBase
                         TipoInmueble tipoInmueble = new TipoInmueble();
                         tipoInmueble.idTipoInmueble = reader.GetInt32("idTipoInmueble");
                         tipoInmueble.nombre = reader.GetString("nombre");
-                        tipoInmueble.descripcion = reader.GetString("descripcion");
+                        tipoInmueble.descripcion = reader.GetString("descripción");
                         tiposInmuebles.Add(tipoInmueble);
                     }
                 }
@@ -91,7 +91,7 @@ public class RepositorioTipoInmueble : RepositorioBase
         TipoInmueble tipoInmueble = null;
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
-            var sql = "SELECT * FROM TiposInmuebles WHERE idTipoInmueble = @idTipoInmueble";
+            var sql = "SELECT * FROM tipoinmueble WHERE idTipoInmueble = @idTipoInmueble";
             using (MySqlCommand command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@idTipoInmueble", id);
@@ -103,7 +103,7 @@ public class RepositorioTipoInmueble : RepositorioBase
                         tipoInmueble = new TipoInmueble();
                         tipoInmueble.idTipoInmueble = reader.GetInt32("idTipoInmueble");
                         tipoInmueble.nombre = reader.GetString("nombre");
-                        tipoInmueble.descripcion = reader.GetString("descripcion");
+                        tipoInmueble.descripcion = reader.GetString("descripción");
                     }
                 }
             }

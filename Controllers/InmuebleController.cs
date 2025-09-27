@@ -41,6 +41,7 @@ public class inmuebleController : Controller
     public IActionResult Create()
     {
         ViewBag.Propietarios = repoPropietario.ObtenerTodos();
+        ViewBag.Tipos = repositorioTipoInmueble.ObtenerTodos();
         ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text");
         return View();
     }
@@ -58,6 +59,7 @@ public class inmuebleController : Controller
             else
             {
                 ViewBag.Propietarios = repoPropietario.ObtenerTodos();
+                ViewBag.Tipos = repositorioTipoInmueble.ObtenerTodos();
                 return View(inmueble);
             }
 
@@ -97,7 +99,9 @@ public class inmuebleController : Controller
         {
             var entidad = repo.ObtenerPorId(id);
             ViewBag.Propietarios = repoPropietario.ObtenerTodos();
+            ViewBag.Tipos = repositorioTipoInmueble.ObtenerTodos();
             ViewBag.PropietarioSelected = entidad.idPropietario;
+            ViewBag.TipoInmuebleSelected = entidad.idTipoInmueble;
             ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text", (int)entidad.uso);
             return View("Edit", entidad);
         }
@@ -126,7 +130,9 @@ public class inmuebleController : Controller
     {
         var inmueble = repo.ObtenerPorId(id);
         var propietario = repoPropietario.ObtenerPorId(inmueble.idPropietario);
+        var tipo = repositorioTipoInmueble.ObtenerPorId(inmueble.idTipoInmueble);
         ViewBag.nombrePropietario = propietario.nombre + " " + propietario.apellido;
+        ViewBag.nombreTipoInmueble = tipo.nombre;
         // ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text", (int)inmueble.uso);
         //  ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text", (int)inmueble.tipo);
         if (inmueble == null)

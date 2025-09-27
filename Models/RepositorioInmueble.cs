@@ -17,7 +17,7 @@ public class RepositorioInmueble : RepositorioBase
             {
                 command.Parameters.AddWithValue("@direccion", inmueble.direccion);
                 command.Parameters.AddWithValue("@uso", (int)inmueble.uso);
-                command.Parameters.AddWithValue("@tipo", inmueble.idTipoInmueble);
+                command.Parameters.AddWithValue("@idTipoInmueble", inmueble.idTipoInmueble);
                 command.Parameters.AddWithValue("@cantidadAmb", inmueble.cantidadAmb);
                 command.Parameters.AddWithValue("@coordenadas", inmueble.coordenadas);
                 command.Parameters.AddWithValue("@precio", inmueble.precio);
@@ -41,7 +41,7 @@ public class RepositorioInmueble : RepositorioBase
             {
                 command.Parameters.AddWithValue("@direccion", inmueble.direccion);
                 command.Parameters.AddWithValue("@uso", (int)inmueble.uso);
-                command.Parameters.AddWithValue("@tipo", inmueble.idTipoInmueble);
+                command.Parameters.AddWithValue("@idTipoInmueble", inmueble.idTipoInmueble);
                 command.Parameters.AddWithValue("@cantidadAmb", inmueble.cantidadAmb);
                 command.Parameters.AddWithValue("@coordenadas", inmueble.coordenadas);
                 command.Parameters.AddWithValue("@precio", inmueble.precio);

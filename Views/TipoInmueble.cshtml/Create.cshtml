@@ -1,0 +1,29 @@
+﻿@model proyectoInmobiliaria.NET.Models.TipoInmueble
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Nuevo Propietario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+            </div>
+            <div class="form-group form-check m-2">
+                <input asp-for="descripcion" class="form-check-input" type="checkbox" />
+                <label asp-for="descripcion" class="form-check-label"></label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary m-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary m-2" asp-action="Index">Volver</a>
+</div>
