@@ -52,11 +52,11 @@ public class TipoInmuebleController : Controller
         }
         catch (MySqlException ex) when (ex.Number == 1451)
         {
-            TempData["Error"] = "No se puede eliminar: tiene inmuebles y/o asociados.";
+            TempData["Error"] = "No se puede eliminar: tiene inmuebles asociados.";
         }
         catch (Exception)
         {
-            TempData["Error"] = "Ocurrió un error al eliminar el propietario.";
+            TempData["Error"] = "Ocurrió un error al eliminar el tipo de inmueble.";
         }
 
         return RedirectToAction(nameof(Index));

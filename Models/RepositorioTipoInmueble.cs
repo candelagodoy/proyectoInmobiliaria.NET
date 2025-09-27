@@ -12,7 +12,7 @@ public class RepositorioTipoInmueble : RepositorioBase
         using (MySqlConnection connection = new MySqlConnection(connectionString))
         {
             string sql = @"INSERT INTO tipoinmueble 
-                            (nombre, descripcion)
+                            (nombre, descripción)
                             VALUES (@nombre, @descripción);";
 
             using (MySqlCommand command = new MySqlCommand(sql, connection))
