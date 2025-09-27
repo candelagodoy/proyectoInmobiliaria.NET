@@ -189,7 +189,7 @@ public class RepositorioInmueble : RepositorioBase
                         inmueble.direccion = reader.GetString("direccion");
                         inmueble.precio = reader.GetDecimal("precio");
                         inmueble.uso = (UsoInmueble)reader.GetByte("uso");
-                        inmueble.idTipoInmueble = reader.GetByte("idTipoInmueble");
+                        inmueble.idTipoInmueble = reader.GetInt32("idTipoInmueble");
                         inmuebles.Add(inmueble);
                     }
                 }
