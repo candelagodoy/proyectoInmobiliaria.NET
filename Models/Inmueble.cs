@@ -8,13 +8,13 @@ namespace proyectoInmobiliaria.NET.Models;
         Residencial = 2
     }
 
-    public enum TipoInmueble
+    /*public enum TipoInmueble
     {
         Local = 1,
         Deposito = 2,
         Casa = 3,
         Departamento = 4
-    }
+    }*/
 
 public class Inmueble
 {
