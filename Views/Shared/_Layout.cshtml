@@ -43,34 +43,41 @@
                     <!-- IZQUIERDA -->
                     <ul class="navbar-nav me-auto mb-2 mb-sm-0 fw-semibold fs-6">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light mx-3" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Propietario"
+                                <a class="nav-link text-light fs-6" asp-controller="Propietario"
                                     asp-action="Index">Propietarios</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Inquilino" asp-action="Index">Inquilinos</a>
+                                <a class="nav-link text-light fs-6" asp-controller="Inquilino"
+                                    asp-action="Index">Inquilinos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Inmueble" asp-action="Index">Inmuebles</a>
+                                <a class="nav-link text-light fs-6" asp-controller="Inmueble"
+                                    asp-action="Index">Inmuebles</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Contrato" asp-action="Index">Contratos</a>
+                                <a class="nav-link text-light fs-6" asp-controller="Contrato"
+                                    asp-action="Index">Contratos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Pago" asp-action="Index">Pagos</a>
+                                <a class="nav-link text-light fs-6" asp-controller="Pago" asp-action="Index">Pagos</a>
                             </li>
+
                             @if (User.IsInRole("Administrador"))
                             {
 
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-controller="Usuario" asp-action="Index">Usuarios</a>
                                 </li>
-
+                                <li class="nav-item">
+                                    <a class="nav-link text-light fs-6" asp-controller="TipoInmueble" asp-action="Index">Tipo
+                                        Inmueble</a>
+                                </li>
                             }
                         }
                     </ul>
@@ -97,20 +104,20 @@
             </div>
         </nav>
     </header>
-   <main role="main" class="flex-fill">
-    <div class="container py-3">
-        @RenderBody()
-    </div>
-</main>
+    <main role="main" class="flex-fill">
+        <div class="container py-3">
+            @RenderBody()
+        </div>
+    </main>
 
-    
 
-   <footer class="mt-auto border-top bg-light">
-    <div class="container small text-muted py-3 d-flex justify-content-between">
-        <span>© @DateTime.Now.Year - Inmobiliaria F&C</span>
-        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </div>
-</footer>
+
+    <footer class="mt-auto border-top bg-light">
+        <div class="container small text-muted py-3 d-flex justify-content-between">
+            <span>© @DateTime.Now.Year - Inmobiliaria F&C</span>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

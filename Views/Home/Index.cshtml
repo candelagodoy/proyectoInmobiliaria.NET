@@ -14,7 +14,11 @@
 
     <a class="btn btn-primary m-2" asp-action="index" asp-controller="Contrato"> Index Contrato</a>
 
-    <a class="btn btn-primary m-2" asp-action="index" asp-controller="Usuario"> Index Usuario</a>
+    @if (User.IsInRole("Administrador"))
+    {
+        <a class="btn btn-primary m-2" asp-action="index" asp-controller="Usuario"> Index Usuario</a>
+        <a class="btn btn-primary m-2" asp-action="index" asp-controller="TipoInmueble"> Index Tipo Inmueble</a>
+    }
 
 
 </div>
