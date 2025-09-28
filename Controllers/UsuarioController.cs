@@ -50,6 +50,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            
             if (ModelState.IsValid)
             {
                 string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -60,12 +61,8 @@ public class UsuarioController : Controller
                  numBytesRequested: 256 / 8));
 
                 var e = repo.ObtenerPorEmail(login.Email);
-                if (e == null || e.clave == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Complete todos los campos");
-                    return View();
-                }
-                if (e.email != login.Email || e.clave != hashed)
+
+                if (e == null || e.clave != hashed)
                 {
                     ModelState.AddModelError(string.Empty, "El email y/o el password son incorrectos");
                     return View();
@@ -87,6 +84,11 @@ public class UsuarioController : Controller
 
                 return RedirectToAction(nameof(Index), "Home");
             }
+            if ( login.Clave == null || login.Email == null )
+                {
+                    ModelState.AddModelError(string.Empty, "Complete todos los campos");
+                    return View();
+                }
             return View();
         }
         catch (Exception ex)
