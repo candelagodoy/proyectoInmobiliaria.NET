@@ -2,6 +2,8 @@
 
 @{
 	ViewData["Title"] = "Home Page";
+	IList<Inquilino>? listaInquilinos = (IList<Inquilino>)ViewBag.Inquilinos;
+	IList<Inmueble>? listaInmuebles = (IList<Inmueble>)ViewBag.Inmuebles;
 }
 
 @if (TempData["Ok"] is string ok)
@@ -66,10 +68,24 @@
 					@Html.DisplayFor(modelItem => item.idUsuarioAlta)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.idInmueble)
+					@foreach (var t in listaInmuebles)
+					{
+						if (t.idInmueble == item.idInmueble)
+						{
+							@t.ToString();
+							
+						}
+					}
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.idInquilino)
+					@foreach (var t in listaInquilinos)
+					{
+						if (t.id == item.idInquilino)
+						{
+							@t.ToString();
+							
+						}
+					}
 				</td>
 				@if (item.idUsuarioBaja != null)
 				{
@@ -93,13 +109,14 @@
 							data-monto="@item.monto">
 							Renovar
 						</a>
-						@if (User.IsInRole("Administrador")) {
+						@if (User.IsInRole("Administrador"))
+						{
 							<a class="btn btn-danger btnOpcion" asp-action="Delete" asp-route-id="@item.idContrato"
-							title="Eliminar">
-							Eliminar
-						</a>
+								title="Eliminar">
+								Eliminar
+							</a>
 						}
-						
+
 					</div>
 				</td>
 			</tr>

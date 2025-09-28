@@ -27,9 +27,16 @@
                 
 					@foreach (TipoInmueble item in ltaTipoInmueble)
 					{
-						<option value="@item.idTipoInmueble">@(item.ToString())</option>
+						if (item.idTipoInmueble == ViewBag.TipoInmuebleSelected)
+						{
+							<option value="@item.idTipoInmueble" selected="selected">@(item.ToString())</option>
+						}
+						else
+						{
+							<option value="@item.idTipoInmueble">@(item.ToString())</option>
+						}
+
 					}
-                    <option value="null" selected >---Seleccione un tipo de inmueble---</option>
 				</select>
 				<span asp-validation-for="idTipoInmueble" class="text-danger"></span>
 			</div>

@@ -2,6 +2,7 @@
 
 @{
 	ViewData["Title"] = "Disponibles";
+	IList<TipoInmueble>? listaTipoInmuebles = (IList<TipoInmueble>)ViewBag.TiposInmuebles;
 }
 
 <table class="table">
@@ -13,7 +14,6 @@
 			<th>
 				@Html.DisplayNameFor(model => model.uso)
 			</th>
-
 			<th>
 				@Html.DisplayNameFor(model => model.idTipoInmueble)
 			</th>
@@ -34,7 +34,14 @@
 					@Html.DisplayFor(modelItem => item.uso)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.idTipoInmueble)
+					@foreach (TipoInmueble t in listaTipoInmuebles)
+					{
+						if (t.idTipoInmueble == item.idTipoInmueble)
+						{
+							@t.nombre
+							;
+						}
+					}
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.precio)

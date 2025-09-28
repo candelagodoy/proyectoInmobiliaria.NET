@@ -74,7 +74,7 @@ public class inmuebleController : Controller
     [Authorize(Policy = "Administrador")]
     public IActionResult Eliminar(int id)
     {
-         try
+        try
         {
             repo.Baja(id);
             TempData["Ok"] = "Inmueble eliminado.";
@@ -146,12 +146,14 @@ public class inmuebleController : Controller
     public IActionResult Disponibles()
     {
         var lista = repo.obtenerDisponibles();
+        ViewBag.TiposInmuebles = repositorioTipoInmueble.ObtenerTodos();
         return View("Disponibles", lista);
 
     }
 
     public IActionResult DisponiblesFecha()
     {
+        ViewBag.TiposInmuebles = repositorioTipoInmueble.ObtenerTodos();
         return View();
 
     }
@@ -164,6 +166,7 @@ public class inmuebleController : Controller
              throw new NullReferenceException();
          } */ //esto es para el video de debug
         var lista = repo.obtenerInmueblesDisponibles(inicio, final);
+        ViewBag.TiposInmuebles = repositorioTipoInmueble.ObtenerTodos();
         return View("Disponibles", lista);
     }
 

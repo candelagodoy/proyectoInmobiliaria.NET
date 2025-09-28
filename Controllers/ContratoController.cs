@@ -24,6 +24,8 @@ public class ContratoController : Controller
     public IActionResult Index()
     {
         var lista = repo.ObtenerTodos();
+         ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
+        ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
         return View(lista);
     }
 

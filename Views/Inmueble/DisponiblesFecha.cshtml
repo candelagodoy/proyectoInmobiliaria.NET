@@ -2,23 +2,24 @@
 
 @{
 	ViewData["Title"] = "DisponiblesFecha";
+	IList<TipoInmueble>? listaTipoInmuebles = (IList<TipoInmueble>)ViewBag.TiposInmuebles;
 }
 
 
 <h1>Inmuebles disponibles por fecha</h1>
 
 <div class="row-md-4">
-    <form asp-action="DisponiblesFecha">
-        <label class="control-label">Desde</label>
-        <input  class="form-control" type="date" name="inicio"/>
+	<form asp-action="DisponiblesFecha">
+		<label class="control-label">Desde</label>
+		<input class="form-control" type="date" name="inicio" />
 
-        <label class="control-label">Hasta</label>
-        <input  class="form-control" type="date" name="final"/>
+		<label class="control-label">Hasta</label>
+		<input class="form-control" type="date" name="final" />
 
-        <div class="form-group">
-            <input type="submit" value="Buscar" class="btn btn-primary m-2" />
-        </div>
-    </form>
+		<div class="form-group">
+			<input type="submit" value="Buscar" class="btn btn-primary m-2" />
+		</div>
+	</form>
 </div>
 <table class="table">
 	<thead>
@@ -52,14 +53,19 @@
 						@Html.DisplayFor(modelItem => item.uso)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.idTipoInmueble)
+						@foreach (TipoInmueble t in listaTipoInmuebles)
+						{
+							if(t.idTipoInmueble == item.idTipoInmueble){
+								@t.nombre;
+							}
+						}
 					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.precio)
 					</td>
 				</tr>
 			}
- }
+		}
 	</tbody>
 </table>
 

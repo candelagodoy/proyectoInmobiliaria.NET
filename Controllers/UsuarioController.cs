@@ -316,6 +316,12 @@ public class UsuarioController : Controller
 
     public ActionResult Details(int id)
     {
+         if (!User.IsInRole("Administrador"))
+        {
+            var idLog = int.Parse(User.FindFirst("Id")?.Value);
+            if (id != idLog)
+                return RedirectToAction("Restringido", "Home");
+        }
         Usuario u = repo.ObtenerPorId(id);
         ViewBag.UsuarioLogin = repo.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View(u);
