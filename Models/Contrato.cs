@@ -9,23 +9,27 @@ public class Contrato
     public int idContrato { get; set; }
 
     [Display(Name = "Fecha desde")]
-
+      [Required(ErrorMessage = "La fecha desde es obligatoria")]
+    [DataType(DataType.Date)]
     public DateTime fechaDesde { get; set; }
 
     [Display(Name = "Fecha hasta")]
-
+    [Required(ErrorMessage = "La fecha hasta es obligatoria")]
+    [DataType(DataType.Date)]
     public DateTime fechaHasta { get; set; }
 
     [Display(Name = "Inquilino")]
-
+    [Required(ErrorMessage = "El inquilino es obligatorio")]
     public int idInquilino { get; set; }
 
     [Display(Name = "Inmueble")]
 
+    [Required(ErrorMessage = "El inmueble es obligatorio")]
     public int idInmueble { get; set; }
 
     [Display(Name = "Monto")]
-
+    [Required(ErrorMessage = "El monto es obligatorio")]
+    [Range(1, double.MaxValue, ErrorMessage = "El monto debe ser mayor a 0")]
     public decimal monto { get; set; }
 
     [Display(Name = "Usuario alta")]

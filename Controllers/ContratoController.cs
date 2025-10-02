@@ -33,7 +33,6 @@ public class ContratoController : Controller
     {
         ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
         ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
-        ViewBag.Usuarios = repoUsuario.ObtenerTodos();
         ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
         return View();
     }
@@ -51,7 +50,6 @@ public class ContratoController : Controller
             ModelState.AddModelError("", "La fecha de inicio no puede ser posterior a la de fin.");
             ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
             ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
-            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
             ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
             return View(contrato);
         }
@@ -61,7 +59,6 @@ public class ContratoController : Controller
             ModelState.AddModelError("", "Se superpone con otro contrato de este inmueble.");
             ViewBag.Inquilinos = repoInquilino.ObtenerTodos();
             ViewBag.Inmuebles = repoInmueble.ObtenerTodos();
-            ViewBag.Usuarios = repoUsuario.ObtenerTodos();
             ViewBag.UsuarioLogin = repoUsuario.ObtenerPorId(int.Parse(User.FindFirst("Id")?.Value));
             return View(contrato);
         }
@@ -121,13 +118,6 @@ public class ContratoController : Controller
         int usuarioLogeadoId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
         repo.Baja(id, usuarioLogeadoId);
         return RedirectToAction(nameof(Index));
-
-        /*var con = repo.ObtenerPorId(id);
-        int idUsuarioLogin = int.Parse(User.FindFirst("Id")?.Value);
-        con.idUsuarioBaja = idUsuarioLogin;
-        repo.Modificacion(con);
-        repo.Baja(id);
-        return RedirectToAction(nameof(Index));*/
     }
 
     public IActionResult Detalles(int id)

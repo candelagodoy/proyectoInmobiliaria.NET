@@ -3,7 +3,6 @@
     ViewData["Title"] = "Create";
     IList<Inquilino>? listaInquilinos = (IList<Inquilino>)ViewBag.Inquilinos;
     IList<Inmueble>? listaInmuebles = (IList<Inmueble>)ViewBag.Inmuebles;
-    IList<Usuario>? listaUsuarios = (IList<Usuario>)ViewBag.Usuarios;
 }
 
 <h4>Nuevo Contrato</h4>
@@ -14,29 +13,32 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Inmueble</label>
-                <select class="form-control" name="idInmueble">
-                    <option value="null"></option>
-                    @foreach (Inmueble item in listaInmuebles)
+                <select asp-for="idInmueble" class="form-control" name="idInmueble">
+                    <option value=""></option>
+                    @foreach (Inmueble? item in listaInmuebles)
                     {
                         <option value="@item.idInmueble">@(item.ToString())</option>
                     }
                 </select>
+            <span asp-validation-for="idInmueble" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Inquilino</label>
-                <select class="form-control" name="idInquilino">
-                    <option value="null"></option>
+                <select asp-for="idInquilino" class="form-control" name="idInquilino">
+                    <option value=""></option>
                     @foreach (Inquilino item in listaInquilinos)
                     {
                         <option value="@item.id">@(item.ToString())</option>
                     }
                 </select>
+                 <span asp-validation-for="idInquilino" class="text-danger"></span>
             </div>
             <div class="form-group">
-              <label asp-for="idUsuarioAlta" class="control-label">Usuario</label>
+                <label asp-for="idUsuarioAlta" class="control-label">Usuario</label>
                 <select class="form-control" name="idUsuarioAlta">
                     <option value="@ViewBag.UsuarioLogin.idUsuario">@(ViewBag.UsuarioLogin.ToString())</option>
                 </select>
+                <span asp-validation-for="idUsuarioAlta" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="monto" class="control-label">Monto</label>
@@ -45,14 +47,17 @@
             <div class="form-group">
                 <label asp-for="fechaDesde" class="control-label">Desde</label>
                 <input asp-for="fechaDesde" class="form-control" type="date" />
+                <span asp-validation-for="fechaDesde" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="fechaHasta" class="control-label">Hasta</label>
                 <input asp-for="fechaHasta" class="form-control" type="date" />
+                <span asp-validation-for="fechaHasta" class="text-danger"></span>
             </div>
             <div class="form-group form-check m-2">
                 <input asp-for="estado" class="form-check-input" type="checkbox" />
                 <label asp-for="estado" class="form-check-label">Estado</label>
+                <span asp-validation-for="estado" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary m-2" />
@@ -64,3 +69,9 @@
 <div>
     <a class="btn btn-primary m-2" asp-action="Index">Volver</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
