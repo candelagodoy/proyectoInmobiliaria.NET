@@ -217,14 +217,14 @@ public class UsuarioController : Controller
         var db = repo.ObtenerPorId(i.idUsuario);
         if (db is null) return NotFound();
 
-        // Admin-only
+
         if (esAdmin) db.rol = i.rol;
 
         db.nombre = i.nombre;
         db.apellido = i.apellido;
         db.email = i.email;
 
-        // Clave opcional
+    
         if (!string.IsNullOrWhiteSpace(i.clave))
         {
             db.clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -235,8 +235,6 @@ public class UsuarioController : Controller
                 numBytesRequested: 256 / 8));
         }
 
-        // ---- Avatar: 1) ¿pide eliminar? (y NO sube nuevo) -> borrar físico + null
-        // Si sube archivo nuevo, la subida tiene prioridad (ignora eliminarAvatar)
         var hayArchivoNuevo = i.avatarFile is { Length: > 0 };
         if (eliminarAvatar && !hayArchivoNuevo && !string.IsNullOrWhiteSpace(db.avatar))
         {
@@ -248,7 +246,7 @@ public class UsuarioController : Controller
             db.avatar = null;
         }
 
-        // 2) ¿subieron archivo nuevo? -> guardar y borrar el viejo
+
         if (hayArchivoNuevo)
         {
             var wwwPath = environment.WebRootPath;
