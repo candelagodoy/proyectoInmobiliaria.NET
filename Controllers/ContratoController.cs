@@ -100,7 +100,7 @@ public class ContratoController : Controller
             return View(contrato);
         }
 
-        if (repo.ExisteSuperposicion(contrato.idInmueble, contrato.fechaDesde, contrato.fechaHasta, null))
+        if (repo.ExisteSuperposicion(contrato.idInmueble, contrato.fechaDesde, contrato.fechaHasta, contrato.idContrato))
         {
             ModelState.AddModelError("", "Se superpone con otro contrato de este inmueble.");
             ViewBag.Inquilinos = repoInquilino.ObtenerTodos();

@@ -133,8 +133,6 @@ public class inmuebleController : Controller
         var tipo = repositorioTipoInmueble.ObtenerPorId(inmueble.idTipoInmueble);
         ViewBag.nombrePropietario = propietario.nombre + " " + propietario.apellido;
         ViewBag.nombreTipoInmueble = tipo.nombre;
-        // ViewBag.Usos = new SelectList(EnumToSelectList<UsoInmueble>(), "Value", "Text", (int)inmueble.uso);
-        //  ViewBag.Tipos = new SelectList(EnumToSelectList<TipoInmueble>(), "Value", "Text", (int)inmueble.tipo);
         if (inmueble == null)
         {
             return NotFound();
@@ -161,10 +159,6 @@ public class inmuebleController : Controller
     [HttpPost]
     public IActionResult DisponiblesFecha(string inicio, string final)
     {
-        /*  if (string.IsNullOrEmpty(final))
-         {
-             throw new NullReferenceException();
-         } */ //esto es para el video de debug
         var lista = repo.obtenerInmueblesDisponibles(inicio, final);
         ViewBag.TiposInmuebles = repositorioTipoInmueble.ObtenerTodos();
         return View("Disponibles", lista);
